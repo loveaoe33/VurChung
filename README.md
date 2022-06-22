@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # newvue
 
 ## Project setup
@@ -22,3 +23,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# VurChung
+>>>>>>> 34f5da0b5835c554ba9839b47acaa0a9b9e143fa
