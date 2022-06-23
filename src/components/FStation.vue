@@ -19,6 +19,29 @@
     人員註冊
   </button>
 
+
+<div class="modal fade" id="ContextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
   <!-- Modal -->
   <div
     class="modal fade"
@@ -68,12 +91,12 @@
           <div class="DrugEventText">
           <input type="text" class="form-control " style="width: 250px"> </div><i class="fa-solid fa-user DrugEventText"></i><button type="button"  name="DrugEventEmp" class="btn btn-link DrugEventText">帶入員工</button>
          <i class="fa-solid fa-file-pen DrugEventText"></i><button type="button" @click="ShowDrugEventPain" name="DrugEventPain" class="btn btn-link DrugEventText">患者資料</button>
-         <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i><button type="button"   name="DrugEventRession"  class="btn btn-link DrugEventText">事件發生原因</button>
+         <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i><button type="button"   @click="ShowDrugEventReason" name="DrugEventRession"  class="btn btn-link DrugEventText">事件發生原因</button>
          <i class="fa-solid fa-file-circle-exclamation DrugEventText"></i><button type="button"   name="DrugEventResult"  class="btn btn-link DrugEventText">事件結果</button>
          <i class="fa-solid fa-file-circle-question DrugEventText"></i><button type="button" name="DrugEventMayRession"   class="btn btn-link DrugEventText">事件可能發生原因</button>
          <i class="fa-solid fa-file-shield DrugEventText"></i><button type="button" name="DrugEventDeal"  class="btn btn-link DrugEventText">事件處理方式與改善措施</button><hr>
 
-
+         
           <label for="EmployeeOc" name="DrugEventPainName" class="col-form-label DrugEventPain">患者姓名:</label>
           <input type="text" name="DrugEventPainName"   v-model="DrugEventData.DrugEventPainName"  class="form-control DrugEventPain" >
           <label for="EmployeeOc" name="DrugEventPainGender" class="col-form-label DrugEventPain">患者性別:</label>
@@ -101,8 +124,47 @@
 
                      <label for="EmployeeOc" name="DrugEventPainEnd" class="col-form-label DrugEventPain">事件停止日:</label>
           <input type="date" name="DrugEventPainEnd"    v-model="DrugEventData.DrugEventPainEnd"  class="form-control DrugEventPain" >
-          </div>
+          <div class="DrugEventRessionText">
+   <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    醫囑相關
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" >
+  <label class="form-check-label" for="flexCheckChecked">
+    處方籤交付
+  </label>
+</div>
+
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    傳送過程
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" >
+  <label class="form-check-label" for="flexCheckChecked">
+    護理相關
+  </label>
+</div>
+
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    其他補充
+  </label>
+</div>
+</div>
+</div>
    
+
+
+
           
          
 
@@ -217,6 +279,7 @@
   </div>
 
   {{ DrugEventData }}
+  
 
 </form>
 </template>>
@@ -239,6 +302,12 @@ export default {
       FallEventE: false, //跌倒異常
       MixEvent: false, //混和異常
       CheckEmpBool: false, //確認員工有無帶入
+      AboutOder: false, //醫囑相關check
+      PrescriptionSign: false,//處發籤交付check
+      DeliveryProcess: false,//傳送過程check
+      NursingRelated: false,//護理相關check
+      Other: false,//其他補充check
+      DrugConfirmation: false,//給藥確認
       DrugEventData:
        {
         DrugEventPainName:"",
@@ -253,24 +322,47 @@ export default {
        },
        DrugEventRession:
        {
-        
+        AboutOderEvent:[],//醫囑相關內容
+        PrescriptionSignEvent:[],//處發籤交付內容
+        DeliveryProcessEvetn:[],//傳送過程內容
+        NursingRelatedEvent:[],//護理相關內容
+        OtherAboutOrder:"",//醫囑其他選項
+        OtherPrescriptionSign:"",//處發籤其他選項
+        OtherDeliveryProcess:"",//傳送過程其他選項
+        OtherNursingRelated:"",//護理相關其他選項
+        OtherEvent:[],//其他補充內容      
        },
        DrugEventResult:
-       {},
+       {
+  
+       },
        DrugEventMayRession:
-       {},
+       {
+        WorkingProcess:[],//工作狀態流程因素相關
+        DrugInformation:[],//藥品/資訊系統因素相關
+        Surroundings:[],//環境因素相關
+        Personnel:[],//人員因素相關
+        PatientPhysiology:[],//病人生理及行為因素相關
+        Communicate:[],//溝通因素相關
+        OtherRession:"",
+       },
        DrugEventDeal:
-       {},
+       {
+        ProcessingMethod:[],//建議處理方式
+        Prevention:"",//預防
+       },
     };
   },
   created() {
     let NDate = new Date();
     this.ND = NDate;
+
   },
   mounted()
   {
     $(".DrugEventText").hide();//隱藏
     $(".DrugEventPain").hide();//表單隱藏
+    $(".DrugEventRessionText").hide();//事件發生原因隱藏
   },
   methods: {
     alert: function () {
@@ -332,8 +424,21 @@ export default {
 
     ShowDrugEventPain: function ()
     {
+         this.AllHide();
          $(".DrugEventPain").show();//顯示
     },
+
+     ShowDrugEventReason: function ()
+    {
+        this.AllHide();
+        $(".DrugEventRessionText").show()//顯示
+    },
+      AllHide: function ()
+    {
+      $(".DrugEventPain").hide();//藥物事件表單隱藏
+      $(".DrugEventRessionText").hide();//藥物事件表單隱藏}
+    },
+
 
     test: function()
     {
