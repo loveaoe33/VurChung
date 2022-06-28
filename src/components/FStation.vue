@@ -1305,7 +1305,7 @@ export default {
     },
 
     test: function () {
-      console.log(this.DrugEventData);
+      console.log(this.DrugEventData);//測試用
     },
   },
 };
