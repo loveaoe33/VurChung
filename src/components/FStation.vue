@@ -1307,6 +1307,9 @@ export default {
     test: function () {
       console.log(this.DrugEventData);//測試用235
     },
+     test2: function () {
+      console.log(this.DrugEventData);//測試用235
+    },
   },
 };
 </script>
