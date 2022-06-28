@@ -1305,6 +1305,7 @@ export default {
     },
 
     test: function () {
+      123131313
       console.log(this.DrugEventData);
     },
   },
