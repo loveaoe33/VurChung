@@ -92,7 +92,7 @@
           <input type="text" class="form-control " style="width: 250px"> </div><i class="fa-solid fa-user DrugEventText"></i><button type="button"  name="DrugEventEmp" class="btn btn-link DrugEventText">帶入員工</button>
          <i class="fa-solid fa-file-pen DrugEventText"></i><button type="button" @click="ShowDrugEventPain" name="DrugEventPain" class="btn btn-link DrugEventText">患者資料</button>
          <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i><button type="button"   @click="ShowDrugEventReason" name="DrugEventRession"  class="btn btn-link DrugEventText">事件發生原因</button>
-         <i class="fa-solid fa-file-circle-exclamation DrugEventText"></i><button type="button"   name="DrugEventResult"  class="btn btn-link DrugEventText">事件結果</button>
+         <i class="fa-solid fa-file-circle-exclamation DrugEventText"></i><button type="button"   name="DrugEventResult" @click="ShowDrugEventResult"  class="btn btn-link DrugEventText">事件結果</button>
          <i class="fa-solid fa-file-circle-question DrugEventText"></i><button type="button" name="DrugEventMayRession"   class="btn btn-link DrugEventText">事件可能發生原因</button>
          <i class="fa-solid fa-file-shield DrugEventText"></i><button type="button" name="DrugEventDeal"  class="btn btn-link DrugEventText">事件處理方式與改善措施</button><hr>
 
@@ -405,8 +405,108 @@
 
 </div>
 
+<div class="DrugEventResultText">
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="藥局尚未發藥，藥師發現異常" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   藥局尚未發藥，藥師發現異常
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="護理站尚未給藥，護理師發現異常" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   護理站尚未給藥，護理師發現異常
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input OtherResultEvenCheck" type="checkbox"  @change="ResultEventContexts2"  v-model="DrugEventResult.DrugEventResultContext" value="已給藥，請接續回答下列2題"  >
+  <label class="form-check-label" >
+   已給藥，請接續回答下列2題
+  </label>
+</div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">請說明:</label>
+    <input type="textbox" class="form-control" v-model="DrugEventResult.OtherResult" id="exampleFormControlInput1" placeholder="如不在選項內請手動填寫">
+  </div>
+</div>
 
 
+<div class="ResultEventContext2">
+<i class="fa-solid fa-user"></i>  <span style="color:red;font-size:0.5cm;"><b>事件對病患的影響(可複選):</b></span><br>
+
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患尚未使用" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患尚未使用
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="無任何異樣" id="flexCheckChecked" >
+  <label class="form-check-label" >
+  無任何異樣
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="原病情加重" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   原病情加重
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="增加不良反應" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   增加不良反應
+  </label>
+</div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">請說明:</label>
+    <input type="textbox" class="form-control" v-model="DrugEventResult.OtherResultPa" id="exampleFormControlInput1" placeholder="如不在選項內請手動填寫">
+  </div>
+
+  <i class="fa-solid fa-user"></i>  <span style="color:red;font-size:0.5cm;"><b>病患對本事件的反應(可複選):</b></span><br>
+
+
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患不知情" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患不知情
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患知情但無表示" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患知情但無表示
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患可接受" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患可接受
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患有負面情緒" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患有負面情緒
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患不接受" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患不接受
+  </label>
+</div>
+<div class="form-check form-check-inline ">
+  <input class="form-check-input " type="checkbox" v-model="DrugEventResult.DrugEventResultContext" value="病患擔心不安" id="flexCheckChecked" >
+  <label class="form-check-label" >
+   病患擔心不安
+  </label>
+</div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">請說明:</label>
+    <input type="textbox" class="form-control" v-model="DrugEventResult.PaOtherResult" id="exampleFormControlInput1" placeholder="如不在選項內請手動填寫">
+  </div>
+</div>
 
 
 
@@ -581,7 +681,10 @@ export default {
        },
        DrugEventResult:
        {
-  
+         DrugEventResultContext:[],//事件結果
+         OtherResult:"",//事件結果其他
+         OtherResultPa:"",//事件對病患結果其他
+         PaOtherResult:"",//病患對本次事件結果其他
        },
        DrugEventMayRession:
        {
@@ -617,12 +720,19 @@ export default {
     $(".NursingRelatedText").hide();//表單隱藏
     $(".DrugEventRessionText").hide();//事件發生原因隱藏
     $(".OtherText").hide();
+    $(".DrugEventResultText").hide();//事件結果表單隱藏
+    $(".ResultEventContext2").hide();//事件結果表單2隱藏
+
+    
     
 
   },
   methods: {
-    alert: function () {
+    alertTrue: function () {
       alert("12");
+    },
+    alertFalse: function () {
+      alert("34");
     },
     add: function () {
       this.number++;
@@ -676,6 +786,12 @@ export default {
       }
 
     },
+    ShowDrugEventResult:function()//事件結果
+    {
+       this.AllHide();
+       this.ContextHide();
+       $(".DrugEventResultText").show();
+    },
 
     ShowDrugEventPain: function ()
     {
@@ -719,7 +835,7 @@ export default {
         $(".DeliveryProcessText").hide();//表單隱藏
         $(".NursingRelatedText").hide();//表單隱藏
         $(".OtherText").hide();//表單隱藏
-
+        $(".DrugEventResultText2").hide();//表單隱藏
 
         
     },
@@ -786,7 +902,7 @@ export default {
 
     },
 
-        Others:function()
+    Others:function()
     {
       if(this.Other==true)
       {
@@ -799,8 +915,22 @@ export default {
 
     },
 
-
+    ResultEventContexts2:function()
+    {
     
+    let ConfirmCheck=document.querySelector('.OtherResultEvenCheck');
+    if(ConfirmCheck.checked==true)
+    {
+     $(".ResultEventContext2").show();
+    }else
+    {
+     $(".ResultEventContext2").hide();
+    }
+
+    },
+
+  
+      
 
     test: function()
     {
