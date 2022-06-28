@@ -1305,7 +1305,12 @@ export default {
     },
 
     test: function () {
+<<<<<<< HEAD
+      123131313
+      console.log(this.DrugEventData);
+=======
       console.log(this.DrugEventData);//測試用
+>>>>>>> Develop
     },
   },
 };
