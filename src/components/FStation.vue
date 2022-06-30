@@ -1,7 +1,8 @@
 <template>
+<div class="AllBodyContext">
   <button
     type="button"
-    class="btn btn-primary"
+    class="btn btn-primary NewEvent"
     data-bs-toggle="modal"
     data-bs-target="#exampleModal"
   >
@@ -11,7 +12,7 @@
   |||
   <button
     type="button"
-    class="btn btn-danger"
+    class="btn btn-danger NewPeople"
     data-bs-toggle="modal"
     data-bs-target="#exampleModal1"
     data-whatever="@mdo"
@@ -645,9 +646,8 @@
             </div>
             <br />
 
-            <i class="fa-solid fa-user"></i>
-            <span style="font-family: 標楷體; color: red; font-size: 0.5cm"
-              ><b>給藥錯誤:</b></span
+            <i class="fa-solid fa-circle-plus fa-beat"></i>
+            <span class="TextStlye"><b>給藥錯誤:</b></span
             ><br />
             <div class="form-check form-check-inline">
               <input
@@ -784,9 +784,8 @@
           </div>
 
           <div class="ResultEventContext2">
-            <i class="fa-solid fa-face-downcast-sweat"></i>
-            <span style="font-family: 標楷體; color: red; font-size: 0.5cm"
-              ><b>事件對病患的影響(可複選):</b></span
+             <i class="fa-solid fa-envelope fa-bounce" style=" --fa-bounce-start-scale-x: 1; --fa-bounce-start-scale-y: 1; --fa-bounce-jump-scale-x: 1; --fa-bounce-jump-scale-y: 1; --fa-bounce-land-scale-x: 1; --fa-bounce-land-scale-y: 1; --fa-bounce-rebound: 0;" ></i>
+            <span class="TextStlye"><b>事件對病患的影響(可複選):</b></span
             ><br />
 
             <div class="form-check form-check-inline">
@@ -840,9 +839,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
-              ><b>病患對本事件的反應(可複選):</b></span
+            <i class="fa-solid fa-envelope fa-bounce" style=" --fa-bounce-start-scale-x: 1; --fa-bounce-start-scale-y: 1; --fa-bounce-jump-scale-x: 1; --fa-bounce-jump-scale-y: 1; --fa-bounce-land-scale-x: 1; --fa-bounce-land-scale-y: 1; --fa-bounce-rebound: 0;" ></i><span class="TextStlye"><b>病患對本事件的反應(可複選):</b></span
             ><br />
 
             <div class="form-check form-check-inline">
@@ -918,8 +915,7 @@
           </div>
 
           <div class="DrugEventMayRessionText">
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
               ><b>工作狀態流程因素相關:</b></span
             ><br />
             <div class="form-check form-check-inline">
@@ -1004,8 +1000,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
               ><b>藥品/資訊系統因素相關: </b></span
             ><br />
             <div class="form-check form-check-inline">
@@ -1069,8 +1064,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>環境因素相關: </b></span
             ><br />
 
@@ -1135,8 +1129,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>人員因素相關:</b></span
             ><br />
 
@@ -1182,8 +1175,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
               ><b>病人生理及行為因素相關:</b></span
             ><br />
             <div class="form-check form-check-inline">
@@ -1239,8 +1231,7 @@
               />
             </div>
 
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>溝通因素相關:</b></span
             ><br />
             <div class="form-check form-check-inline">
@@ -1307,8 +1298,7 @@
                 placeholder="如不在選項內請手動填寫"
               />
             </div>
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>其他因素:</b></span
             ><br />
             <textarea
@@ -1319,11 +1309,8 @@
             ></textarea>
           </div>
 
-
-
-<div class="DrugEventDealText">
- <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+          <div class="DrugEventDealText">
+           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>處理方式(可複選):</b></span
             ><br />
             <div class="form-check form-check-inline">
@@ -1336,7 +1323,7 @@
               />
               <label class="form-check-label"> 更正錯誤醫囑 </label>
             </div>
-       <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1346,7 +1333,7 @@
               />
               <label class="form-check-label"> 補給處方箋/藥品 </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1354,9 +1341,11 @@
                 value="追回錯誤藥品/更換正確藥品"
                 id="flexCheckChecked"
               />
-              <label class="form-check-label"> 追回錯誤藥品/更換正確藥品 </label>
+              <label class="form-check-label">
+                追回錯誤藥品/更換正確藥品
+              </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1366,7 +1355,7 @@
               />
               <label class="form-check-label"> 通知病患領取藥品 </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1376,7 +1365,7 @@
               />
               <label class="form-check-label"> 停用錯誤藥品並觀察 </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1386,7 +1375,7 @@
               />
               <label class="form-check-label"> 使用其他治療藥品 </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1396,7 +1385,7 @@
               />
               <label class="form-check-label"> 門診治療</label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1406,7 +1395,7 @@
               />
               <label class="form-check-label"> 急診治療或急救處理 </label>
             </div>
-                   <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -1427,8 +1416,7 @@
                 placeholder="如不在選項內請手動填寫"
               />
             </div>
-            <i class="fa-regular fa-face-mask"></i
-            ><span style="font-family: 標楷體; color: red; font-size: 0.5cm"
+            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
               ><b>預防再次發生的改善措施和建議::</b></span
             ><br />
             <textarea
@@ -1437,9 +1425,7 @@
               rows="3"
               v-model="DrugEventDeal.Prevention"
             ></textarea>
-         
-          
-         </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -1567,6 +1553,7 @@
     {{ DrugEventResult.DrugEventResultContext2 }}
     <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
   </form>
+</div>>
 </template>>
 
 
@@ -1665,7 +1652,7 @@ export default {
     $(".DrugEventResultText").hide(); //事件結果表單隱藏
     $(".ResultEventContext2").hide(); //事件結果表單2隱藏
     $(".DrugEventMayRessionText").hide(); //表單隱藏隱藏
-     $(".DrugEventDealText").hide(); //表單隱藏隱藏
+    $(".DrugEventDealText").hide(); //表單隱藏隱藏
   },
   methods: {
     alertTrue: function () {
@@ -1779,7 +1766,7 @@ export default {
       $(".DrugEventResultText").hide(); //表單隱藏
       $(".ResultEventContext2").hide(); //表單隱藏
       $(".DrugEventMayRessionText").hide(); //表單隱藏
-      $(".DrugEventDealText").hide();//表單隱藏
+      $(".DrugEventDealText").hide(); //表單隱藏
     },
     AboutOders: function () {
       if (this.AboutOder == true) {
@@ -1862,3 +1849,28 @@ export default {
   },
 };
 </script>
+
+
+<style>
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+.AllBodyContext
+{
+    font-family: "DFKai-sb";
+    text-align: left;
+}
+span.TextStlye {
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 15px;
+  color: rgb(233, 15, 69);
+  text-shadow: 3px 3px 3px #a8b8c4;
+}
+
+.NewEvent
+{
+
+}
+.NewPeople
+{
+  
+}
+</style>>
