@@ -1,1452 +1,65 @@
 <template>
-<div class="AllBodyContext">
-  <button
-    type="button"
-    class="btn btn-primary NewEvent"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
-  >
-    事件新增
-  </button>
+  <div class="AllBodyContext">
+    <button
+      type="button"
+      class="btn btn-primary NewEvent"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      事件新增
+    </button>
 
-  |||
-  <button
-    type="button"
-    class="btn btn-danger NewPeople"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal1"
-    data-whatever="@mdo"
-  >
-    人員註冊
-  </button>
+    |||
+    <button
+      type="button"
+      class="btn btn-danger NewPeople"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal1"
+      data-whatever="@mdo"
+    >
+      人員註冊
+    </button>
 
-  <div
-    class="modal fade"
-    id="ContextModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="fa-2x">
-            <i class="fa-solid fa-triangle-exclamation fa-fade"></i>
-          </div>
-          <h5 class="modal-title" id="exampleModalLabel">異常事件</h5>
-          <i class="fa-solid fa-person-walking-arrow-right"></i>
-          <div class="form-check">
-            <input
-              class="form-check-input DrugEvent"
-              type="checkbox"
-              @change="DrugEventF"
-              v-model="DrugEvent"
-              value="藥物事件單"
-              id="DrugEvent"
-            />
-            <label class="form-check-label"> 藥物事件 </label>
-          </div>
-          <i class="fa-solid fa-person-walking-arrow-right"></i>
-          <div class="form-check">
-            <input
-              class="form-check-input FallEventE"
-              type="checkbox"
-              @change="FallE"
-              v-model="FallEventE"
-              value="跌倒事件單"
-              id="FallEventE"
-            />
-            <label class="form-check-label"> 跌倒事件 </label>
-          </div>
-          <i class="fa-solid fa-person-walking-arrow-right"></i>
-          <div class="form-check">
-            <input
-              class="form-check-input MixEvent"
-              type="checkbox"
-              @change="Mix"
-              v-model="MixEvent"
-              value="綜合事件"
-              id="MixEvent"
-            />
-            <label class="form-check-label"> 綜合事件 </label>
-          </div>
-
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-
-        <div class="modal-body">
-          <div class="DrugEventText">
-            <input type="text" class="form-control" style="width: 250px" />
-          </div>
-          <i class="fa-solid fa-user DrugEventText"></i
-          ><button
-            type="button"
-            name="DrugEventEmp"
-            class="btn btn-link DrugEventText"
-          >
-            帶入員工
-          </button>
-          <i class="fa-solid fa-file-pen DrugEventText"></i
-          ><button
-            type="button"
-            @click="ShowDrugEventPain"
-            name="DrugEventPain"
-            class="btn btn-link DrugEventText"
-          >
-            患者資料
-          </button>
-          <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i
-          ><button
-            type="button"
-            @click="ShowDrugEventReason"
-            name="DrugEventRession"
-            class="btn btn-link DrugEventText"
-          >
-            事件發生原因
-          </button>
-          <i class="fa-solid fa-file-circle-exclamation DrugEventText"></i
-          ><button
-            type="button"
-            name="DrugEventResult"
-            @click="ShowDrugEventResult"
-            class="btn btn-link DrugEventText"
-          >
-            事件結果
-          </button>
-          <i class="fa-solid fa-file-circle-question DrugEventText"></i
-          ><button
-            type="button"
-            name="DrugEventMayRession"
-            class="btn btn-link DrugEventText"
-            @click="DrugEventMayRessions"
-          >
-            事件可能發生原因
-          </button>
-          <i class="fa-solid fa-file-shield DrugEventText"></i
-          ><button
-            type="button"
-            name="DrugEventDeal"
-            class="btn btn-link DrugEventText"
-            @click="DrugEventDeals"
-          >
-            事件處理方式與改善措施
-          </button>
-          <hr />
-
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainName"
-            class="col-form-label DrugEventPain"
-            >患者姓名:</label
-          >
-          <input
-            type="text"
-            name="DrugEventPainName"
-            v-model="DrugEventData.DrugEventPainName"
-            class="form-control DrugEventPain"
-          />
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainGender"
-            class="col-form-label DrugEventPain"
-            >患者性別:</label
-          >
-          <input
-            type="text"
-            name="DrugEventPainGender"
-            v-model="DrugEventData.DrugEventPainGender"
-            class="form-control DrugEventPain"
-          />
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainNumber"
-            class="col-form-label DrugEventPain"
-            >病歷號碼:</label
-          >
-          <input
-            type="text"
-            name="DrugEventPainNumber"
-            v-model="DrugEventData.DrugEventPainNumber"
-            class="form-control DrugEventPain"
-          />
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainClassification"
-            class="col-form-label DrugEventPain"
-            >類別:</label
-          >
-          <select
-            class="form-select EmployeeOccuapation DrugEventPain"
-            v-model="DrugEventData.DrugEventPainClassification"
-            name="DrugEventPainClassification"
-            aria-label="Default select example"
-          >
-            <option value="門診">門診</option>
-            <option value="住院">住院</option>
-          </select>
-
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainAge"
-            class="col-form-label DrugEventPain"
-            >年齡:</label
-          >
-          <input
-            type="text"
-            name="DrugEventPainAge"
-            v-model="DrugEventData.DrugEventPainAge"
-            class="form-control DrugEventPain"
-          />
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainDiagnosis"
-            class="col-form-label DrugEventPain"
-            >診斷:</label
-          >
-          <input
-            type="text"
-            name="DrugEventPainDiagnosis"
-            v-model="DrugEventData.DrugEventPainDiagnosis"
-            class="form-control DrugEventPain"
-          />
-
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainStar"
-            class="col-form-label DrugEventPain"
-            >發生起始日:</label
-          >
-          <input
-            type="date"
-            name="DrugEventPainStar"
-            v-model="DrugEventData.DrugEventPainStar"
-            class="form-control DrugEventPain"
-          />
-
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainDFind"
-            class="col-form-label DrugEventPain"
-            >發現異常日:</label
-          >
-          <input
-            type="date"
-            name="DrugEventPainDFind"
-            v-model="DrugEventData.DrugEventPainDFind"
-            class="form-control DrugEventPain"
-          />
-
-          <label
-            for="EmployeeOc"
-            name="DrugEventPainEnd"
-            class="col-form-label DrugEventPain"
-            >事件停止日:</label
-          >
-          <input
-            type="date"
-            name="DrugEventPainEnd"
-            v-model="DrugEventData.DrugEventPainEnd"
-            class="form-control DrugEventPain"
-          />
-          <div class="DrugEventRessionText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input AboutOder"
-                type="checkbox"
-                v-model="AboutOder"
-                @change="AboutOders"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label"> 醫囑相關 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input PrescriptionSign"
-                type="checkbox"
-                v-model="PrescriptionSign"
-                @change="PrescriptionSigns"
-                value=""
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 處方籤交付 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input PrescriptionSign"
-                type="checkbox"
-                v-model="Pharmacy"
-                @change="Pharmacys"
-                value=""
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥局相關 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input DeliveryProcess"
-                @change="DeliveryProcesss"
-                v-model="DeliveryProcess"
-                type="checkbox"
-                value=""
-              />
-              <label class="form-check-label"> 傳送過程 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input NursingRelated"
-                @change="NursingRelateds"
-                v-model="NursingRelated"
-                type="checkbox"
-                value=""
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 護理相關 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input Other"
-                v-model="Other"
-                @change="Others"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label"> 其他補充 </label>
-            </div>
-          </div>
-          <hr />
-
-          <div class="AboutOtherText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="藥名錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥名錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="途徑錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 途徑錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="劑量錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 劑量錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="劑型錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 劑型錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="數量錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 數量錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="醫囑遺漏"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 醫囑遺漏 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="交互作用"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 交互作用 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="重複用藥"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 重複用藥 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="開立不適用病人病情藥物(如不符合適應症/病情、具禁忌症等)"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                開立不適用病人病情藥物(如不符合適應症、具禁忌症等)
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.AboutOderEvent"
-                value="頻率錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 頻率錯誤 </label>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventRession.OtherAboutOrder"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="PrescriptionSignText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PrescriptionSignEvent"
-                value="遺漏未給"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 遺漏未給 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PrescriptionSignEvent"
-                value="交付錯誤病人"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 交付錯誤病人 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventRession.OtherPrescriptionSign"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="PharmacyText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PharmacyEvent"
-                value="遺漏給藥"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 遺漏給藥 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PharmacyEvent"
-                value="調劑錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 調劑錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PharmacyEvent"
-                value="病患未領"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患未領 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PharmacyEvent"
-                value="病人辨識錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病人辨識錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.PharmacyEvent"
-                value="衛教不當"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 衛教不當 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventRession.OtherPharmacy"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="DeliveryProcessText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.DeliveryProcessEvetn"
-                value="藥物破損"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物破損 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.DeliveryProcessEvetn"
-                value="藥物遺失"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物遺失 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventRession.OtherDeliveryProcess"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="NursingRelatedText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="遺漏給藥"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 遺漏給藥 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="藥物遺失"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物遺失 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="藥品保存不當"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥品保存不當 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="藥物已DC，但仍給藥"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物已DC@但仍給藥 </label>
-            </div>
-            <br />
-
-            <i class="fa-solid fa-circle-plus fa-beat"></i>
-            <span class="TextStlye"><b>給藥錯誤:</b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="藥品錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥品錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="途徑錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 途徑錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="數量錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 數量錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="頻率錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 頻率錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="病人錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病人錯誤 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventRession.NursingRelatedEvent"
-                value="時間錯誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 時間錯誤 </label>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventRession.OtherNursingRelated"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="OtherText">
-            <div class="form-group">
-              <label for="exampleFormControlInput1">其他內容補充:</label>
-              <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                v-model="DrugEventRession.OtherEvent"
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="DrugEventResultText">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext"
-                value="藥局尚未發藥，藥師發現異常"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                藥局尚未發藥，藥師發現異常
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext"
-                value="護理站尚未給藥，護理師發現異常"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                護理站尚未給藥，護理師發現異常
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input OtherResultEvenCheck"
-                type="checkbox"
-                @change="ResultEventContexts2"
-                v-model="DrugEventResult.DrugEventResultContext"
-                value="已給藥，請接續回答下列2題"
-              />
-              <label class="form-check-label">
-                已給藥，請接續回答下列2題
-              </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventResult.OtherResult"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="ResultEventContext2">
-             <i class="fa-solid fa-envelope fa-bounce" style=" --fa-bounce-start-scale-x: 1; --fa-bounce-start-scale-y: 1; --fa-bounce-jump-scale-x: 1; --fa-bounce-jump-scale-y: 1; --fa-bounce-land-scale-x: 1; --fa-bounce-land-scale-y: 1; --fa-bounce-rebound: 0;" ></i>
-            <span class="TextStlye"><b>事件對病患的影響(可複選):</b></span
-            ><br />
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患尚未使用"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患尚未使用 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="無任何異樣"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 無任何異樣 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="原病情加重"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 原病情加重 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="增加不良反應"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 增加不良反應 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventResult.OtherResultPa"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-            <i class="fa-solid fa-envelope fa-bounce" style=" --fa-bounce-start-scale-x: 1; --fa-bounce-start-scale-y: 1; --fa-bounce-jump-scale-x: 1; --fa-bounce-jump-scale-y: 1; --fa-bounce-land-scale-x: 1; --fa-bounce-land-scale-y: 1; --fa-bounce-rebound: 0;" ></i><span class="TextStlye"><b>病患對本事件的反應(可複選):</b></span
-            ><br />
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患不知情"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患不知情 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患知情但無表示"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患知情但無表示 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患可接受"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患可接受 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患有負面情緒"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患有負面情緒 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患不接受"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患不接受 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventResult.DrugEventResultContext2"
-                value="病患擔心不安"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患擔心不安 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventResult.PaOtherResult"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-          </div>
-
-          <div class="DrugEventMayRessionText">
-           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
-              ><b>工作狀態流程因素相關:</b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="缺乏標準作業流程"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 缺乏標準作業流程 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="未依照標準作業流程"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 未依照標準作業流程 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="未做覆核"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 未做覆核 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="工作量過大"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 工作量過大 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="團隊合作問題"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 團隊合作問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="人力不足"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 人力不足 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.WorkingProcess"
-                value="診斷前缺乏對病患完整評估"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 診斷前缺乏對病患完整評估 </label>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other1"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
-              ><b>藥品/資訊系統因素相關: </b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.DrugInformation"
-                value="藥物有多種劑型"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物有多種劑型 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.DrugInformation"
-                value="資訊系統問題"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 資訊系統問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.DrugInformation"
-                value="藥名相似"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥名相似 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.DrugInformation"
-                value="藥品過期/變質/毀損"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥品過期/變質/毀損 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.DrugInformation"
-                value="藥物外觀或包裝相似"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 藥物外觀或包裝相似 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other2"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>環境因素相關: </b></span
-            ><br />
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Surroundings"
-                value="環境安全防護問題"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 環境安全防護問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Surroundings"
-                value="環境動線問題"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 環境動線問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Surroundings"
-                value="照明問題"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 照明問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Surroundings"
-                value="路面平整度問題 "
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 路面平整度問題 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Surroundings"
-                value="地面濕滑"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 地面濕滑 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other3"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>人員因素相關:</b></span
-            ><br />
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Personnel"
-                value="交班有誤"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 交班有誤 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Personnel"
-                value="訓練不足"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 訓練不足 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Personnel"
-                value="人員疏忽"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 人員疏忽 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other4"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye"
-              ><b>病人生理及行為因素相關:</b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.PatientPhysiology"
-                value="病患不配合治療 "
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病患不配合治療 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.PatientPhysiology"
-                value="與個人生理或疾病有關"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 與個人生理或疾病有關 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.PatientPhysiology"
-                value="未提供或提供錯誤病史/用藥史"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                未提供或提供錯誤病史/用藥史
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.PatientPhysiology"
-                value="病人抽菸飲酒或使用禁藥"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 病人抽菸飲酒或使用禁藥 </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other5"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-
-            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>溝通因素相關:</b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Communicate"
-                value="醫療團隊溝通不足"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 醫療團隊溝通不足 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Communicate"
-                value="未告知患者完整資訊"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 未告知患者完整資訊 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Communicate"
-                value="口頭醫囑交代不清"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 口頭醫囑交代不清 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Communicate"
-                value="交班未落實"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 交班未落實 </label>
-            </div>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventMayRession.Communicate"
-                value="患者或家屬與醫療團隊溝通不足"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                患者或家屬與醫療團隊溝通不足
-              </label>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventMayRession.Other6"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>其他因素:</b></span
-            ><br />
-            <textarea
-              class="form-control MemoranDum"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              v-model="DrugEventMayRession.OtherRession"
-            ></textarea>
-          </div>
-
-          <div class="DrugEventDealText">
-           <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>處理方式(可複選):</b></span
-            ><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="更正錯誤醫囑"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 更正錯誤醫囑 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="補給處方箋/藥品"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 補給處方箋/藥品 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="追回錯誤藥品/更換正確藥品"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label">
-                追回錯誤藥品/更換正確藥品
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="通知病患領取藥品"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 通知病患領取藥品 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="停用錯誤藥品並觀察"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 停用錯誤藥品並觀察 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="使用其他治療藥品"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 使用其他治療藥品 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="門診治療"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 門診治療</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="急診治療或急救處理"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 急診治療或急救處理 </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="DrugEventDeal.ProcessingMethod"
-                value="住院治療"
-                id="flexCheckChecked"
-              />
-              <label class="form-check-label"> 住院治療 </label>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">請說明:</label>
-              <input
-                type="textbox"
-                class="form-control"
-                v-model="DrugEventDeal.DrugEventDealOther"
-                id="exampleFormControlInput1"
-                placeholder="如不在選項內請手動填寫"
-              />
-            </div>
-            <i class="fa-solid fa-circle-plus fa-beat"></i><span class="TextStlye" 
-              ><b>預防再次發生的改善措施和建議::</b></span
-            ><br />
-            <textarea
-              class="form-control MemoranDum"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              v-model="DrugEventDeal.Prevention"
-            ></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="button" @click="test" class="btn btn-primary">
-            Save changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <form>
     <div
       class="modal fade"
-      id="exampleModal1"
+      id="ContextModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -1454,7 +67,47 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">執行人員註冊</h5>
+            <div class="fa-2x">
+              <i class="fa-solid fa-triangle-exclamation fa-fade"></i>
+            </div>
+            <h5 class="modal-title" id="exampleModalLabel">異常事件</h5>
+            <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <div class="form-check">
+              <input
+                class="form-check-input DrugEvent"
+                type="checkbox"
+                @change="DrugEventF"
+                v-model="DrugEvent"
+                value="藥物事件單"
+                id="DrugEvent"
+              />
+              <label class="form-check-label"> 藥物事件 </label>
+            </div>
+            <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <div class="form-check">
+              <input
+                class="form-check-input FallEventE"
+                type="checkbox"
+                @change="FallE"
+                v-model="FallEventE"
+                value="跌倒事件單"
+                id="FallEventE"
+              />
+              <label class="form-check-label"> 跌倒事件 </label>
+            </div>
+            <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <div class="form-check">
+              <input
+                class="form-check-input MixEvent"
+                type="checkbox"
+                @change="Mix"
+                v-model="MixEvent"
+                value="綜合事件"
+                id="MixEvent"
+              />
+              <label class="form-check-label"> 綜合事件 </label>
+            </div>
+
             <button
               type="button"
               class="btn-close"
@@ -1462,67 +115,1397 @@
               aria-label="Close"
             ></button>
           </div>
+
           <div class="modal-body">
-            <div class="form-group">
-              <label for="EmployeeAc" class="col-form-label">院內帳號:</label>
-              <input
-                type="text"
-                style="width: 250px"
-                class="form-control EmployeeAccount"
-              />| <i class="fa-solid fa-user"></i> |<button
-                type="button"
-                class="btn btn-link AcCheck"
-              >
-                檢查
-              </button>
+            <div class="DrugEventText">
+              <input type="text" class="form-control" style="width: 250px" />
             </div>
-            <div class="form-group">
-              <label for="EmployeeNa" class="col-form-label">申請人:</label>
-              <input type="text" class="form-control EmployeeName" />
+            <i class="fa-solid fa-user DrugEventText"></i
+            ><button
+              type="button"
+              name="DrugEventEmp"
+              class="btn btn-link DrugEventText"
+            >
+              帶入員工
+            </button>
+            <i class="fa-solid fa-file-pen DrugEventText"></i
+            ><button
+              type="button"
+              @click="ShowDrugEventPain"
+              name="DrugEventPain"
+              class="btn btn-link DrugEventText"
+            >
+              患者資料
+            </button>
+            <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i
+            ><button
+              type="button"
+              @click="ShowDrugEventReason"
+              name="DrugEventRession"
+              class="btn btn-link DrugEventText"
+            >
+              事件發生原因
+            </button>
+            <i class="fa-solid fa-file-circle-exclamation DrugEventText"></i
+            ><button
+              type="button"
+              name="DrugEventResult"
+              @click="ShowDrugEventResult"
+              class="btn btn-link DrugEventText"
+            >
+              事件結果
+            </button>
+
+            <i class="fa-solid fa-file-circle-question DrugEventText"></i
+            ><button
+              type="button"
+              name="DrugEventMayRession"
+              class="btn btn-link DrugEventText"
+              @click="DrugEventMayRessions"
+            >
+              事件可能發生原因
+            </button>
+            <i class="fa-solid fa-file-shield DrugEventText"></i
+            ><button
+              type="button"
+              name="DrugEventDeal"
+              class="btn btn-link DrugEventText"
+              @click="DrugEventDeals"
+            >
+              事件處理方式與改善措施</button
+            ><br />
+
+            <i
+              class="fa-solid fa-circle-info fa-beat-fade DrugEventText"
+              style="--fa-beat-fade-opacity: 0.67; --fa-beat-fade-scale: 1.075"
+            ></i
+            ><button
+              type="button"
+              name="DrugEventResult"
+              @click="DrugDetails"
+              class="btn btn-link DrugEventText"
+            >
+              藥物明細
+            </button>
+            <hr />
+
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainName"
+              class="col-form-label DrugEventPain"
+              >患者姓名:</label
+            >
+            <input
+              type="text"
+              name="DrugEventPainName"
+              v-model="DrugEventData.DrugEventPainName"
+              class="form-control DrugEventPain"
+            />
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainGender"
+              class="col-form-label DrugEventPain"
+              >患者性別:</label
+            >
+            <input
+              type="text"
+              name="DrugEventPainGender"
+              v-model="DrugEventData.DrugEventPainGender"
+              class="form-control DrugEventPain"
+            />
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainNumber"
+              class="col-form-label DrugEventPain"
+              >病歷號碼:</label
+            >
+            <input
+              type="text"
+              name="DrugEventPainNumber"
+              v-model="DrugEventData.DrugEventPainNumber"
+              class="form-control DrugEventPain"
+            />
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainClassification"
+              class="col-form-label DrugEventPain"
+              >類別:</label
+            >
+            <select
+              class="form-select EmployeeOccuapation DrugEventPain"
+              v-model="DrugEventData.DrugEventPainClassification"
+              name="DrugEventPainClassification"
+              aria-label="Default select example"
+            >
+              <option value="門診">門診</option>
+              <option value="住院">住院</option>
+            </select>
+
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainAge"
+              class="col-form-label DrugEventPain"
+              >年齡:</label
+            >
+            <input
+              type="text"
+              name="DrugEventPainAge"
+              v-model="DrugEventData.DrugEventPainAge"
+              class="form-control DrugEventPain"
+            />
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainDiagnosis"
+              class="col-form-label DrugEventPain"
+              >診斷:</label
+            >
+            <input
+              type="text"
+              name="DrugEventPainDiagnosis"
+              v-model="DrugEventData.DrugEventPainDiagnosis"
+              class="form-control DrugEventPain"
+            />
+
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainStar"
+              class="col-form-label DrugEventPain"
+              >發生起始日:</label
+            >
+            <input
+              type="date"
+              name="DrugEventPainStar"
+              v-model="DrugEventData.DrugEventPainStar"
+              @change="DateProcess"
+              class="form-control DrugEventPain"
+            />
+
+            <label
+              for="EmployeeOc"
+              name="DrugEventPainEnd"
+              class="col-form-label DrugEventPain"
+              >事件停止日:</label
+            >
+            <input
+              type="date"
+              id="DrugEventPainEnd"
+              v-model="DrugEventData.DrugEventPainEnd"
+              @change="DateChecks"
+              class="form-control DrugEventPain"
+            />
+
+
+                        <label
+              for="EmployeeOc"
+              name="DrugEventPainDFind"
+              class="col-form-label DrugEventPain"
+              >發現異常日:</label
+            >
+            <input
+              type="date"
+              id="DrugEventPainDFind"
+              v-model="DrugEventData.DrugEventPainDFind"
+              @change="AllDateChecks"
+              class="form-control DrugEventPain"
+            />
+            <div class="DrugEventRessionText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input AboutOder"
+                  type="checkbox"
+                  v-model="AboutOder"
+                  @change="AboutOders"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label"> 醫囑相關 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input PrescriptionSign"
+                  type="checkbox"
+                  v-model="PrescriptionSign"
+                  @change="PrescriptionSigns"
+                  value=""
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 處方籤交付 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input PrescriptionSign"
+                  type="checkbox"
+                  v-model="Pharmacy"
+                  @change="Pharmacys"
+                  value=""
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥局相關 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input DeliveryProcess"
+                  @change="DeliveryProcesss"
+                  v-model="DeliveryProcess"
+                  type="checkbox"
+                  value=""
+                />
+                <label class="form-check-label"> 傳送過程 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input NursingRelated"
+                  @change="NursingRelateds"
+                  v-model="NursingRelated"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 護理相關 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input Other"
+                  v-model="Other"
+                  @change="Others"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label"> 其他補充 </label>
+              </div>
+            </div>
+            <hr />
+
+            <div class="AboutOtherText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="藥名錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥名錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="途徑錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 途徑錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="劑量錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 劑量錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="劑型錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 劑型錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="數量錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 數量錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="醫囑遺漏"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 醫囑遺漏 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="交互作用"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 交互作用 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="重複用藥"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 重複用藥 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="開立不適用病人病情藥物(如不符合適應症/病情、具禁忌症等)"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  開立不適用病人病情藥物(如不符合適應症、具禁忌症等)
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.AboutOderEvent"
+                  value="頻率錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 頻率錯誤 </label>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventRession.OtherAboutOrder"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="EmployeeOc" class="col-form-label">職稱:</label>
-              <select
-                class="form-select EmployeeOccuapation"
-                aria-label="Default select example"
-              >
-                <option selected>選擇職稱</option>
-                <option value="護理師">護理師</option>
-                <option value="護士">護士</option>
-                <option value="醫師">醫師</option>
-                <option value="藥師">藥師</option>
-                <option value="行政人員">行政人員</option>
-                <option value="資訊專員">資訊專員</option>
-                <option value="警衛人員">警衛人員</option>
-              </select>
+            <div class="PrescriptionSignText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PrescriptionSignEvent"
+                  value="遺漏未給"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 遺漏未給 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PrescriptionSignEvent"
+                  value="交付錯誤病人"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 交付錯誤病人 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventRession.OtherPrescriptionSign"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="exampleFormControlTextarea1">備註</label>
+            <div class="PharmacyText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PharmacyEvent"
+                  value="遺漏給藥"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 遺漏給藥 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PharmacyEvent"
+                  value="調劑錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 調劑錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PharmacyEvent"
+                  value="病患未領"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患未領 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PharmacyEvent"
+                  value="病人辨識錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病人辨識錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.PharmacyEvent"
+                  value="衛教不當"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 衛教不當 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventRession.OtherPharmacy"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+            </div>
+
+            <div class="DeliveryProcessText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.DeliveryProcessEvetn"
+                  value="藥物破損"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物破損 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.DeliveryProcessEvetn"
+                  value="藥物遺失"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物遺失 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventRession.OtherDeliveryProcess"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+            </div>
+
+            <div class="NursingRelatedText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="遺漏給藥"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 遺漏給藥 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="藥物遺失"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物遺失 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="藥品保存不當"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥品保存不當 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="藥物已DC，但仍給藥"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物已DC@但仍給藥 </label>
+              </div>
+              <br />
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i>
+              <span class="TextStlye"><b>給藥錯誤:</b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="藥品錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥品錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="途徑錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 途徑錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="數量錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 數量錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="頻率錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 頻率錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="病人錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病人錯誤 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventRession.NursingRelatedEvent"
+                  value="時間錯誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 時間錯誤 </label>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventRession.OtherNursingRelated"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+            </div>
+
+            <div class="OtherText">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">其他內容補充:</label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  v-model="DrugEventRession.OtherEvent"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="DrugEventResultText">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext"
+                  value="藥局尚未發藥，藥師發現異常"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  藥局尚未發藥，藥師發現異常
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext"
+                  value="護理站尚未給藥，護理師發現異常"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  護理站尚未給藥，護理師發現異常
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input OtherResultEvenCheck"
+                  type="checkbox"
+                  @change="ResultEventContexts2"
+                  v-model="DrugEventResult.DrugEventResultContext"
+                  value="已給藥，請接續回答下列2題"
+                />
+                <label class="form-check-label">
+                  已給藥，請接續回答下列2題
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventResult.OtherResult"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+            </div>
+
+            <div class="ResultEventContext2">
+              <i
+                class="fa-solid fa-envelope fa-bounce"
+                style="
+                  --fa-bounce-start-scale-x: 1;
+                  --fa-bounce-start-scale-y: 1;
+                  --fa-bounce-jump-scale-x: 1;
+                  --fa-bounce-jump-scale-y: 1;
+                  --fa-bounce-land-scale-x: 1;
+                  --fa-bounce-land-scale-y: 1;
+                  --fa-bounce-rebound: 0;
+                "
+              ></i>
+              <span class="TextStlye"><b>事件對病患的影響(可複選):</b></span
+              ><br />
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患尚未使用"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患尚未使用 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="無任何異樣"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 無任何異樣 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="原病情加重"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 原病情加重 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="增加不良反應"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 增加不良反應 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventResult.OtherResultPa"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i
+                class="fa-solid fa-envelope fa-bounce"
+                style="
+                  --fa-bounce-start-scale-x: 1;
+                  --fa-bounce-start-scale-y: 1;
+                  --fa-bounce-jump-scale-x: 1;
+                  --fa-bounce-jump-scale-y: 1;
+                  --fa-bounce-land-scale-x: 1;
+                  --fa-bounce-land-scale-y: 1;
+                  --fa-bounce-rebound: 0;
+                "
+              ></i
+              ><span class="TextStlye"><b>病患對本事件的反應(可複選):</b></span
+              ><br />
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患不知情"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患不知情 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患知情但無表示"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患知情但無表示 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患可接受"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患可接受 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患有負面情緒"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患有負面情緒 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患不接受"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患不接受 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventResult.DrugEventResultContext2"
+                  value="病患擔心不安"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患擔心不安 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventResult.PaOtherResult"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+            </div>
+
+            <div class="DrugEventMayRessionText">
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>工作狀態流程因素相關:</b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="缺乏標準作業流程"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 缺乏標準作業流程 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="未依照標準作業流程"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 未依照標準作業流程 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="未做覆核"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 未做覆核 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="工作量過大"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 工作量過大 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="團隊合作問題"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 團隊合作問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="人力不足"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 人力不足 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.WorkingProcess"
+                  value="診斷前缺乏對病患完整評估"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  診斷前缺乏對病患完整評估
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other1"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>藥品/資訊系統因素相關: </b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.DrugInformation"
+                  value="藥物有多種劑型"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物有多種劑型 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.DrugInformation"
+                  value="資訊系統問題"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 資訊系統問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.DrugInformation"
+                  value="藥名相似"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥名相似 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.DrugInformation"
+                  value="藥品過期/變質/毀損"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥品過期/變質/毀損 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.DrugInformation"
+                  value="藥物外觀或包裝相似"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 藥物外觀或包裝相似 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other2"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>環境因素相關: </b></span><br />
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Surroundings"
+                  value="環境安全防護問題"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 環境安全防護問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Surroundings"
+                  value="環境動線問題"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 環境動線問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Surroundings"
+                  value="照明問題"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 照明問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Surroundings"
+                  value="路面平整度問題 "
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 路面平整度問題 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Surroundings"
+                  value="地面濕滑"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 地面濕滑 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other3"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>人員因素相關:</b></span
+              ><br />
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Personnel"
+                  value="交班有誤"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 交班有誤 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Personnel"
+                  value="訓練不足"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 訓練不足 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Personnel"
+                  value="人員疏忽"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 人員疏忽 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other4"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>病人生理及行為因素相關:</b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.PatientPhysiology"
+                  value="病患不配合治療 "
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病患不配合治療 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.PatientPhysiology"
+                  value="與個人生理或疾病有關"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 與個人生理或疾病有關 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.PatientPhysiology"
+                  value="未提供或提供錯誤病史/用藥史"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  未提供或提供錯誤病史/用藥史
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.PatientPhysiology"
+                  value="病人抽菸飲酒或使用禁藥"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 病人抽菸飲酒或使用禁藥 </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other5"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>溝通因素相關:</b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Communicate"
+                  value="醫療團隊溝通不足"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 醫療團隊溝通不足 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Communicate"
+                  value="未告知患者完整資訊"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 未告知患者完整資訊 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Communicate"
+                  value="口頭醫囑交代不清"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 口頭醫囑交代不清 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Communicate"
+                  value="交班未落實"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 交班未落實 </label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventMayRession.Communicate"
+                  value="患者或家屬與醫療團隊溝通不足"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  患者或家屬與醫療團隊溝通不足
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventMayRession.Other6"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>其他因素:</b></span
+              ><br />
               <textarea
                 class="form-control MemoranDum"
                 id="exampleFormControlTextarea1"
                 rows="3"
+                v-model="DrugEventMayRession.OtherRession"
               ></textarea>
             </div>
 
-            <div class="form-group">
-              <label for="EmployeeOc" class="col-form-label">註冊日期:</label>
-              <input
-                type="text"
-                v-model="ND"
-                class="form-control EmployeeOccuapation"
-                disabled="disabled"
-              />
+            <div class="DrugEventDealText">
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"><b>處理方式(可複選):</b></span
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="更正錯誤醫囑"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 更正錯誤醫囑 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="補給處方箋/藥品"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 補給處方箋/藥品 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="追回錯誤藥品/更換正確藥品"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label">
+                  追回錯誤藥品/更換正確藥品
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="通知病患領取藥品"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 通知病患領取藥品 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="停用錯誤藥品並觀察"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 停用錯誤藥品並觀察 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="使用其他治療藥品"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 使用其他治療藥品 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="門診治療"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 門診治療</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="急診治療或急救處理"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 急診治療或急救處理 </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugEventDeal.ProcessingMethod"
+                  value="住院治療"
+                  id="flexCheckChecked"
+                />
+                <label class="form-check-label"> 住院治療 </label>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">請說明:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugEventDeal.DrugEventDealOther"
+                  id="exampleFormControlInput1"
+                  placeholder="如不在選項內請手動填寫"
+                />
+              </div>
+              <i class="fa-solid fa-circle-plus fa-beat"></i
+              ><span class="TextStlye"
+                ><b>預防再次發生的改善措施和建議::</b></span
+              ><br />
+              <textarea
+                class="form-control MemoranDum"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                v-model="DrugEventDeal.Prevention"
+              ></textarea>
+            </div>
+            <div class="DrugDetailText">
+              <label class="col-form-label">藥物名稱:</label>
+              <input type="text" class="form-control" />
+              <label class="col-form-label">藥物劑量:</label>
+              <input type="text" class="form-control" />
+              <label class="col-form-label">藥物途徑:</label>
+              <input type="text" class="form-control" />
+              <label class="col-form-label">藥物劑型:</label>
+              <input type="text" class="form-control" />
+              <label class="col-form-label">藥物頻率:</label>
+              <input type="text" class="form-control" />
+              <label class="col-form-label">藥物數量:</label>
+              <input type="text" class="form-control" />
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="DrugFalse"
+                  value="通知病患領取藥品"
+                  id="flexCheckChecked"
+                />
+                           <label class="form-check-label"> 給藥錯誤請勾選: </label>
+              </div>
+   
+            </div>
+            <div v-if="DrugFalse">
+              <div class="HideDrugFalse">
+                <label class="col-form-label">請說明錯誤藥物:</label>
+                <input type="textbox" class="form-control" />
+              </div>
             </div>
           </div>
-          <!-- <div class="form-check">
-  <input class="form-check-input check" v-model="CheckBool" type="checkbox" value="" id="flexCheckDefault">
-  <label class="form-check-label" for="flexCheckDefault">
-    Default checkbox
-  </label>
-  </div> -->
           <div class="modal-footer">
             <button
               type="button"
@@ -1531,16 +1514,7 @@
             >
               Close
             </button>
-
-            <button type="button" v-if="CheckBool" class="btn btn-primary">
-              Save changes
-            </button>
-            <button
-              type="button"
-              v-else
-              class="btn btn-primary"
-              disabled="disabled"
-            >
+            <button type="button" @click="test" class="btn btn-primary">
               Save changes
             </button>
           </div>
@@ -1548,12 +1522,118 @@
       </div>
     </div>
 
-    <!-- {{ DrugEventData }} -->
-    {{ DrugEventRession }}
-    {{ DrugEventResult.DrugEventResultContext2 }}
-    <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
-  </form>
-</div>>
+    <form>
+      <div
+        class="modal fade"
+        id="exampleModal1"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">執行人員註冊</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="EmployeeAc" class="col-form-label">院內帳號:</label>
+                <input
+                  type="text"
+                  style="width: 250px"
+                  class="form-control EmployeeAccount"
+                />| <i class="fa-solid fa-user"></i> |<button
+                  type="button"
+                  class="btn btn-link AcCheck"
+                >
+                  檢查
+                </button>
+              </div>
+              <div class="form-group">
+                <label for="EmployeeNa" class="col-form-label">申請人:</label>
+                <input type="text" class="form-control EmployeeName" />
+              </div>
+
+              <div class="form-group">
+                <label for="EmployeeOc" class="col-form-label">職稱:</label>
+                <select
+                  class="form-select EmployeeOccuapation"
+                  aria-label="Default select example"
+                >
+                  <option selected>選擇職稱</option>
+                  <option value="護理師">護理師</option>
+                  <option value="護士">護士</option>
+                  <option value="醫師">醫師</option>
+                  <option value="藥師">藥師</option>
+                  <option value="行政人員">行政人員</option>
+                  <option value="資訊專員">資訊專員</option>
+                  <option value="警衛人員">警衛人員</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">備註</label>
+                <textarea
+                  class="form-control MemoranDum"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="EmployeeOc" class="col-form-label">註冊日期:</label>
+                <input
+                  type="text"
+                  v-model="ND"
+                  class="form-control EmployeeOccuapation"
+                  disabled="disabled"
+                />
+              </div>
+            </div>
+            <!-- <div class="form-check">
+  <input class="form-check-input check" v-model="CheckBool" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    Default checkbox
+  </label>
+  </div> -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+
+              <button type="button" v-if="CheckBool" class="btn btn-primary">
+                Save changes
+              </button>
+              <button
+                type="button"
+                v-else
+                class="btn btn-primary"
+                disabled="disabled"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- {{ DrugEventData }} -->
+      {{ DrugEventRession }}
+      {{ DrugEventResult.DrugEventResultContext2 }}
+      <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
+    </form>
+  </div>
+  >
 </template>>
 
 
@@ -1570,6 +1650,7 @@ export default {
   data() {
     return {
       ND: "5",
+      DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
       DrugEvent: false, //藥物異常
       FallEventE: false, //跌倒異常
@@ -1628,6 +1709,11 @@ export default {
         Other6: "", //溝通因素其他
         OtherRession: "",
       },
+      DrugDetail: {
+        TrueDrug: [], //正確藥品
+        FalseDrug: "", //錯誤藥品
+      },
+
       DrugEventDeal: {
         ProcessingMethod: [], //建議處理方式
         DrugEventDealOther: "",
@@ -1638,6 +1724,8 @@ export default {
   created() {
     let NDate = new Date();
     this.ND = NDate;
+
+
   },
   mounted() {
     $(".DeliveryProcessText").hide(); //表單隱藏
@@ -1653,6 +1741,9 @@ export default {
     $(".ResultEventContext2").hide(); //事件結果表單2隱藏
     $(".DrugEventMayRessionText").hide(); //表單隱藏隱藏
     $(".DrugEventDealText").hide(); //表單隱藏隱藏
+    $(".DrugDetailText").hide(); //表單隱藏隱藏
+      $("#DrugEventPainDFind").attr("disabled", "disabled"); //默認的發現異常日期
+  $("#DrugEventPainEnd").attr("disabled", "disabled"); //默認的結束日期
   },
   methods: {
     alertTrue: function () {
@@ -1737,6 +1828,10 @@ export default {
       this.ContextHide();
       $(".DrugEventRessionText").show(); //顯示
     },
+
+    ShowDrugDetail: function () {
+      $(".DrugDetailText").show(); //顯示
+    },
     AllHide: function () {
       $(".DrugEventPain").hide(); //藥物事件表單隱藏
       $(".DrugEventRessionText").hide(); //藥物事件表單隱藏}
@@ -1767,6 +1862,7 @@ export default {
       $(".ResultEventContext2").hide(); //表單隱藏
       $(".DrugEventMayRessionText").hide(); //表單隱藏
       $(".DrugEventDealText").hide(); //表單隱藏
+      $(".DrugDetailText").hide(); //表單隱藏
     },
     AboutOders: function () {
       if (this.AboutOder == true) {
@@ -1840,6 +1936,51 @@ export default {
       this.ContextHide();
       $(".DrugEventDealText").show();
     },
+    DrugDetails: function () {
+      this.AllHide();
+      this.ContextHide();
+      $(".DrugDetailText").show();
+    },
+    DateProcess: function () 
+    {
+       $("#DrugEventPainEnd").removeAttr("disabled"); //結束日期欄位解鎖
+          this.DrugEventData.DrugEventPainDFind="";
+          this.DrugEventData.DrugEventPainEnd="";
+    },
+    DateChecks:function ()
+    {
+     let SDate=this.DrugEventData.DrugEventPainStar;
+    //  let FDate=this.DrugEventData.DrugEventPainDFind;
+     let EDate=this.DrugEventData.DrugEventPainEnd;
+     this.DrugEventData.DrugEventPainDFind="";
+     if((Date.parse(SDate)).valueOf()>(Date.parse(EDate)).valueOf())
+     {
+       this.DrugEventData.DrugEventPainEnd="";
+        this.$swal.fire("日期不能小於開始日");
+        $("#DrugEventPainDFind").attr("disabled","disabled");
+     }else
+     {
+      if(EDate!="")
+    {
+       $("#DrugEventPainDFind").removeAttr("disabled"); //發現異常日期欄位解鎖
+    }
+     }
+    },
+    AllDateChecks: function()
+    {
+     let SDate=this.DrugEventData.DrugEventPainStar;
+     let FDate=this.DrugEventData.DrugEventPainDFind;
+     let EDate=this.DrugEventData.DrugEventPainEnd;
+     if((Date.parse(SDate)).valueOf()<=(Date.parse(FDate)).valueOf()&&(Date.parse(EDate)).valueOf()>=(Date.parse(FDate)).valueOf())
+     {
+    this.DrugEventData.DrugEventPainDFind=FDate;
+     }else
+     {
+       this.DrugEventData.DrugEventPainDFind="";
+       this.$swal.fire("發現異常日期不能小於起始日或大於結束日!");
+     }
+    },
+
     test: function () {
       console.log(this.DrugEventData); //測試用235
     },
@@ -1853,10 +1994,9 @@ export default {
 
 <style>
 @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
-.AllBodyContext
-{
-    font-family: "DFKai-sb";
-    text-align: left;
+.AllBodyContext {
+  font-family: "DFKai-sb";
+  text-align: left;
 }
 span.TextStlye {
   font-family: "Noto Sans TC", sans-serif;
@@ -1865,12 +2005,8 @@ span.TextStlye {
   text-shadow: 3px 3px 3px #a8b8c4;
 }
 
-.NewEvent
-{
-
+.NewEvent {
 }
-.NewPeople
-{
-  
+.NewPeople {
 }
 </style>>
