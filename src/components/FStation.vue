@@ -118,13 +118,19 @@
 
           <div class="modal-body">
             <div class="DrugEventText">
-              <input type="text" class="form-control" style="width: 250px" />
+              <input
+                type="text"
+                class="form-control"
+                v-model="EmpAccount"
+                style="width: 250px"
+              />
             </div>
             <i class="fa-solid fa-user DrugEventText"></i
             ><button
               type="button"
               name="DrugEventEmp"
               class="btn btn-link DrugEventText"
+              @click="EmpData"
             >
               帶入員工
             </button>
@@ -294,8 +300,7 @@
               class="form-control DrugEventPain"
             />
 
-
-                        <label
+            <label
               for="EmployeeOc"
               name="DrugEventPainDFind"
               class="col-form-label DrugEventPain"
@@ -1493,16 +1498,21 @@
                   type="checkbox"
                   v-model="DrugFalse"
                   value="通知病患領取藥品"
-                  id="flexCheckChecked"
+                  id="DrugFalseCheck"
                 />
-                           <label class="form-check-label"> 給藥錯誤請勾選: </label>
+                <label class="form-check-label"> 給藥錯誤請勾選: </label>
               </div>
-   
             </div>
             <div v-if="DrugFalse">
               <div class="HideDrugFalse">
                 <label class="col-form-label">請說明錯誤藥物:</label>
-                <input type="textbox" class="form-control" />
+
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="DrugDetail.FalseDrug"
+                  @keyup="DrugCheckText"
+                />
               </div>
             </div>
           </div>
@@ -1514,7 +1524,7 @@
             >
               Close
             </button>
-            <button type="button" @click="test" class="btn btn-primary">
+            <button type="button" @click="TestF" class="btn btn-primary">
               Save changes
             </button>
           </div>
@@ -1547,13 +1557,34 @@
                 <input
                   type="text"
                   style="width: 250px"
-                  class="form-control EmployeeAccount"
-                />| <i class="fa-solid fa-user"></i> |<button
+                  v-model="EmpResAccount"
+                  class="form-control EmployeeAccount" v-if="ACHCHECK" 
+                />
+                <input
+                  type="text"
+                  style="width: 250px"
+                  v-model="EmpResAccount"
+                
+                  class="form-control EmployeeAccount"   v-else  disabled="disabled"
+                 
+                />|
+
+                <i class="fa-solid fa-user"></i> |<button
                   type="button"
-                  class="btn btn-link AcCheck"
+                  class="btn btn-link AcCheck" @click="Accheck"
                 >
                   檢查
                 </button>
+
+                <button
+                  type="button"
+                  class="btn btn-link AcCheck" @click="POSTAcCheck"
+                >
+                  測試POST
+                </button>
+
+
+
               </div>
               <div class="form-group">
                 <label for="EmployeeNa" class="col-form-label">申請人:</label>
@@ -1629,7 +1660,7 @@
 
       <!-- {{ DrugEventData }} -->
       {{ DrugEventRession }}
-      {{ DrugEventResult.DrugEventResultContext2 }}
+     
       <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
     </form>
   </div>
@@ -1639,6 +1670,7 @@
 
 
 <script>
+import axios from "axios";
 import "jquery";
 import $ from "jquery";
 
@@ -1652,6 +1684,7 @@ export default {
       ND: "5",
       DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
+      ACHCHECK: true,//帳號檢查有無重複
       DrugEvent: false, //藥物異常
       FallEventE: false, //跌倒異常
       MixEvent: false, //混和異常
@@ -1663,6 +1696,9 @@ export default {
       NursingRelated: false, //護理相關check
       Other: false, //其他補充check
       DrugConfirmation: false, //給藥確認
+      EmpAccount: "", //員工帳號欄位
+      EmpAccountCheck: "", //員工確認OK
+      EmpResAccount:"",
       DrugEventData: {
         DrugEventPainName: "",
         DrugEventPainGender: "",
@@ -1685,6 +1721,7 @@ export default {
         OtherPrescriptionSign: "", //處發籤其他選項
         OtherDeliveryProcess: "", //傳送過程其他選項
         OtherNursingRelated: "", //護理相關其他選項
+        
         OtherEvent: "", //其他補充內容
       },
       DrugEventResult: {
@@ -1724,8 +1761,6 @@ export default {
   created() {
     let NDate = new Date();
     this.ND = NDate;
-
-
   },
   mounted() {
     $(".DeliveryProcessText").hide(); //表單隱藏
@@ -1742,8 +1777,8 @@ export default {
     $(".DrugEventMayRessionText").hide(); //表單隱藏隱藏
     $(".DrugEventDealText").hide(); //表單隱藏隱藏
     $(".DrugDetailText").hide(); //表單隱藏隱藏
-      $("#DrugEventPainDFind").attr("disabled", "disabled"); //默認的發現異常日期
-  $("#DrugEventPainEnd").attr("disabled", "disabled"); //默認的結束日期
+    $("#DrugEventPainDFind").attr("disabled", "disabled"); //默認的發現異常日期
+    $("#DrugEventPainEnd").attr("disabled", "disabled"); //默認的結束日期
   },
   methods: {
     alertTrue: function () {
@@ -1941,52 +1976,178 @@ export default {
       this.ContextHide();
       $(".DrugDetailText").show();
     },
-    DateProcess: function () 
-    {
-       $("#DrugEventPainEnd").removeAttr("disabled"); //結束日期欄位解鎖
-          this.DrugEventData.DrugEventPainDFind="";
-          this.DrugEventData.DrugEventPainEnd="";
+    DateProcess: function () {
+      $("#DrugEventPainEnd").removeAttr("disabled"); //結束日期欄位解鎖
+      this.DrugEventData.DrugEventPainDFind = "";
+      this.DrugEventData.DrugEventPainEnd = "";
     },
-    DateChecks:function ()
-    {
-     let SDate=this.DrugEventData.DrugEventPainStar;
-    //  let FDate=this.DrugEventData.DrugEventPainDFind;
-     let EDate=this.DrugEventData.DrugEventPainEnd;
-     this.DrugEventData.DrugEventPainDFind="";
-     if((Date.parse(SDate)).valueOf()>(Date.parse(EDate)).valueOf())
-     {
-       this.DrugEventData.DrugEventPainEnd="";
+    DateChecks: function () {
+      let SDate = this.DrugEventData.DrugEventPainStar;
+      //  let FDate=this.DrugEventData.DrugEventPainDFind;
+      let EDate = this.DrugEventData.DrugEventPainEnd;
+      this.DrugEventData.DrugEventPainDFind = "";
+      if (Date.parse(SDate).valueOf() > Date.parse(EDate).valueOf()) {
+        this.DrugEventData.DrugEventPainEnd = "";
         this.$swal.fire("日期不能小於開始日");
-        $("#DrugEventPainDFind").attr("disabled","disabled");
-     }else
-     {
-      if(EDate!="")
-    {
-       $("#DrugEventPainDFind").removeAttr("disabled"); //發現異常日期欄位解鎖
-    }
-     }
+        $("#DrugEventPainDFind").attr("disabled", "disabled");
+      } else {
+        if (EDate != "") {
+          $("#DrugEventPainDFind").removeAttr("disabled"); //發現異常日期欄位解鎖
+        }
+      }
     },
-    AllDateChecks: function()
+    AllDateChecks: function () {
+      let SDate = this.DrugEventData.DrugEventPainStar;
+      let FDate = this.DrugEventData.DrugEventPainDFind;
+      let EDate = this.DrugEventData.DrugEventPainEnd;
+      if (
+        Date.parse(SDate).valueOf() <= Date.parse(FDate).valueOf() &&
+        Date.parse(EDate).valueOf() >= Date.parse(FDate).valueOf()
+      ) {
+        this.DrugEventData.DrugEventPainDFind = FDate;
+      } else {
+        this.DrugEventData.DrugEventPainDFind = "";
+        this.$swal.fire("發現異常日期不能小於起始日或大於結束日!");
+      }
+    },
+    DrugCheckText: function () {
+      if (this.DrugDetail.FalseDrug != "") {
+        $("#DrugFalseCheck").attr("disabled", "disabled");
+      } else {
+        $("#DrugFalseCheck").removeAttr("disabled");
+      }
+    },
+    PostDate: function () {
+      const url = "/Post";
+      axios
+        .post(url, {
+          EmpNumber: this.EmpAccount, // 員工帶入bool值確認
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          this.EmpAccountCheck = "";
+          alert(error);
+          alert("帶入失敗");
+        });
+    },
+    Accheck: function () 
     {
-     let SDate=this.DrugEventData.DrugEventPainStar;
-     let FDate=this.DrugEventData.DrugEventPainDFind;
-     let EDate=this.DrugEventData.DrugEventPainEnd;
-     if((Date.parse(SDate)).valueOf()<=(Date.parse(FDate)).valueOf()&&(Date.parse(EDate)).valueOf()>=(Date.parse(FDate)).valueOf())
-     {
-    this.DrugEventData.DrugEventPainDFind=FDate;
-     }else
-     {
-       this.DrugEventData.DrugEventPainDFind="";
-       this.$swal.fire("發現異常日期不能小於起始日或大於結束日!");
-     }
+         const url="http://192.168.2.192:8080/AccountCheck/"+this.EmpResAccount;
+         axios
+        .get(url, {
+          EmployeeID: this.EmpResAccount, // 員工帳號參數
+
+        })
+        
+        .then(function (response) {
+          alert(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {
+          this.EmpResAccount = "";
+          alert(error);
+          alert("帶入失敗");
+        });
+    },
+
+
+
+    POSTAcCheck: function()
+    {
+        const url="http://192.168.2.192:8080/PostAccountCheck";
+         axios
+        .post(url, {
+          EmployeeID: this.EmpResAccount, // 員工帳號參數
+     
+        })
+        
+        .then(function (response) {
+          alert(response.data); 
+          console.log(response);
+        })
+        .catch(function (error) {
+          
+     
+          alert(error);
+        });
+
+    },
+
+    PostApi: function () {
+      for (let [keys, value] of Object.entries(this.DrugEventData)) {
+        if (value == "") {
+          switch (keys) {    //患者資料防呆
+            case "DrugEventPainName": {
+              this.$swal.fire("患者姓名未填寫!");
+              break;
+            }
+            case "DrugEventPainGender": {
+              this.$swal.fire("患者性別未填寫!");
+              break;
+            }
+            case "DrugEventPainNumber": {
+              this.$swal.fire("患者病歷號碼未填寫!");
+              break;
+            }
+            case "DrugEventPainClassification": {
+              this.$swal.fire("類別未填寫!");
+              break;
+            }
+            case "DrugEventPainAge": {
+              this.$swal.fire("患者年齡未填寫!");
+              break;
+            }
+            case "DrugEventPainDiagnosis": {
+              this.$swal.fire("患者診斷未填寫!");
+              break;
+            }
+            case "DrugEventPainStar": {
+              this.$swal.fire("起始日期未填寫!");
+              break;
+            }
+            case "DrugEventPainEnd": {
+              this.$swal.fire("停止日期未填寫!");
+              break;
+            }
+            case "DrugEventPainDFind": {
+              this.$swal.fire("發現異常日未填寫!");
+              break;
+            }
+         
+          }
+   console.log(keys);
+        } else {
+          console.log(value);
+        }
+      }
+    },
+
+    TestF: function () 
+    {
+  for (let [keys, value] of Object.entries(this.DrugEventRession)) 
+  {
+         if (value == "") {
+          console.log(keys);
+         }else
+         {
+            this.DrugEventRession.AboutOderEvent.push(this.DrugEventRession.OtherAboutOrder);
+            console.log(keys,value);
+         }
+  }
     },
 
     test: function () {
-      console.log(this.DrugEventData); //測試用235
+      console.log(); //測試用235
     },
     test2: function () {
-      console.log(this.DrugEventData); //測試用235
+      console.log(); //測試用235
     },
+    ChangeBloean: function () 
+    {
+      this.ACHCHECK==false;
+    }
   },
 };
 </script>
