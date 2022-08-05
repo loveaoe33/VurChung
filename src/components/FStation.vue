@@ -2054,8 +2054,9 @@ export default {
 
 
 
-    POSTAcCheck: function()
+    POSTAcCheck: async function()
     {
+        
         const url="http://192.168.2.192:8080/PostAccountCheck";
          axios
         .post(url, {
@@ -2065,14 +2066,17 @@ export default {
         
         .then(function (response) {
           alert(response.data); 
-          console.log(response);
+          var aa=false;
+          aa=true;
+        
+          console.log(aa)
         })
         .catch(function (error) {
           
      
           alert(error);
         });
-
+       
     },
 
     PostApi: function () {
@@ -2144,9 +2148,12 @@ export default {
     test2: function () {
       console.log(); //測試用235
     },
-    ChangeBloean: function () 
+    ChangeBloean: function (a) 
     {
-      this.ACHCHECK==false;
+      this.ACHCHECK==a;
+      console.log(this.ACHCHECK);
+      console.log(a); //
+ 
     }
   },
 };
