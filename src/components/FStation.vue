@@ -1558,37 +1558,45 @@
                   type="text"
                   style="width: 250px"
                   v-model="EmpResAccount"
-                  class="form-control EmployeeAccount" v-if="ACHCHECK" 
+                  class="form-control EmployeeAccount"
+                  v-if="ACHCHECK"
                 />
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="EmpResAccount"
-                
-                  class="form-control EmployeeAccount"   v-else  disabled="disabled"
-                 
-                />|
+                  v-else
+                  disabled="disabled"
 
+         class="form-control EmployeeAccount"/>
                 <i class="fa-solid fa-user"></i> |<button
                   type="button"
-                  class="btn btn-link AcCheck" @click="Accheck"
+                  class="btn btn-link AcCheck"
+                  @click="Accheck"
                 >
                   檢查
                 </button>
 
                 <button
                   type="button"
-                  class="btn btn-link AcCheck" @click="POSTAcCheck"
+                  class="btn btn-link AcCheck"
+                  @click="POSTAcCheckc"
                 >
                   測試POST
                 </button>
 
-
-
+                <button
+                  type="button"
+                  class="btn btn-link AcCheck"
+                  @click="UnLockAc"
+                >
+                  解鎖欄位
+                </button>
+     
               </div>
               <div class="form-group">
-                <label for="EmployeeNa" class="col-form-label">申請人:</label>
-                <input type="text" class="form-control EmployeeName" />
+                <label for="EmployeeNa" class="col-form-label" >申請人:</label>
+                <input type="text" v-model="ResEmp" class="form-control EmployeeName" />
               </div>
 
               <div class="form-group">
@@ -1596,6 +1604,7 @@
                 <select
                   class="form-select EmployeeOccuapation"
                   aria-label="Default select example"
+                  v-model="ResEmpOri"
                 >
                   <option selected>選擇職稱</option>
                   <option value="護理師">護理師</option>
@@ -1614,6 +1623,7 @@
                   class="form-control MemoranDum"
                   id="exampleFormControlTextarea1"
                   rows="3"
+                  v-model="ResTexarea"
                 ></textarea>
               </div>
 
@@ -1642,7 +1652,7 @@
                 Close
               </button>
 
-              <button type="button" v-if="CheckBool" class="btn btn-primary">
+              <button type="button" v-if="CheckBool" class="btn btn-primary" @click="PostAcoountData">
                 Save changes
               </button>
               <button
@@ -1660,7 +1670,7 @@
 
       <!-- {{ DrugEventData }} -->
       {{ DrugEventRession }}
-     
+
       <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
     </form>
   </div>
@@ -1674,6 +1684,7 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 
+
 export default {
   name: "FStation",
   props: {
@@ -1684,7 +1695,7 @@ export default {
       ND: "5",
       DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
-      ACHCHECK: true,//帳號檢查有無重複
+      ACHCHECK: true, //帳號檢查有無重複
       DrugEvent: false, //藥物異常
       FallEventE: false, //跌倒異常
       MixEvent: false, //混和異常
@@ -1697,8 +1708,10 @@ export default {
       Other: false, //其他補充check
       DrugConfirmation: false, //給藥確認
       EmpAccount: "", //員工帳號欄位
-      EmpAccountCheck: "", //員工確認OK
-      EmpResAccount:"",
+      ResEmpOri:"選擇職稱", //員工職稱
+      ResEmp:"",//申請人
+      ResTexarea:"",//申請備註欄為
+      EmpResAccount: "",
       DrugEventData: {
         DrugEventPainName: "",
         DrugEventPainGender: "",
@@ -1721,7 +1734,7 @@ export default {
         OtherPrescriptionSign: "", //處發籤其他選項
         OtherDeliveryProcess: "", //傳送過程其他選項
         OtherNursingRelated: "", //護理相關其他選項
-        
+
         OtherEvent: "", //其他補充內容
       },
       DrugEventResult: {
@@ -2017,30 +2030,15 @@ export default {
         $("#DrugFalseCheck").removeAttr("disabled");
       }
     },
-    PostDate: function () {
-      const url = "/Post";
-      axios
-        .post(url, {
-          EmpNumber: this.EmpAccount, // 員工帶入bool值確認
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          this.EmpAccountCheck = "";
-          alert(error);
-          alert("帶入失敗");
-        });
-    },
-    Accheck: function () 
+    Accheck: function () //Get方式
     {
-         const url="http://192.168.2.192:8080/AccountCheck/"+this.EmpResAccount;
-         axios
+      const url =
+        "http://192.168.2.192:8080/AccountCheck/" + this.EmpResAccount;
+      axios
         .get(url, {
           EmployeeID: this.EmpResAccount, // 員工帳號參數
-
         })
-        
+
         .then(function (response) {
           alert(response.data);
           console.log(response);
@@ -2052,37 +2050,41 @@ export default {
         });
     },
 
-
-
-    POSTAcCheck: async function()
-    {
-        
-        const url="http://192.168.2.192:8080/PostAccountCheck";
-         axios
+    POSTAcCheckc: function () {
+      const url = "http://192.168.2.192:8080/PostAccountCheck";
+      if(this.EmpResAccount=="")
+      {
+     this.$swal.fire("不可為空!");
+      }else{
+      axios
         .post(url, {
-          EmployeeID: this.EmpResAccount, // 員工帳號參數
-     
+          EmployeeID: this.EmpResAccount, //       員工帳號參數
         })
-        
-        .then(function (response) {
-          alert(response.data); 
-          var aa=false;
-          aa=true;
-        
-          console.log(aa)
+
+        .then((response) => {
+          console.log(this.ACHCHECK);
+          if (response.data == "編號重複") {
+            alert("編號重複囉!");
+          } else if (response.data == "編號可使用") {
+            alert("此帳號可以使用!");
+            this.ACHCHECK = false;
+             this.CheckBool=true;
+          }
+          console.log(response.data);
+          console.log(this.ACHCHECK);
         })
         .catch(function (error) {
-          
-     
           alert(error);
         });
-       
+      }
     },
 
     PostApi: function () {
       for (let [keys, value] of Object.entries(this.DrugEventData)) {
         if (value == "") {
-          switch (keys) {    //患者資料防呆
+          switch (
+            keys //患者資料防呆
+          ) {
             case "DrugEventPainName": {
               this.$swal.fire("患者姓名未填寫!");
               break;
@@ -2119,27 +2121,25 @@ export default {
               this.$swal.fire("發現異常日未填寫!");
               break;
             }
-         
           }
-   console.log(keys);
+          console.log(keys);
         } else {
           console.log(value);
         }
       }
     },
 
-    TestF: function () 
-    {
-  for (let [keys, value] of Object.entries(this.DrugEventRession)) 
-  {
-         if (value == "") {
+    TestF: function () {
+      for (let [keys, value] of Object.entries(this.DrugEventRession)) {
+        if (value == "") {
           console.log(keys);
-         }else
-         {
-            this.DrugEventRession.AboutOderEvent.push(this.DrugEventRession.OtherAboutOrder);
-            console.log(keys,value);
-         }
-  }
+        } else {
+          this.DrugEventRession.AboutOderEvent.push(
+            this.DrugEventRession.OtherAboutOrder
+          );
+          console.log(keys, value);
+        }
+      }
     },
 
     test: function () {
@@ -2148,13 +2148,41 @@ export default {
     test2: function () {
       console.log(); //測試用235
     },
-    ChangeBloean: function (a) 
+    UnLockAc: function () {
+      this.ACHCHECK = true;
+      this.CheckBool=false;
+      this.EmpResAccount="";
+    },
+  PostAcoountData: function () 
+  {
+    if(this.ResEmp=="")
     {
-      this.ACHCHECK==a;
-      console.log(this.ACHCHECK);
-      console.log(a); //
- 
+      this.$swal.fire("申請人不可為空白!");
+    }else if(this.ResEmpOri=="選擇職稱")
+    {
+      this.$swal.fire("請選擇正確職稱!");
+    }else{
+    const url = "http://192.168.2.192:8080/PostAccountData";
+    axios 
+        .post(url, {
+          EmployeeID: this.EmpResAccount, // 員工帳號參數
+          ResEmp:this.ResEmp,
+          ResEmpOri:this.ResEmpOri,
+          ResTexarea:this.ResTexarea,
+          ResDate: this.ND,
+        })
+
+        .then((response) => {
+          alert(response);
+        })
+        .catch(function (error) {
+          alert(error);
+        });
+
     }
+
+
+  }
   },
 };
 </script>
@@ -2177,4 +2205,6 @@ span.TextStlye {
 }
 .NewPeople {
 }
+
+
 </style>>
