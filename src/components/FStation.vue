@@ -1567,8 +1567,8 @@
                   v-model="EmpResAccount"
                   v-else
                   disabled="disabled"
-
-         class="form-control EmployeeAccount"/>
+                  class="form-control EmployeeAccount"
+                />
                 <i class="fa-solid fa-user"></i> |<button
                   type="button"
                   class="btn btn-link AcCheck"
@@ -1592,11 +1592,14 @@
                 >
                   解鎖欄位
                 </button>
-     
               </div>
               <div class="form-group">
-                <label for="EmployeeNa" class="col-form-label" >申請人:</label>
-                <input type="text" v-model="ResEmp" class="form-control EmployeeName" />
+                <label for="EmployeeNa" class="col-form-label">申請人:</label>
+                <input
+                  type="text"
+                  v-model="ResEmp"
+                  class="form-control EmployeeName"
+                />
               </div>
 
               <div class="form-group">
@@ -1652,7 +1655,12 @@
                 Close
               </button>
 
-              <button type="button" v-if="CheckBool" class="btn btn-primary" @click="PostAcoountData">
+              <button
+                type="button"
+                v-if="CheckBool"
+                class="btn btn-primary"
+                @click="PostAcoountData"
+              >
                 Save changes
               </button>
               <button
@@ -1684,7 +1692,6 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 
-
 export default {
   name: "FStation",
   props: {
@@ -1708,9 +1715,9 @@ export default {
       Other: false, //其他補充check
       DrugConfirmation: false, //給藥確認
       EmpAccount: "", //員工帳號欄位
-      ResEmpOri:"選擇職稱", //員工職稱
-      ResEmp:"",//申請人
-      ResTexarea:"",//申請備註欄為
+      ResEmpOri: "選擇職稱", //員工職稱
+      ResEmp: "", //申請人
+      ResTexarea: "", //申請備註欄為
       EmpResAccount: "",
       DrugEventData: {
         DrugEventPainName: "",
@@ -2052,30 +2059,29 @@ export default {
 
     POSTAcCheckc: function () {
       const url = "http://192.168.2.192:8080/PostAccountCheck";
-      if(this.EmpResAccount=="")
-      {
-     this.$swal.fire("不可為空!");
-      }else{
-      axios
-        .post(url, {
-          EmployeeID: this.EmpResAccount, //       員工帳號參數
-        })
+      if (this.EmpResAccount == "") {
+        this.$swal.fire("不可為空!");
+      } else {
+        axios
+          .post(url, {
+            EmployeeID: this.EmpResAccount, //       員工帳號參數
+          })
 
-        .then((response) => {
-          console.log(this.ACHCHECK);
-          if (response.data == "編號重複") {
-            alert("編號重複囉!");
-          } else if (response.data == "編號可使用") {
-            alert("此帳號可以使用!");
-            this.ACHCHECK = false;
-             this.CheckBool=true;
-          }
-          console.log(response.data);
-          console.log(this.ACHCHECK);
-        })
-        .catch(function (error) {
-          alert(error);
-        });
+          .then((response) => {
+            console.log(this.ACHCHECK);
+            if (response.data == "編號重複") {
+                  this.$swal.fire("編號重複囉!")
+            } else if (response.data == "編號可使用") {
+              alert("此帳號可以使用!");
+              this.ACHCHECK = false;
+              this.CheckBool = true;
+            }
+            console.log(response.data);
+            console.log(this.ACHCHECK);
+          })
+          .catch(function (error) {
+            alert(error);
+          });
       }
     },
 
@@ -2148,41 +2154,63 @@ export default {
     test2: function () {
       console.log(); //測試用235
     },
+    EmpData: function()
+    {
+      if(this.EmpAccount=="")
+      {
+        this.$swal.fire("欄位不可為空值");
+      }else
+      {
+        const url="http://192.168.2.192:8080/SelectEmpAccount";
+          axios
+          .post(url, {
+            EmployeeID: this.EmpAccount, // 員工帳號參數
+          })
+
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    },
     UnLockAc: function () {
       this.ACHCHECK = true;
-      this.CheckBool=false;
-      this.EmpResAccount="";
+      this.CheckBool = false;
+      this.EmpResAccount = "";
     },
-  PostAcoountData: function () 
-  {
-    if(this.ResEmp=="")
-    {
-      this.$swal.fire("申請人不可為空白!");
-    }else if(this.ResEmpOri=="選擇職稱")
-    {
-      this.$swal.fire("請選擇正確職稱!");
-    }else{
-    const url = "http://192.168.2.192:8080/PostAccountData";
-    axios 
-        .post(url, {
-          EmployeeID: this.EmpResAccount, // 員工帳號參數
-          ResEmp:this.ResEmp,
-          ResEmpOri:this.ResEmpOri,
-          ResTexarea:this.ResTexarea,
-          ResDate: this.ND,
-        })
+    PostAcoountData: function () {
+      if (this.ResEmp == "") {
+        this.$swal.fire("申請人不可為空白!");
+      } else if (this.ResEmpOri == "選擇職稱") {
+        this.$swal.fire("請選擇正確職稱!");
+      } else {
+        const url = "http://192.168.2.192:8080/PostAccountData";
+        axios
+          .post(url, {
+            EmployeeID: this.EmpResAccount, // 員工帳號參數
+            Employee: this.ResEmp,
+            JobTitle: this.ResEmpOri,
+            ResTexarea: this.ResTexarea,
+            ResDate: this.ND,
+          })
 
-        .then((response) => {
-          alert(response);
-        })
-        .catch(function (error) {
-          alert(error);
-        });
+          .then((response) => {
+            console.log(response.data);
 
-    }
-
-
-  }
+            this.EmpResAccount = ""; // 員工帳號參數
+            this.ResEmp = "";
+            this.ResEmpOri = "";
+            this.ResTexarea = "";
+            this.ACHCHECK = true;
+            this.$swal.fire("新增成功!")
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    },
   },
 };
 </script>
@@ -2205,6 +2233,4 @@ span.TextStlye {
 }
 .NewPeople {
 }
-
-
 </style>>
