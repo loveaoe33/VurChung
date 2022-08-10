@@ -108,6 +108,8 @@
               <label class="form-check-label"> 綜合事件 </label>
             </div>
 
+
+
             <button
               type="button"
               class="btn-close"
@@ -119,12 +121,26 @@
           <div class="modal-body">
             <div class="DrugEventText">
               <input
+       
                 type="text"
-                class="form-control"
+                class="form-control DrugEventInText"
                 v-model="EmpAccount"
-                style="width: 250px"
+                style="width:200px" 
+       
               />
             </div>
+
+
+            
+                  <div class="ShowEmp form-iinline"  name="ShowEmp" v-if="ShowEmp == '無此帳號'">
+                {{ ShowEmp }}
+              </div>
+
+
+
+              <div class="ShowEmp form-iinline "   name="ShowEmp" v-else>
+            {{ ShowEmp }}</div>
+         
             <i class="fa-solid fa-user DrugEventText"></i
             ><button
               type="button"
@@ -134,6 +150,8 @@
             >
               帶入員工
             </button>
+          
+            
             <i class="fa-solid fa-file-pen DrugEventText"></i
             ><button
               type="button"
@@ -141,6 +159,7 @@
               name="DrugEventPain"
               class="btn btn-link DrugEventText"
             >
+
               患者資料
             </button>
             <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i
@@ -1524,9 +1543,15 @@
             >
               Close
             </button>
-            <button type="button" @click="TestF" class="btn btn-primary">
+            <button type="button" v-if="ShowEmp!=''" @click="TestF" class="btn btn-primary">
               Save changes
             </button>
+
+               <button type="button" v-else disabled="disabled" class="btn btn-primary">
+              Save changes
+            </button>
+
+            
           </div>
         </div>
       </div>
@@ -1699,7 +1724,7 @@ export default {
   },
   data() {
     return {
-      ND: "5",
+      ND: "",
       DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
       ACHCHECK: true, //帳號檢查有無重複
@@ -1718,7 +1743,8 @@ export default {
       ResEmpOri: "選擇職稱", //員工職稱
       ResEmp: "", //申請人
       ResTexarea: "", //申請備註欄為
-      EmpResAccount: "",
+      EmpResAccount: "", //員工申請帶入的參數
+      ShowEmp: "", //帶入員工帳號秀出
       DrugEventData: {
         DrugEventPainName: "",
         DrugEventPainGender: "",
@@ -1918,6 +1944,7 @@ export default {
       $(".DrugEventMayRessionText").hide(); //表單隱藏
       $(".DrugEventDealText").hide(); //表單隱藏
       $(".DrugDetailText").hide(); //表單隱藏
+      this.DrugFalse=false;//藥物錯誤說明隱藏
     },
     AboutOders: function () {
       if (this.AboutOder == true) {
@@ -2070,9 +2097,10 @@ export default {
           .then((response) => {
             console.log(this.ACHCHECK);
             if (response.data == "編號重複") {
-                  this.$swal.fire("編號重複囉!")
+              this.$swal.fire("編號重複囉!");
             } else if (response.data == "編號可使用") {
-              alert("此帳號可以使用!");
+              this.$swal.fire("此帳號可以使用")
+         
               this.ACHCHECK = false;
               this.CheckBool = true;
             }
@@ -2154,21 +2182,24 @@ export default {
     test2: function () {
       console.log(); //測試用235
     },
-    EmpData: function()
-    {
-      if(this.EmpAccount=="")
-      {
+    EmpData: function () {
+      if (this.EmpAccount == "") {
         this.$swal.fire("欄位不可為空值");
-      }else
-      {
-        const url="http://192.168.2.192:8080/SelectEmpAccount";
-          axios
+      } else {
+        const url = "http://192.168.2.192:8080/SelectEmpAccount";
+        axios
           .post(url, {
-            EmployeeID: this.EmpAccount, // 員工帳號參數
+            EmpID: this.EmpAccount, // 員工帳號參數
           })
 
           .then((response) => {
-            console.log(response.data);
+            if (response.data.AcMiss == "無此帳號") {
+              this.$swal.fire("搜尋無此帳號");
+              this.ShowEmp = "";
+            } else {
+              let S = response.data.AcSucess;
+              this.ShowEmp = S;
+            }
           })
           .catch(function (error) {
             console.log(error);
@@ -2204,7 +2235,7 @@ export default {
             this.ResEmpOri = "";
             this.ResTexarea = "";
             this.ACHCHECK = true;
-            this.$swal.fire("新增成功!")
+            this.$swal.fire("新增成功!");
           })
           .catch(function (error) {
             console.log(error);
@@ -2228,9 +2259,18 @@ span.TextStlye {
   color: rgb(233, 15, 69);
   text-shadow: 3px 3px 3px #a8b8c4;
 }
-
+.DrugEventtext
+{
+  display: inline;
+  width: 250px;
+}
 .NewEvent {
 }
 .NewPeople {
+}
+
+.DrugEventInText
+{
+  width:200px
 }
 </style>>
