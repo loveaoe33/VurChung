@@ -1806,7 +1806,8 @@ export default {
   },
   created() {
     let NDate = new Date();
-    this.ND = NDate;
+    const DateString = NDate.getFullYear()+"/"+NDate.getMonth()+"/"+NDate.getDate();
+    this.ND = DateString;
   },
   mounted() {
     $(".DeliveryProcessText").hide(); //表單隱藏
