@@ -108,8 +108,6 @@
               <label class="form-check-label"> 綜合事件 </label>
             </div>
 
-
-
             <button
               type="button"
               class="btn-close"
@@ -121,26 +119,25 @@
           <div class="modal-body">
             <div class="DrugEventText">
               <input
-       
                 type="text"
                 class="form-control DrugEventInText"
                 v-model="EmpAccount"
-                style="width:200px" 
-       
+                style="width: 200px"
               />
             </div>
 
+            <div
+              class="ShowEmp form-iinline"
+              name="ShowEmp"
+              v-if="ShowEmp == '無此帳號'"
+            >
+              {{ ShowEmp }}
+            </div>
 
-            
-                  <div class="ShowEmp form-iinline"  name="ShowEmp" v-if="ShowEmp == '無此帳號'">
-                {{ ShowEmp }}
-              </div>
+            <div class="ShowEmp form-iinline" name="ShowEmp" v-else>
+              {{ ShowEmp }}
+            </div>
 
-
-
-              <div class="ShowEmp form-iinline "   name="ShowEmp" v-else>
-            {{ ShowEmp }}</div>
-         
             <i class="fa-solid fa-user DrugEventText"></i
             ><button
               type="button"
@@ -150,8 +147,7 @@
             >
               帶入員工
             </button>
-          
-            
+
             <i class="fa-solid fa-file-pen DrugEventText"></i
             ><button
               type="button"
@@ -159,7 +155,6 @@
               name="DrugEventPain"
               class="btn btn-link DrugEventText"
             >
-
               患者資料
             </button>
             <i class="fa-solid fa-heart-circle-exclamation DrugEventText"></i
@@ -699,7 +694,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="藥品錯誤"
                   id="flexCheckChecked"
                 />
@@ -709,7 +704,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="途徑錯誤"
                   id="flexCheckChecked"
                 />
@@ -719,7 +714,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="數量錯誤"
                   id="flexCheckChecked"
                 />
@@ -729,7 +724,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="頻率錯誤"
                   id="flexCheckChecked"
                 />
@@ -739,7 +734,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="病人錯誤"
                   id="flexCheckChecked"
                 />
@@ -749,7 +744,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventRession.NursingRelatedEvent"
+                  v-model="DrugEventRession.NursingForErrorDrugEvent"
                   value="時間錯誤"
                   id="flexCheckChecked"
                 />
@@ -915,7 +910,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患不知情"
                   id="flexCheckChecked"
                 />
@@ -925,7 +920,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患知情但無表示"
                   id="flexCheckChecked"
                 />
@@ -935,7 +930,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患可接受"
                   id="flexCheckChecked"
                 />
@@ -945,7 +940,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患有負面情緒"
                   id="flexCheckChecked"
                 />
@@ -955,7 +950,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患不接受"
                   id="flexCheckChecked"
                 />
@@ -965,7 +960,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  v-model="DrugEventResult.DrugEventResultContext2"
+                  v-model="DrugEventResult.DrugEventResultContext3"
                   value="病患擔心不安"
                   id="flexCheckChecked"
                 />
@@ -1499,17 +1494,17 @@
             </div>
             <div class="DrugDetailText">
               <label class="col-form-label">藥物名稱:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control"  v-model="DrugName"/>
               <label class="col-form-label">藥物劑量:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="DrugDose"/>
               <label class="col-form-label">藥物途徑:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control"  v-model="DrugRouter"/>
               <label class="col-form-label">藥物劑型:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="DrugDosage" />
               <label class="col-form-label">藥物頻率:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="DrugFrequency" />
               <label class="col-form-label">藥物數量:</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="DrugNumber"  />
 
               <div class="form-check form-check-inline">
                 <input
@@ -1543,15 +1538,23 @@
             >
               Close
             </button>
-            <button type="button" v-if="ShowEmp!=''" @click="TestF" class="btn btn-primary">
+            <button
+              type="button"
+              v-if="ShowEmp != ''"
+              @click="TestF"
+              class="btn btn-primary"
+            >
               Save changes
             </button>
 
-               <button type="button" v-else disabled="disabled" class="btn btn-primary">
+            <button
+              type="button"
+              v-else
+              disabled="disabled"
+              class="btn btn-primary"
+            >
               Save changes
             </button>
-
-            
           </div>
         </div>
       </div>
@@ -1702,12 +1705,14 @@
       </div>
 
       <!-- {{ DrugEventData }} -->
-      {{ DrugEventRession }}
+      <!-- {{ DrugEventRession }} -->
 
+      <!-- {{ DrugEventResult }}
+      {{ DrugEventMayRession }} -->
       <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
     </form>
   </div>
-  >
+  
 </template>>
 
 
@@ -1767,12 +1772,13 @@ export default {
         OtherPrescriptionSign: "", //處發籤其他選項
         OtherDeliveryProcess: "", //傳送過程其他選項
         OtherNursingRelated: "", //護理相關其他選項
-
-        OtherEvent: "", //其他補充內容
+        NursingForErrorDrugEvent:[],//護理相關給藥錯誤
+        OtherEvent: "", //其他補充內容 獨立傳輸參數
       },
       DrugEventResult: {
         DrugEventResultContext: [], //事件結果
-        DrugEventResultContext2: [], //事件2結果
+        DrugEventResultContext2: [], //ResultForPa
+        DrugEventResultContext3: [], //PaForResult
         OtherResult: "", //事件結果其他
         OtherResultPa: "", //事件對病患結果其他
         PaOtherResult: "", //病患對本次事件結果其他
@@ -1790,23 +1796,29 @@ export default {
         Other4: "", //人員因素其他
         Other5: "", //病人生理期他
         Other6: "", //溝通因素其他
-        OtherRession: "",
+        OtherRession: "",  //獨立傳輸其他欄位
       },
       DrugDetail: {
-        TrueDrug: [], //正確藥品
+        DrugName:"",//藥物名稱
+        DrugDose:"",//藥物劑量
+        DrugDosage:"",//藥物劑型別
+        DrugRouter:"",//藥物途徑錯誤
+        DrugFrequency:"",//藥物頻率
+        DrugNumber:"",//藥物數量
         FalseDrug: "", //錯誤藥品
       },
 
       DrugEventDeal: {
         ProcessingMethod: [], //建議處理方式
         DrugEventDealOther: "",
-        Prevention: "", //預防
+        Prevention: "", //預防 獨立參數
       },
     };
   },
   created() {
     let NDate = new Date();
-    const DateString = NDate.getFullYear()+"/"+NDate.getMonth()+"/"+NDate.getDate();
+    const DateString =
+      NDate.getFullYear() + "/" + NDate.getMonth() + "/" + NDate.getDate();
     this.ND = DateString;
   },
   mounted() {
@@ -1945,7 +1957,7 @@ export default {
       $(".DrugEventMayRessionText").hide(); //表單隱藏
       $(".DrugEventDealText").hide(); //表單隱藏
       $(".DrugDetailText").hide(); //表單隱藏
-      this.DrugFalse=false;//藥物錯誤說明隱藏
+      this.DrugFalse = false; //藥物錯誤說明隱藏
     },
     AboutOders: function () {
       if (this.AboutOder == true) {
@@ -2004,6 +2016,7 @@ export default {
         $(".ResultEventContext2").show();
       } else {
         this.DrugEventResult.DrugEventResultContext2 = [];
+        this.DrugEventResult.DrugEventResultContext3 = [];
         $(".ResultEventContext2").hide();
         this.$swal("取消勾選資料會消失唷!!");
       }
@@ -2100,8 +2113,8 @@ export default {
             if (response.data == "編號重複") {
               this.$swal.fire("編號重複囉!");
             } else if (response.data == "編號可使用") {
-              this.$swal.fire("此帳號可以使用")
-         
+              this.$swal.fire("此帳號可以使用");
+
               this.ACHCHECK = false;
               this.CheckBool = true;
             }
@@ -2165,16 +2178,100 @@ export default {
     },
 
     TestF: function () {
-      for (let [keys, value] of Object.entries(this.DrugEventRession)) {
-        if (value == "") {
-          console.log(keys);
-        } else {
-          this.DrugEventRession.AboutOderEvent.push(
-            this.DrugEventRession.OtherAboutOrder
-          );
-          console.log(keys, value);
-        }
+      // this.PostApi();
+      if (this.DrugEventRession.OtherAboutOrder != "") {
+        this.DrugEventRession.AboutOderEvent.push(
+          this.DrugEventRession.OtherAboutOrder
+        );
       }
+      if (this.DrugEventRession.OtherPrescriptionSign != "") {
+        this.DrugEventRession.PrescriptionSignEvent.push(
+          this.DrugEventRession.OtherPrescriptionSign
+        );
+      }
+      if (this.DrugEventRession.OtherDeliveryProcess != "") {
+        this.DrugEventRession.DeliveryProcessEvetn.push(
+          this.DrugEventRession.OtherDeliveryProcess
+        );
+      }
+      if (this.DrugEventRession.OtherNursingRelated != "") {
+        this.DrugEventRession.NursingRelatedEvent.push(
+          this.DrugEventRession.OtherNursingRelated
+        );
+      }
+      if (this.DrugEventRession.OtherPharmacy != "") {
+        this.DrugEventRession.PharmacyEvent.push(
+          this.DrugEventRession.OtherPharmacy
+        );
+      }
+      if (this.DrugEventResult.OtherResult != "") {
+        this.DrugEventResult.DrugEventResultContext.push(
+          this.DrugEventResult.OtherResult
+        );
+      }
+      if (this.DrugEventResult.OtherResultPa != "") {
+        this.DrugEventResult.DrugEventResultContext2.push(
+          this.DrugEventResult.OtherResultPa
+        );
+      }
+      if (this.DrugEventResult.PaOtherResult != "") {
+        this.DrugEventResult.DrugEventResultContext3.push(
+          this.DrugEventResult.PaOtherResult
+        );
+      }
+
+      if (this.DrugEventMayRession.Other1 != "") {
+        this.DrugEventMayRession.WorkingProcess.push(
+          this.DrugEventMayRession.Other1
+        );
+      }
+
+      if (this.DrugEventMayRession.Other2 != "") {
+        this.DrugEventMayRession.DrugInformation.push(
+          this.DrugEventMayRession.Other2
+        );
+      }
+
+      if (this.DrugEventMayRession.Other3 != "") {
+        this.DrugEventMayRession.Surroundings.push(
+          this.DrugEventMayRession.Other3
+        );
+      }
+
+      if (this.DrugEventMayRession.Other4 != "") {
+        this.DrugEventMayRession.Personnel.push(
+          this.DrugEventMayRession.Other4
+        );
+      }
+
+      if (this.DrugEventMayRession.Other5 != "") {
+        this.DrugEventMayRession.PatientPhysiology.push(
+          this.DrugEventMayRession.Other5
+        );
+      }
+
+      if (this.DrugEventMayRession.Other6 != "") {
+        this.DrugEventMayRession.Communicate.push(
+          this.DrugEventMayRession.Other6
+        );
+      }
+            if (this.DrugEventDeal.DrugEventDealOther != "") {
+        this.DrugEventDeal.ProcessingMethod.push(
+          this.DrugEventDeal.DrugEventDealOther
+        );
+      }
+   var JsonDrugEventData=JSON.stringify(this.DrugEventData)
+   console.log(JsonDrugEventData);
+   var JsonDrugEventRession=JSON.stringify(this.DrugEventRession);
+   console.log(JsonDrugEventRession);
+   var JsonDrugEventResult=JSON.stringify(this.DrugEventResult);
+   console.log(JsonDrugEventResult);
+   var JsonDrugEventMayRession=JSON.stringify(this.DrugEventMayRession);
+   console.log(JsonDrugEventMayRession);
+   var JsonDrugDetail=JSON.stringify(this.DrugDetail);
+   console.log(JsonDrugDetail);
+   var JsonDrugEventDeal=JSON.stringify(this.DrugEventDeal);
+   console.log(JsonDrugEventDeal);
     },
 
     test: function () {
@@ -2260,8 +2357,7 @@ span.TextStlye {
   color: rgb(233, 15, 69);
   text-shadow: 3px 3px 3px #a8b8c4;
 }
-.DrugEventtext
-{
+.DrugEventtext {
   display: inline;
   width: 250px;
 }
@@ -2270,8 +2366,7 @@ span.TextStlye {
 .NewPeople {
 }
 
-.DrugEventInText
-{
-  width:200px
+.DrugEventInText {
+  width: 200px;
 }
 </style>>
