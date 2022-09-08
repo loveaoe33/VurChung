@@ -243,6 +243,7 @@
               type="text"
               name="DrugEventPainNumber"
               v-model="DrugEventData.DrugEventPainNumber"
+              onkeyup="value=value.replace(/[^\d]/g,'')"
               class="form-control DrugEventPain"
             />
             <label
@@ -1494,17 +1495,17 @@
             </div>
             <div class="DrugDetailText">
               <label class="col-form-label">藥物名稱:</label>
-              <input type="text" class="form-control"  v-model="DrugName"/>
+              <input type="text" class="form-control"  v-model="DrugDetail.DrugName"/>
               <label class="col-form-label">藥物劑量:</label>
-              <input type="text" class="form-control" v-model="DrugDose"/>
+              <input type="text" class="form-control" v-model="DrugDetail.DrugDose"/>
               <label class="col-form-label">藥物途徑:</label>
-              <input type="text" class="form-control"  v-model="DrugRouter"/>
+              <input type="text" class="form-control"  v-model="DrugDetail.DrugRouter"/>
               <label class="col-form-label">藥物劑型:</label>
-              <input type="text" class="form-control" v-model="DrugDosage" />
+              <input type="text" class="form-control" v-model="DrugDetail.DrugDosage" />
               <label class="col-form-label">藥物頻率:</label>
-              <input type="text" class="form-control" v-model="DrugFrequency" />
+              <input type="text" class="form-control" v-model="DrugDetail.DrugFrequency" />
               <label class="col-form-label">藥物數量:</label>
-              <input type="text" class="form-control" v-model="DrugNumber"  />
+              <input type="text" class="form-control" v-model="DrugDetail.DrugNumber"  />
 
               <div class="form-check form-check-inline">
                 <input
@@ -1541,7 +1542,7 @@
             <button
               type="button"
               v-if="ShowEmp != ''"
-              @click="TestF"
+              @click="PostApi"
               class="btn btn-primary"
             >
               Save changes
@@ -1776,7 +1777,7 @@ export default {
         OtherEvent: "", //其他補充內容 獨立傳輸參數
       },
       DrugEventResult: {
-        DrugEventResultContext: [], //事件結果
+        DrugEventResultContext: [], //事件結果  如有以給藥要有外來鍵
         DrugEventResultContext2: [], //ResultForPa
         DrugEventResultContext3: [], //PaForResult
         OtherResult: "", //事件結果其他
@@ -1805,7 +1806,7 @@ export default {
         DrugRouter:"",//藥物途徑錯誤
         DrugFrequency:"",//藥物頻率
         DrugNumber:"",//藥物數量
-        FalseDrug: "", //錯誤藥品
+        FalseDrug: "", //錯誤藥品有外來鍵
       },
 
       DrugEventDeal: {
@@ -2082,6 +2083,7 @@ export default {
     {
       const url =
         "http://192.168.2.192:8080/AccountCheck/" + this.EmpResAccount;
+        
       axios
         .get(url, {
           EmployeeID: this.EmpResAccount, // 員工帳號參數
@@ -2100,6 +2102,7 @@ export default {
 
     POSTAcCheckc: function () {
       const url = "http://192.168.2.192:8080/PostAccountCheck";
+      // const url="http://192.168.0.105:8080/PostAccountCheck";
       if (this.EmpResAccount == "") {
         this.$swal.fire("不可為空!");
       } else {
@@ -2172,12 +2175,13 @@ export default {
           }
           console.log(keys);
         } else {
-          console.log(value);
+          this.PostForm();
         }
       }
+      
     },
 
-    TestF: function () {
+    PostForm: function () {
       // this.PostApi();
       if (this.DrugEventRession.OtherAboutOrder != "") {
         this.DrugEventRession.AboutOderEvent.push(
@@ -2272,6 +2276,27 @@ export default {
    console.log(JsonDrugDetail);
    var JsonDrugEventDeal=JSON.stringify(this.DrugEventDeal);
    console.log(JsonDrugEventDeal);
+   const url="http://192.168.2.192:8080/DrugFormData";
+  // const url="http://192.168.0.105:8080/DrugFormData";
+   console.log(JsonDrugEventRession);
+   axios
+          .post(url, {
+            JsonDrugEventData:JsonDrugEventData,
+            JsonDrugEventRession:JsonDrugEventRession,
+            JsonDrugEventResult:JsonDrugEventResult,
+            JsonDrugEventMayRession:JsonDrugEventMayRession,
+            JsonDrugDetail:JsonDrugDetail,
+            JsonDrugEventDeal:JsonDrugEventDeal,
+          })
+
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            alert(error);
+          });
+
+
     },
 
     test: function () {
@@ -2285,6 +2310,8 @@ export default {
         this.$swal.fire("欄位不可為空值");
       } else {
         const url = "http://192.168.2.192:8080/SelectEmpAccount";
+        // const url="http://192.168.0.105:8080/SelectEmpAccount";
+
         axios
           .post(url, {
             EmpID: this.EmpAccount, // 員工帳號參數
@@ -2315,7 +2342,9 @@ export default {
       } else if (this.ResEmpOri == "選擇職稱") {
         this.$swal.fire("請選擇正確職稱!");
       } else {
-        const url = "http://192.168.2.192:8080/PostAccountData";
+        // const url = "http://192.168.2.192:8080/PostAccountData";
+        const url="http://192.168.0.105:8080/PostAccountData";
+
         axios
           .post(url, {
             EmployeeID: this.EmpResAccount, // 員工帳號參數
