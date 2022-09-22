@@ -12,6 +12,9 @@ import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VueLoaders from 'vue-loaders';
+
+
 
 
 const $=require('jquery')
@@ -19,7 +22,7 @@ window.$=$;
 var app =createApp(App);
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.config.globalProperties.axios=axios
-app.use(Router).use(VueSweetalert2).mount('#app')
+app.use(Router).use(VueSweetalert2).use(VueLoaders).mount('#app')
 
 
 

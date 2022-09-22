@@ -1,4 +1,6 @@
 <template>
+
+
   <div class="AllBodyContext">
     <button
       type="button"
@@ -51,6 +53,7 @@
               Close
             </button>
             <button type="button" class="btn btn-primary">Save changes</button>
+        
           </div>
         </div>
       </div>
@@ -125,7 +128,7 @@
                 style="width: 200px"
               />
             </div>
-
+  
             <div
               class="ShowEmp form-iinline"
               name="ShowEmp"
@@ -136,6 +139,9 @@
 
             <div class="ShowEmp form-iinline" name="ShowEmp" v-else>
               {{ ShowEmp }}
+            </div>
+            <div class="all">
+            <div  v-bind:class="{ line:Loadindbind }"></div>
             </div>
 
             <i class="fa-solid fa-user DrugEventText"></i
@@ -1542,7 +1548,7 @@
             <button
               type="button"
               v-if="ShowEmp != ''"
-              @click="PostApi"
+              @click="PostForm"
               class="btn btn-primary"
             >
               Save changes
@@ -1556,6 +1562,7 @@
             >
               Save changes
             </button>
+            <button type="button" @click="Loadindbind=!Loadindbind" class="btn btn-primary">測試</button> 
           </div>
         </div>
       </div>
@@ -1700,11 +1707,12 @@
               >
                 Save changes
               </button>
+            
             </div>
           </div>
         </div>
       </div>
-
+    
       <!-- {{ DrugEventData }} -->
       <!-- {{ DrugEventRession }} -->
 
@@ -1712,8 +1720,25 @@
       {{ DrugEventMayRession }} -->
       <!-- {{ DrugEventRession.AboutOderEvent['0'] }} -->
     </form>
+
+
+
+ 
+
+
+   
+      
+
+
+
+
   </div>
+
+
+
+
   
+
 </template>>
 
 
@@ -1723,6 +1748,7 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 
+
 export default {
   name: "FStation",
   props: {
@@ -1731,6 +1757,8 @@ export default {
   data() {
     return {
       ND: "",
+      Loadindbind: false,//資料傳送讀取動畫
+      NLoadindbind: false,//隱藏動畫
       DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
       ACHCHECK: true, //帳號檢查有無重複
@@ -1821,6 +1849,7 @@ export default {
     const DateString =
       NDate.getFullYear() + "/" + NDate.getMonth() + "/" + NDate.getDate();
     this.ND = DateString;
+    
   },
   mounted() {
     $(".DeliveryProcessText").hide(); //表單隱藏
@@ -2175,14 +2204,19 @@ export default {
           }
           console.log(keys);
         } else {
-          this.PostForm();
+          return true;
         }
       }
       
     },
 
     PostForm: function () {
-      // this.PostApi();
+      var BoleanCheck= this.PostApi();
+      if(BoleanCheck!=true) 
+      {
+         console.log("資料不齊全");
+      }else{
+        this.Loadindbind= true;
       if (this.DrugEventRession.OtherAboutOrder != "") {
         this.DrugEventRession.AboutOderEvent.push(
           this.DrugEventRession.OtherAboutOrder
@@ -2290,12 +2324,14 @@ export default {
           })
 
           .then((response) => {
+            this.Loadindbind= true;
             console.log(response);
           })
           .catch(function (error) {
+             this.Loadindbind= true;
             alert(error);
           });
-
+        }
 
     },
 
@@ -2342,10 +2378,10 @@ export default {
       } else if (this.ResEmpOri == "選擇職稱") {
         this.$swal.fire("請選擇正確職稱!");
       } else {
-        // const url = "http://192.168.2.192:8080/PostAccountData";
-        const url="http://192.168.0.105:8080/PostAccountData";
+        const url = "http://192.168.2.192:8080/PostAccountData";
+        // const url="http://192.168.0.105:8080/PostAccountData";
 
-        axios
+       axios
           .post(url, {
             EmployeeID: this.EmpResAccount, // 員工帳號參數
             Employee: this.ResEmp,
@@ -2390,12 +2426,79 @@ span.TextStlye {
   display: inline;
   width: 250px;
 }
-.NewEvent {
-}
-.NewPeople {
-}
+
 
 .DrugEventInText {
   width: 200px;
 }
-</style>>
+.test
+{
+  width: 100%;
+  height: 100%;
+  background-color:rgba(255, 0, 55, 0.87)
+}
+
+
+
+
+.all 
+  {
+    
+    position:relative;
+   left:900;top:450;
+    justify-content: center;
+    align-content: center;
+
+  }
+.line {
+  --uib-size: 450px;
+  --uib-speed: 1.75s;
+  --uib-color: black;
+  --uib-line-weight: 5px;
+
+  position: absolute;
+  top:0px;
+  left:0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  height: var(--uib-line-weight);
+  width: var(--uib-size);
+  border-radius: calc(var(--uib-line-weight) / 2);
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--uib-color);
+  opacity: 0.1;
+}
+
+.line::after {
+  content: '';
+  height: 100%;
+  width: 100%;
+  border-radius: calc(var(--uib-line-weight) / 2);
+  animation: wobble var(--uib-speed) ease-in-out infinite;
+  transform: translateX(-95%);
+  background-color: var(--uib-color);
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: translateX(-95%);
+  }
+  50% {
+    transform: translateX(95%);
+  }
+}
+
+</style>
