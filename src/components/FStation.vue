@@ -1753,6 +1753,11 @@ export default {
   name: "FStation",
   props: {
     msg: String,
+    FatherAxiosMethods:
+    {
+        type: Function, 
+        default: null
+    }
   },
   data() {
     return {
@@ -2325,6 +2330,7 @@ export default {
 
           .then((response) => {
             this.Loadindbind= true;
+            location.reload()
             console.log(response);
           })
           .catch(function (error) {
@@ -2405,6 +2411,7 @@ export default {
           });
       }
     },
+
   },
 };
 </script>
