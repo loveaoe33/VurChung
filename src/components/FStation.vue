@@ -2330,7 +2330,7 @@ export default {
 
           .then((response) => {
             this.Loadindbind= true;
-            location.reload()
+            // location.reload()
             console.log(response);
           })
           .catch(function (error) {
