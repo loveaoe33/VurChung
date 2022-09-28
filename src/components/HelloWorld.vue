@@ -69,72 +69,79 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade PaDataModal" id="PaDataModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fade  bs-example-modal-lg PaDataModal" id="PaDataModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content"  style="width: 900px;">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">異常事件表單</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="PaTitle"><h2>患者資料:</h2></div>
-        <a>患者姓名:{{ MPaName }}</a><br>
-        <a>患者性別:{{ MPaName }}</a><br>
-        <a>患者病歷號碼:{{ MPaName }}</a><br>
-        <a>患者年齡:{{ MPaAge }}</a><br>
-        <a>事件類別:{{ MPaClass }}</a><br>
-        <a>事件診斷:{{ MPaDia }}</a><br>
-        <a>事件開始日期:{{ MPaStart }}</a><br>
-        <a>異常事件發現日:{{ MPaFiD }}</a><br>
-        <a>事件結束日期:{{ MPaEnd }}</a><br>
+        <ul>
+         <li>患者姓名:<span>{{ MPaName }}</span> </li> <br>
+         <li>患者性別:<span>{{ MPaGender }}</span> </li> <br>
+         <li>患者病歷號碼: <span>{{ MPaNumber }}</span> </li><br>
+         <li>患者年齡:<span>{{ MPaAge }}</span> </li><br>
+         <li>事件類別:<span>{{ MPaClass }}</span> </li><br>
+         <li>事件診斷:<span>{{ MPaDia }}</span> </li><br>
+         <li>事件開始日期:<span>{{ MPaStart }}</span> </li><br>
+         <li>異常事件發現日:<span>{{ MPaFiD }}</span> </li><br>
+         <li>事件結束日期:<span>{{ MPaEnd }}</span> </li><br>
         <hr>
         <div class="PaTitle"><h2>紀載內容:</h2></div>
-        <a>醫囑相關:{{ MAboutOtherEvent }}</a><br>
-        <a>處方籤交付相關:{{ MPreScript }}</a><br>
-        <a>運送過程相關:{{ MDeliveryProcessEvent }}</a><br>
-        <a>藥局相關:{{ MPharMacyEvent }}</a><br>
-        <a>護理相關:{{ MNursingReEvent }}</a><br>
-        <a>其他補充(發生原因):{{ MOtherEvent }}</a><br>
+         <li>醫囑相關:<span>{{ MAboutOtherEvent }}</span> </li> <br>
+         <li>處方籤交付相關:<span>{{ MPreScript }}</span> </li> <br>
+         <li>運送過程相關:<span>{{ MDeliveryProcessEvent }}</span> </li> <br>
+         <li>藥局相關:<span>{{ MPharMacyEvent }}</span> </li> <br>
+         <li>護理相關:<span>{{ MNursingReEvent }}</span> </li> <br>
+         <li>其他補充(發生原因):<span>{{ MOtherEvent }}</span> </li> <br>
 
 
-        <a>事件結果(未給藥物):{{ MNursionNonFor }}</a><br>
-        <a>已發藥:{{ MErrorEvent }}</a><br>
-
-        <a>工作流程因素:{{ MWorkStatusProcess }}</a><br>
-        <a>藥品/資訊系統因素:{{ MDrugInfoStatusProcess }}</a><br>
-        <a>環境因素:{{ MEnvironmentStatusProcess }}</a><br>
-        <a>人員因素:{{ MPhysiologicalStatusProcess }}</a><br>
-        <a>病人生理/行為因素:{{ MPersonStatusProcess }}</a><br>
-        <a>溝通因素:{{ MCommunicateStatusProcess }}</a><br>
-        <a>其他因素(事件可能發生原因):{{ MOtherStatusProcess }}</a><br>
+         <li>事件結果(未給藥物):<span>{{ MNursionNonFor }}</span> </li> <br>
+         <li>給藥錯誤:<span>{{ MErrorEvent }}</span> </li> <br>
+         <li>事件對病人影響:<span>{{ MEvenForPa }}</span> </li> <br>
+         <li>病人對事件影響:<span>{{ MPaForEven }}</span> </li> <br>
 
 
-        <a>處理方式:{{ MProcessMethod }}</a><br>
-        <a>建議:{{ MSuggest }}</a><br>
 
-        <a>藥物名稱:{{ MDrugName }}</a><br>
-        <a>藥物劑量:{{ MDrugDose }}</a><br>
-        <a>藥物途徑:{{ MDrugRouter }}</a><br>
-        <a>藥物劑型:{{ MDrugDosage }}</a><br>
-        <a>藥物頻率:{{ MDrugFrequency }}</a><br>
-        <a>藥物數量:{{ MDrugNumber }}</a><br>
-        <a>給錯藥物說明:{{ MErrorName }}</a><br>
+         <li>工作流程因素:<span>{{ MWorkStatusProcess }}</span> </li> <br>
+         <li>藥品/資訊系統因素:<span>{{ MDrugInfoStatusProcess }}</span> </li> <br>
+         <li>環境因素:<span>{{ MEnvironmentStatusProcess }}</span> </li> <br>
+         <li>人員因素:<span>{{ MPhysiologicalStatusProcess }}</span> </li> <br>
+         <li>病人生理/行為因素:<span>{{ MPersonStatusProcess }}</span>  </li><br>
+         <li>溝通因素:<span>{{ MCommunicateStatusProcess }}</span> </li> <br>
+         <li>其他因素(事件可能發生原因):<span>{{ MOtherStatusProcess }}</span> </li> <br>
+
+
+         <li>處理方式:<span>{{ MProcessMethod }}</span> </li> <br>
+         <li>建議:<span>{{ MSuggest }}</span> </li> <br>
+
+         <li>藥物名稱:<span>{{ MDrugName }}</span> </li> <br>
+         <li>藥物劑量:<span>{{ MDrugDose }}</span>  </li><br>
+         <li>藥物途徑:<span>{{ MDrugRouter }}</span>  </li><br>
+         <li>藥物劑型:<span>{{ MDrugDosage }}</span> </li> <br>
+         <li>藥物頻率:<span>{{ MDrugFrequency }}</span> </li> <br>
+         <li>藥物數量:<span>{{ MDrugNumber }}</span>  </li><br>
+         <li>給錯藥物說明:<span>{{ MErrorName }}</span>  </li><br>
 
 
         <hr>
         <div class="PaTitle"><h2>紀載日期:</h2></div>
-        <a>紀載員工 :{{ MEmployeeID }}</a><br>
-        <a>紀載日期:{{ MInsertDate }}</a><br>
-
+         <li>紀載員工:<span>{{ MEmployeeID }}</span> </li> <br>
+         <li>員工姓名:<span>{{ MEmployeeName }}</span> </li> <br>
+         <li>紀載日期:<span>{{ MInsertDate }}</span> </li> <br>
+        </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+  
       </div>
     </div>
   </div>
 </div>
-    <!-- {{ CallBackMainData }} -->
+</div>
+    {{ CallBackMainDetetailData }}
   
 <!-- 
  <router-link :to="{ name: 'Home' }">Home</router-link> |
@@ -164,7 +171,6 @@ export default {
           this.CallBackMainData.push(response.data[i]);
         }
 
-        console.log(response.data[0]);
       })
       .catch(function (error) {
         alert(error);
@@ -208,6 +214,7 @@ export default {
         MDrugFrequency:"",
         MDrugNumber:"",
         MEmployeeID:"",
+        MEmployeeName:"",
         MInsertDate:"",
         MErrorEvent:"",
         MEvenForPa:"",
@@ -227,8 +234,9 @@ export default {
        DetailId:tableId,
 
       })
-
+      
       .then((response) => {	
+        this.$forceUpdate();
         this.MPaName=response.data.PaName;
         this.MPaGender=response.data.PaGender;
         this.MPaNumber=response.data.PaNumber;
@@ -238,6 +246,7 @@ export default {
         this.MPaFiD=response.data.PaFiD;
         this.MPaStart=response.data.PaStart;
         this.MPaEnd=response.data.PaEnd;
+
         this.MAboutOtherEvent=response.data.AboutOtherEvent;
         this.MPreScript=response.data.PreScript;
         this.MDeliveryProcessEvent=response.data.DeliveryProcessEvent;
@@ -268,8 +277,8 @@ export default {
         this.MEvenForPa=response.data.EvenForPa;
         this.MPaForEven=response.data.PaForEven;
         this.MErrorName=response.data.ErrorName;
-
-        console.log(response.data[0]);
+        this.MEmployeeName=response.data.EmployeeName;
+        console.log(response.data);
       })
       .catch(function (error) {
         alert(error);
@@ -361,5 +370,31 @@ a {
 
 
 
+.PaTitle h2
+{
+  background: linear-gradient(#c4b6b6, #9198e5);
+  color: #d60909;
+  font-size: 20px;
+  text-align: center;
+  font-family:DFKai-sb;
+  border: 5px #554d55 solid;
+  border-width: 5px 1px;
+}
 
+.modal-body
+{
+  font-family:DFKai-sb;
+}
+.modal-body li
+{
+  font-size: 20px;
+  color: #380cd6;
+}
+.modal-body span
+{
+  font-size: 18px;
+  color: #a33e5f;
+}
+
+/* ;border:1px orange solid;margin-right:5px;" */
 </style>
