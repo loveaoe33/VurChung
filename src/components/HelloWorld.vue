@@ -79,59 +79,69 @@
       </div>
       <div class="modal-body">
         <div class="PaTitle"><h2>患者資料:</h2></div>
-        <ul>
-         <li>患者姓名:<span>{{ MPaName }}</span> </li> <br>
-         <li>患者性別:<span>{{ MPaGender }}</span> </li> <br>
-         <li>患者病歷號碼: <span>{{ MPaNumber }}</span> </li><br>
-         <li>患者年齡:<span>{{ MPaAge }}</span> </li><br>
-         <li>事件類別:<span>{{ MPaClass }}</span> </li><br>
-         <li>事件診斷:<span>{{ MPaDia }}</span> </li><br>
-         <li>事件開始日期:<span>{{ MPaStart }}</span> </li><br>
-         <li>異常事件發現日:<span>{{ MPaFiD }}</span> </li><br>
-         <li>事件結束日期:<span>{{ MPaEnd }}</span> </li><br>
+        <ul  >
+         <li >患者姓名:<span  v-if="TablceCheck"   @dblclick="alertTd($event.toElement.className)" class="PaName">{{ MPaName }}</span>
+          <input
+     
+                  type="text"
+                  style="width: 250px"
+                  v-model="MPaName"
+                  v-else
+                  @keyup.enter="TextEnter($event)"
+                  class="form-iinline PaNameText"
+                  
+                /> </li> <br>
+         <li>患者性別:<span class="PaGender">{{ MPaGender }}</span> </li> <br>
+         <li>患者病歷號碼: <span class="PaNumber">{{ MPaNumber }}</span> </li><br>
+         <li>患者年齡:<span class="PaAge">{{ MPaAge }}</span> </li><br>
+         <li>事件類別:<span class="PaClass">{{ MPaClass }}</span> </li><br>
+         <li>事件診斷:<span class="PaDia">{{ MPaDia }}</span> </li><br>
+         <li>事件開始日期:<span class="PaStart">{{ MPaStart }}</span> </li><br>
+         <li>異常事件發現日:<span class="PaFiD">{{ MPaFiD }}</span> </li><br>
+         <li>事件結束日期:<span class="PaEnd">{{ MPaEnd }}</span> </li><br>
         <hr>
         <div class="PaTitle"><h2>紀載內容:</h2></div>
-         <li>醫囑相關:<span>{{ MAboutOtherEvent }}</span> </li> <br>
-         <li>處方籤交付相關:<span>{{ MPreScript }}</span> </li> <br>
-         <li>運送過程相關:<span>{{ MDeliveryProcessEvent }}</span> </li> <br>
-         <li>藥局相關:<span>{{ MPharMacyEvent }}</span> </li> <br>
-         <li>護理相關:<span>{{ MNursingReEvent }}</span> </li> <br>
-         <li>其他補充(發生原因):<span>{{ MOtherEvent }}</span> </li> <br>
+         <li>醫囑相關:<span class="AboutOtherEvent">{{ MAboutOtherEvent }}</span> </li> <br>
+         <li>處方籤交付相關:<span class="PreScript">{{ MPreScript }}</span> </li> <br>
+         <li>運送過程相關:<span class="DeliveryProcessEvent">{{ MDeliveryProcessEvent }}</span> </li> <br>
+         <li>藥局相關:<span class="PharMacyEvent">{{ MPharMacyEvent }}</span> </li> <br>
+         <li>護理相關:<span class="NursingReEvent">{{ MNursingReEvent }}</span> </li> <br>
+         <li>其他補充(發生原因):<span class="OtherEvent">{{ MOtherEvent }}</span> </li> <br>
 
 
-         <li>事件結果(未給藥物):<span>{{ MNursionNonFor }}</span> </li> <br>
-         <li>給藥錯誤:<span>{{ MErrorEvent }}</span> </li> <br>
-         <li>事件對病人影響:<span>{{ MEvenForPa }}</span> </li> <br>
-         <li>病人對事件影響:<span>{{ MPaForEven }}</span> </li> <br>
+         <li>事件結果(未給藥物):<span class="NursionNonFor">{{ MNursionNonFor }}</span> </li> <br>
+         <li>給藥錯誤:<span class="ErrorEvent">{{ MErrorEvent }}</span> </li> <br>
+         <li>事件對病人影響:<span class="EvenForPa">{{ MEvenForPa }}</span> </li> <br>
+         <li>病人對事件影響:<span class="PaForEven">{{ MPaForEven }}</span> </li> <br>
 
 
 
-         <li>工作流程因素:<span>{{ MWorkStatusProcess }}</span> </li> <br>
-         <li>藥品/資訊系統因素:<span>{{ MDrugInfoStatusProcess }}</span> </li> <br>
-         <li>環境因素:<span>{{ MEnvironmentStatusProcess }}</span> </li> <br>
-         <li>人員因素:<span>{{ MPhysiologicalStatusProcess }}</span> </li> <br>
-         <li>病人生理/行為因素:<span>{{ MPersonStatusProcess }}</span>  </li><br>
-         <li>溝通因素:<span>{{ MCommunicateStatusProcess }}</span> </li> <br>
-         <li>其他因素(事件可能發生原因):<span>{{ MOtherStatusProcess }}</span> </li> <br>
+         <li>工作流程因素:<span class="WorkStatusProcess">{{ MWorkStatusProcess }}</span> </li> <br>
+         <li>藥品/資訊系統因素:<span class="DrugInfoStatusProcess">{{ MDrugInfoStatusProcess }}</span> </li> <br>
+         <li>環境因素:<span class="EnvironmentStatusProcess">{{ MEnvironmentStatusProcess }}</span> </li> <br>
+         <li>人員因素:<span class="PhysiologicalStatusProcess">{{ MPhysiologicalStatusProcess }}</span> </li> <br>
+         <li>病人生理/行為因素:<span class="PersonStatusProcess">{{ MPersonStatusProcess }}</span>  </li><br>
+         <li>溝通因素:<span class="CommunicateStatusProcess">{{ MCommunicateStatusProcess }}</span> </li> <br>
+         <li>其他因素(事件可能發生原因):<span class="OtherStatusProcess">{{ MOtherStatusProcess }}</span> </li> <br>
 
 
-         <li>處理方式:<span>{{ MProcessMethod }}</span> </li> <br>
-         <li>建議:<span>{{ MSuggest }}</span> </li> <br>
+         <li>處理方式:<span class="ProcessMethod">{{ MProcessMethod }}</span> </li> <br>
+         <li>建議:<span class="Suggest">{{ MSuggest }}</span> </li> <br>
 
-         <li>藥物名稱:<span>{{ MDrugName }}</span> </li> <br>
-         <li>藥物劑量:<span>{{ MDrugDose }}</span>  </li><br>
-         <li>藥物途徑:<span>{{ MDrugRouter }}</span>  </li><br>
-         <li>藥物劑型:<span>{{ MDrugDosage }}</span> </li> <br>
-         <li>藥物頻率:<span>{{ MDrugFrequency }}</span> </li> <br>
-         <li>藥物數量:<span>{{ MDrugNumber }}</span>  </li><br>
-         <li>給錯藥物說明:<span>{{ MErrorName }}</span>  </li><br>
+         <li>藥物名稱:<span class="DrugName">{{ MDrugName }}</span> </li> <br>
+         <li>藥物劑量:<span class="DrugDose">{{ MDrugDose }}</span>  </li><br>
+         <li>藥物途徑:<span class="DrugRouter">{{ MDrugRouter }}</span>  </li><br>
+         <li>藥物劑型:<span class="DrugDosage">{{ MDrugDosage }}</span> </li> <br>
+         <li>藥物頻率:<span class="DrugFrequency">{{ MDrugFrequency }}</span> </li> <br>
+         <li>藥物數量:<span class="DrugNumber">{{ MDrugNumber }}</span>  </li><br>
+         <li>給錯藥物說明:<span class="ErrorName">{{ MErrorName }}</span>  </li><br>
 
 
         <hr>
         <div class="PaTitle"><h2>紀載日期:</h2></div>
-         <li>紀載員工:<span>{{ MEmployeeID }}</span> </li> <br>
-         <li>員工姓名:<span>{{ MEmployeeName }}</span> </li> <br>
-         <li>紀載日期:<span>{{ MInsertDate }}</span> </li> <br>
+         <li>紀載員工:<span class="EmployeeID">{{ MEmployeeID }}</span> </li> <br>
+         <li>員工姓名:<span class="EmployeeName">{{ MEmployeeName }}</span> </li> <br>
+         <li>紀載日期:<span class="InsertDate">{{ MInsertDate }}</span> </li> <br>
         </ul>
       </div>
       <div class="modal-footer">
@@ -179,8 +189,12 @@ export default {
   },
   data() {
     return {
+      TablceCheck:true,
+      Str:"",
       CallBackMainData: [],
       CallBackMainDetetailData:{
+        PaId:"",
+        PaNumberKey:"",
         MPaName:"",
         MPaGender:"",
         MPaNumber:"",
@@ -237,6 +251,8 @@ export default {
       
       .then((response) => {	
         this.$forceUpdate();
+        this.PaId=response.data.PDrugId;
+        this.PaNumberKey=response.data.PaKey;
         this.MPaName=response.data.PaName;
         this.MPaGender=response.data.PaGender;
         this.MPaNumber=response.data.PaNumber;
@@ -277,7 +293,7 @@ export default {
         this.MEvenForPa=response.data.EvenForPa;
         this.MPaForEven=response.data.PaForEven;
         this.MErrorName=response.data.ErrorName;
-        this.MEmployeeName=response.data.EmployeeName;
+
         console.log(response.data);
       })
       .catch(function (error) {
@@ -289,6 +305,21 @@ export default {
 
       let PaModalButton=document.getElementById("ShowButton");
       PaModalButton.click();
+    },
+    alertTd:function(TD)
+    {
+      console.log(TD);
+      // let TDEle=document.getElementsByClassName(TD)
+      // let Str=TD+"Check";
+      this.TablceCheck=!this.TablceCheck;
+
+  
+
+    },
+    TextEnter:function(TextClassName)
+    {
+      this.TablceCheck=!this.TablceCheck;
+      console.log(TextClassName);
     },
      AxiosEmit:function ()
      {
