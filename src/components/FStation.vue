@@ -2329,7 +2329,7 @@ export default {
 
           .then((response) => {
             this.Loadindbind= true;
-            location.reload()
+            // location.reload()
             console.log(response);
           })
           .catch(function (error) {
@@ -2337,7 +2337,7 @@ export default {
             alert(error);
           });
 
-          // this.$emit('UpdateMainTable');
+          this.$emit('UpdateMainTable');
 
         }
 
