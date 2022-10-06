@@ -1726,7 +1726,7 @@
  
 
 
-   
+    {{ msg }}
       
 
 
@@ -1747,17 +1747,16 @@
 import axios from "axios";
 import "jquery";
 import $ from "jquery";
+// import HelloWorld from './HelloWorld.vue'
 
 
 export default {
   name: "FStation",
+  // props:["msgs"],
   props: {
     msg: String,
-    FatherAxiosMethods:
-    {
-        type: Function, 
-        default: null
-    }
+  
+
   },
   data() {
     return {
@@ -2330,13 +2329,16 @@ export default {
 
           .then((response) => {
             this.Loadindbind= true;
-            // location.reload()
+            location.reload()
             console.log(response);
           })
           .catch(function (error) {
              this.Loadindbind= true;
             alert(error);
           });
+
+          // this.$emit('UpdateMainTable');
+
         }
 
     },

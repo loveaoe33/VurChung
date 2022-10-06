@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="MainData">
     <table
       id="DrugMainTable"
       class="table table-striped DrugMainTable"
@@ -21,7 +21,7 @@
           <th>操作</th>
         </tr>
       </thead>
-      <tbody v-if="Render">
+      <tbody >
         <tr
           style="text-align: center"
           v-for="(item, key) in CallBackMainData"
@@ -40,7 +40,7 @@
           <td>{{ item.paFiD }}</td>
           <td>{{ item.buildEmp }}</td>
           <td>{{ item.buildDate }}</td>
-          <td><button @click="DeletePost(item.id)">刪除</button></td>
+          <td><button @click="DeletePost(item.id,key)">刪除</button></td>
         </tr>
       </tbody>
       <tfoot>
@@ -300,20 +300,23 @@
               <hr />
               <div class="PaTitle"><h2>紀載內容:</h2></div>
 
-
-
               <li>
-                醫囑相關:<span v-if="AboutOtherEventCheck"
-                  @dblclick="AboutOtherEventCheck = !AboutOtherEventCheck" class="AboutOtherEvent">{{
-                  MAboutOtherEvent
-                }}</span>
+                醫囑相關:<span
+                  v-if="AboutOtherEventCheck"
+                  @dblclick="AboutOtherEventCheck = !AboutOtherEventCheck"
+                  class="AboutOtherEvent"
+                  >{{ MAboutOtherEvent }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MAboutOtherEvent"
                   v-else
                   @keyup.enter="
-                    AboutOtherEventEnter($event.target.className, $event.target.id),
+                    AboutOtherEventEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (AboutOtherEventCheck = !AboutOtherEventCheck)
                   "
                   class="patabledrug"
@@ -323,9 +326,13 @@
               </li>
               <br />
               <li>
-                處方籤交付相關:<span v-if="PreScriptCheck"
-                  @dblclick="PreScriptCheck = !PreScriptCheck" class="PreScript">{{ MPreScript }}</span>
-                  <input
+                處方籤交付相關:<span
+                  v-if="PreScriptCheck"
+                  @dblclick="PreScriptCheck = !PreScriptCheck"
+                  class="PreScript"
+                  >{{ MPreScript }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MPreScript"
@@ -341,17 +348,24 @@
               </li>
               <br />
               <li>
-                運送過程相關:<span v-if="DeliveryProcessEventCheck"
-                  @dblclick="DeliveryProcessEventCheck = !DeliveryProcessEventCheck" class="DeliveryProcessEvent">{{
-                  MDeliveryProcessEvent
-                }}</span>
+                運送過程相關:<span
+                  v-if="DeliveryProcessEventCheck"
+                  @dblclick="
+                    DeliveryProcessEventCheck = !DeliveryProcessEventCheck
+                  "
+                  class="DeliveryProcessEvent"
+                  >{{ MDeliveryProcessEvent }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MDeliveryProcessEvent"
                   v-else
                   @keyup.enter="
-                    DeliveryProcessEventEnter($event.target.className, $event.target.id),
+                    DeliveryProcessEventEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (DeliveryProcessEventCheck = !DeliveryProcessEventCheck)
                   "
                   class="patabledrug"
@@ -361,15 +375,22 @@
               </li>
               <br />
               <li>
-                藥局相關:<span v-if="PharMacyEventCheck"
-                  @dblclick="PharMacyEventCheck = !PharMacyEventCheck" class="PharMacyEvent">{{ MPharMacyEvent }}</span>
-                  <input
+                藥局相關:<span
+                  v-if="PharMacyEventCheck"
+                  @dblclick="PharMacyEventCheck = !PharMacyEventCheck"
+                  class="PharMacyEvent"
+                  >{{ MPharMacyEvent }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MPharMacyEvent"
                   v-else
                   @keyup.enter="
-                    PharMacyEventEnter($event.target.className, $event.target.id),
+                    PharMacyEventEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (PharMacyEventCheck = !PharMacyEventCheck)
                   "
                   class="patabledrug"
@@ -379,17 +400,22 @@
               </li>
               <br />
               <li>
-                護理相關:<span v-if="NursingReEventCheck"
-                  @dblclick="NursingReEventCheck = !NursingReEventCheck" class="NursingReEvent">{{
-                  MNursingReEvent
-                }}</span>
+                護理相關:<span
+                  v-if="NursingReEventCheck"
+                  @dblclick="NursingReEventCheck = !NursingReEventCheck"
+                  class="NursingReEvent"
+                  >{{ MNursingReEvent }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MNursingReEvent"
                   v-else
                   @keyup.enter="
-                    NursingReEventEnter($event.target.className, $event.target.id),
+                    NursingReEventEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (NursingReEventCheck = !NursingReEventCheck)
                   "
                   class="patabledrug"
@@ -399,10 +425,12 @@
               </li>
               <br />
               <li>
-                其他補充(發生原因):<span v-if="OtherEventCheck"
-                  @dblclick="OtherEventCheck = !OtherEventCheck" class="OtherEvent">{{
-                  MOtherEvent
-                }}</span>
+                其他補充(發生原因):<span
+                  v-if="OtherEventCheck"
+                  @dblclick="OtherEventCheck = !OtherEventCheck"
+                  class="OtherEvent"
+                  >{{ MOtherEvent }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
@@ -420,17 +448,22 @@
               <br />
 
               <li>
-                事件結果(未給藥物):<span v-if="NursionNonForheck"
-                  @dblclick="NursionNonForheck = !NursionNonForheck" class="NursionNonFor">{{
-                  MNursionNonFor
-                }}</span>
+                事件結果(未給藥物):<span
+                  v-if="NursionNonForheck"
+                  @dblclick="NursionNonForheck = !NursionNonForheck"
+                  class="NursionNonFor"
+                  >{{ MNursionNonFor }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MNursionNonFor"
                   v-else
                   @keyup.enter="
-                    NursionNonForEnter($event.target.className, $event.target.id),
+                    NursionNonForEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (NursionNonForheck = !NursionNonForheck)
                   "
                   class="patabledrug"
@@ -440,9 +473,13 @@
               </li>
               <br />
               <li>
-                給藥錯誤:<span v-if="ErrorEventCheck"
-                  @dblclick="ErrorEventCheck = !ErrorEventCheck" class="ErrorEvent">{{ MErrorEvent }}</span>
-                  <input
+                給藥錯誤:<span
+                  v-if="ErrorEventCheck"
+                  @dblclick="ErrorEventCheck = !ErrorEventCheck"
+                  class="ErrorEvent"
+                  >{{ MErrorEvent }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MErrorEvent"
@@ -458,9 +495,13 @@
               </li>
               <br />
               <li>
-                事件對病人影響:<span v-if="EvenForPaCheck"
-                  @dblclick="EvenForPaCheck = !EvenForPaCheck" class="EvenForPa">{{ MEvenForPa }}</span>
-                  <input
+                事件對病人影響:<span
+                  v-if="EvenForPaCheck"
+                  @dblclick="EvenForPaCheck = !EvenForPaCheck"
+                  class="EvenForPa"
+                  >{{ MEvenForPa }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MEvenForPa"
@@ -476,15 +517,19 @@
               </li>
               <br />
               <li>
-                病人對事件影響:<span v-if="PaForEvenCheck"
-                  @dblclick="PaForEvenCheck = !PaForEvenCheck" class="PaForEven">{{ MPaForEven }}</span>
-                  <input
+                病人對事件影響:<span
+                  v-if="PaForEvenCheck"
+                  @dblclick="PaForEvenCheck = !PaForEvenCheck"
+                  class="PaForEven"
+                  >{{ MPaForEven }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MPaForEven"
                   v-else
                   @keyup.enter="
-                    PaForEvenEnter($event.target.className), $event.target.id,
+                    PaForEvenEnter($event.target.className, $event.target.id),
                       (PaForEvenCheck = !PaForEvenCheck)
                   "
                   class="pharfortable"
@@ -495,17 +540,22 @@
               <br />
 
               <li>
-                工作流程因素:<span v-if="WorkStatusProcessCheck"
-                  @dblclick="WorkStatusProcessCheck = !WorkStatusProcessCheck" class="WorkStatusProcess">{{
-                  MWorkStatusProcess
-                }}</span>
+                工作流程因素:<span
+                  v-if="WorkStatusProcessCheck"
+                  @dblclick="WorkStatusProcessCheck = !WorkStatusProcessCheck"
+                  class="WorkStatusProcess"
+                  >{{ MWorkStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MWorkStatusProcess"
                   v-else
                   @keyup.enter="
-                    WorkStatusProcessEnter($event.target.className, $event.target.id),
+                    WorkStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (WorkStatusProcessCheck = !WorkStatusProcessCheck)
                   "
                   class="patabledrug"
@@ -515,17 +565,24 @@
               </li>
               <br />
               <li>
-                藥品/資訊系統因素:<span v-if="DrugInfoStatusProcessCheck"
-                  @dblclick="DrugInfoStatusProcessCheck = !DrugInfoStatusProcessCheck" class="DrugInfoStatusProcess">{{
-                  MDrugInfoStatusProcess
-                }}</span>
+                藥品/資訊系統因素:<span
+                  v-if="DrugInfoStatusProcessCheck"
+                  @dblclick="
+                    DrugInfoStatusProcessCheck = !DrugInfoStatusProcessCheck
+                  "
+                  class="DrugInfoStatusProcess"
+                  >{{ MDrugInfoStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugInfoStatusProcess"
                   v-else
                   @keyup.enter="
-                    DrugInfoStatusProcessEnter($event.target.className, $event.target.id),
+                    DrugInfoStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (DrugInfoStatusProcessCheck = !DrugInfoStatusProcessCheck)
                   "
                   class="patabledrug"
@@ -535,18 +592,27 @@
               </li>
               <br />
               <li>
-                環境因素:<span v-if="EnvironmentStatusProcessCheck"
-                  @dblclick="EnvironmentStatusProcessCheck = !EnvironmentStatusProcessCheck" class="EnvironmentStatusProcess">{{
-                  MEnvironmentStatusProcess
-                }}</span>
+                環境因素:<span
+                  v-if="EnvironmentStatusProcessCheck"
+                  @dblclick="
+                    EnvironmentStatusProcessCheck =
+                      !EnvironmentStatusProcessCheck
+                  "
+                  class="EnvironmentStatusProcess"
+                  >{{ MEnvironmentStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MEnvironmentStatusProcess"
                   v-else
                   @keyup.enter="
-                    EnvironmentStatusProcessEnter($event.target.className, $event.target.id),
-                      (EnvironmentStatusProcessCheck = !EnvironmentStatusProcessCheck)
+                    EnvironmentStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
+                      (EnvironmentStatusProcessCheck =
+                        !EnvironmentStatusProcessCheck)
                   "
                   class="patabledrug"
                   name="EnvironmentStatusProcessText"
@@ -555,18 +621,27 @@
               </li>
               <br />
               <li>
-                病人生理/行為因素因素:<span v-if="PhysiologicalStatusProcessCheck"
-                  @dblclick="PhysiologicalStatusProcessCheck = !PhysiologicalStatusProcessCheck" class="PhysiologicalStatusProcess">{{
-                  MPhysiologicalStatusProcess
-                }}</span>
+                病人生理/行為因素因素:<span
+                  v-if="PhysiologicalStatusProcessCheck"
+                  @dblclick="
+                    PhysiologicalStatusProcessCheck =
+                      !PhysiologicalStatusProcessCheck
+                  "
+                  class="PhysiologicalStatusProcess"
+                  >{{ MPhysiologicalStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MPhysiologicalStatusProcess"
                   v-else
                   @keyup.enter="
-                    PhysiologicalStatusProcessEnter($event.target.className, $event.target.id),
-                      (PhysiologicalStatusProcessCheck = !PhysiologicalStatusProcessCheck)
+                    PhysiologicalStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
+                      (PhysiologicalStatusProcessCheck =
+                        !PhysiologicalStatusProcessCheck)
                   "
                   class="patabledrug"
                   name="PhysiologicalStatusProcessText"
@@ -575,17 +650,24 @@
               </li>
               <br />
               <li>
-               人員因素:<span v-if="PersonStatusProcessCheck"
-                  @dblclick="PersonStatusProcessCheck = !PersonStatusProcessCheck" class="PersonStatusProcess">{{
-                  MPersonStatusProcess
-                }}</span>
+                人員因素:<span
+                  v-if="PersonStatusProcessCheck"
+                  @dblclick="
+                    PersonStatusProcessCheck = !PersonStatusProcessCheck
+                  "
+                  class="PersonStatusProcess"
+                  >{{ MPersonStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MPersonStatusProcess"
                   v-else
                   @keyup.enter="
-                    PersonStatusProcessEnter($event.target.className, $event.target.id),
+                    PersonStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (PersonStatusProcessCheck = !PersonStatusProcessCheck)
                   "
                   class="patabledrug"
@@ -595,18 +677,27 @@
               </li>
               <br />
               <li>
-                溝通因素:<span v-if="CommunicateStatusProcessCheck"
-                  @dblclick="CommunicateStatusProcessCheck = !CommunicateStatusProcessCheck" class="CommunicateStatusProcess">{{
-                  MCommunicateStatusProcess
-                }}</span>
+                溝通因素:<span
+                  v-if="CommunicateStatusProcessCheck"
+                  @dblclick="
+                    CommunicateStatusProcessCheck =
+                      !CommunicateStatusProcessCheck
+                  "
+                  class="CommunicateStatusProcess"
+                  >{{ MCommunicateStatusProcess }}</span
+                >
                 <input
                   type="text"
                   style="width: 250px"
                   v-model="MCommunicateStatusProcess"
                   v-else
                   @keyup.enter="
-                    CommunicateStatusProcessEvenEnter($event.target.className, $event.target.id),
-                      (CommunicateStatusProcessCheck = !CommunicateStatusProcessCheck)
+                    CommunicateStatusProcessEvenEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
+                      (CommunicateStatusProcessCheck =
+                        !CommunicateStatusProcessCheck)
                   "
                   class="patabledrug"
                   name="CommunicateStatusProcessText"
@@ -615,16 +706,21 @@
               </li>
               <br />
               <li>
-                其他因素(事件可能發生原因):<span v-if="OtherStatusProcessCheck"
-                  @dblclick="OtherStatusProcessCheck = !OtherStatusProcessCheck" class="OtherStatusProcess">{{
-                  MOtherStatusProcess
-                }}</span><input
+                其他因素(事件可能發生原因):<span
+                  v-if="OtherStatusProcessCheck"
+                  @dblclick="OtherStatusProcessCheck = !OtherStatusProcessCheck"
+                  class="OtherStatusProcess"
+                  >{{ MOtherStatusProcess }}</span
+                ><input
                   type="text"
                   style="width: 250px"
                   v-model="MOtherStatusProcess"
                   v-else
                   @keyup.enter="
-                    OtherStatusProcessEnter($event.target.className, $event.target.id),
+                    OtherStatusProcessEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (OtherStatusProcessCheck = !OtherStatusProcessCheck)
                   "
                   class="patabledrug"
@@ -635,15 +731,22 @@
               <br />
 
               <li>
-                處理方式:<span v-if="ProcessMethodCheck"
-                  @dblclick="ProcessMethodCheck = !ProcessMethodCheck" class="ProcessMethod">{{ MProcessMethod }}</span>
-                  <input
+                處理方式:<span
+                  v-if="ProcessMethodCheck"
+                  @dblclick="ProcessMethodCheck = !ProcessMethodCheck"
+                  class="ProcessMethod"
+                  >{{ MProcessMethod }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MProcessMethod"
                   v-else
                   @keyup.enter="
-                    ProcessMethodEnter($event.target.className, $event.target.id),
+                    ProcessMethodEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (ProcessMethodCheck = !ProcessMethodCheck)
                   "
                   class="patabledrug"
@@ -653,9 +756,13 @@
               </li>
               <br />
               <li>
-                建議:<span v-if="SuggestCheck"
-                  @dblclick="SuggestCheck = !SuggestCheck" class="Suggest">{{ MSuggest }}</span>
-                  <input
+                建議:<span
+                  v-if="SuggestCheck"
+                  @dblclick="SuggestCheck = !SuggestCheck"
+                  class="Suggest"
+                  >{{ MSuggest }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MSuggest"
@@ -672,9 +779,13 @@
               <br />
 
               <li>
-                藥物名稱:<span v-if="DrugNameCheck"
-                  @dblclick="DrugNameCheck = !DrugNameCheck" class="DrugName">{{ MDrugName }}</span>
-                  <input
+                藥物名稱:<span
+                  v-if="DrugNameCheck"
+                  @dblclick="DrugNameCheck = !DrugNameCheck"
+                  class="DrugName"
+                  >{{ MDrugName }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugName"
@@ -690,15 +801,22 @@
               </li>
               <br />
               <li>
-                藥物劑量:<span v-if="DrugDoseCheck"
-                  @dblclick="DrugDoseCheck = !DrugDoseCheck" class="DrugDose">{{ MDrugDose }}</span>
-                  <input
+                藥物劑量:<span
+                  v-if="DrugDoseCheck"
+                  @dblclick="DrugDoseCheck = !DrugDoseCheck"
+                  class="DrugDose"
+                  >{{ MDrugDose }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugDose"
                   v-else
                   @keyup.enter="
-                    DrugDoseEvenEnter($event.target.className, $event.target.id),
+                    DrugDoseEvenEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (DrugDoseCheck = !DrugDoseCheck)
                   "
                   class="patabledrug"
@@ -708,9 +826,13 @@
               </li>
               <br />
               <li>
-                藥物途徑:<span v-if="DrugRouterCheck"
-                  @dblclick="DrugRouterCheck = !DrugRouterCheck" class="DrugRouter">{{ MDrugRouter }}</span>
-                  <input
+                藥物途徑:<span
+                  v-if="DrugRouterCheck"
+                  @dblclick="DrugRouterCheck = !DrugRouterCheck"
+                  class="DrugRouter"
+                  >{{ MDrugRouter }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugRouter"
@@ -726,9 +848,13 @@
               </li>
               <br />
               <li>
-                藥物劑型:<span v-if="DrugDosageCheck"
-                  @dblclick="DrugDosageCheck = !DrugDosageCheck" class="DrugDosage">{{ MDrugDosage }}</span>
-                  <input
+                藥物劑型:<span
+                  v-if="DrugDosageCheck"
+                  @dblclick="DrugDosageCheck = !DrugDosageCheck"
+                  class="DrugDosage"
+                  >{{ MDrugDosage }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugDosage"
@@ -744,15 +870,22 @@
               </li>
               <br />
               <li>
-                藥物頻率:<span v-if="DrugFrequencyCheck"
-                  @dblclick="DrugFrequencyCheck = !DrugFrequencyCheck" class="DrugFrequency">{{ MDrugFrequency }}</span>
-                  <input
+                藥物頻率:<span
+                  v-if="DrugFrequencyCheck"
+                  @dblclick="DrugFrequencyCheck = !DrugFrequencyCheck"
+                  class="DrugFrequency"
+                  >{{ MDrugFrequency }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugFrequency"
                   v-else
                   @keyup.enter="
-                    DrugFrequencyEnter($event.target.className, $event.target.id),
+                    DrugFrequencyEnter(
+                      $event.target.className,
+                      $event.target.id
+                    ),
                       (DrugFrequencyCheck = !DrugFrequencyCheck)
                   "
                   class="patabledrug"
@@ -762,9 +895,13 @@
               </li>
               <br />
               <li>
-                藥物數量:<span v-if="DrugNumberCheck"
-                  @dblclick="DrugNumberCheck = !DrugNumberCheck" class="DrugNumber">{{ MDrugNumber }}</span>
-                  <input
+                藥物數量:<span
+                  v-if="DrugNumberCheck"
+                  @dblclick="DrugNumberCheck = !DrugNumberCheck"
+                  class="DrugNumber"
+                  >{{ MDrugNumber }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MDrugNumber"
@@ -780,9 +917,13 @@
               </li>
               <br />
               <li>
-                給錯藥物說明:<span v-if="ErrorNameCheck"
-                  @dblclick="ErrorNameCheck = !ErrorNameCheck" class="ErrorName">{{ MErrorName }}</span>
-                  <input
+                給錯藥物說明:<span
+                  v-if="ErrorNameCheck"
+                  @dblclick="ErrorNameCheck = !ErrorNameCheck"
+                  class="ErrorName"
+                  >{{ MErrorName }}</span
+                >
+                <input
                   type="text"
                   style="width: 250px"
                   v-model="MErrorName"
@@ -819,7 +960,10 @@
       </div>
     </div>
   </div>
-  {{ CallBackMainDetetailData }}
+
+  <FStation @UpdateMainTable="CallUpdateMain"></FStation>
+  <FStation :msg="sds"></FStation>
+  <!-- {{ CallBackMainDetetailData }} -->
 
   <!-- 
  <router-link :to="{ name: 'Home' }">Home</router-link> |
@@ -832,16 +976,21 @@
 import axios from "axios";
 import "jquery";
 import $ from "jquery";
+import FStation from './FStation.vue';
+
 // import Empty from './components/Empty.vue';
 
 // import $ from "jquery";
 export default {
   name: "HelloWorld",
+  component:{FStation},
   props: {
     msg: String,
   },
   created() {
     const url = "http://192.168.2.192:8080/PostMainData";
+
+    
     axios
       .post(url, {})
 
@@ -900,6 +1049,7 @@ export default {
       ErrorNameCheck: true,
 
       Str: "",
+    
       CallBackMainData: [],
       CallBackMainDetetailData: {
         NursingForKey: "",
@@ -1030,244 +1180,241 @@ export default {
     //   "this." + Str == false;
     //   console.log(this.PaNameCheck);
     // },
-    PaNameEnter: function (ClassName,ClassId) {
+    PaNameEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaNameText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaGenderEnter: function (ClassName,ClassId) {
+    PaGenderEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaGenderText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaNumberEnter: function (ClassName,ClassId) {
+    PaNumberEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaNumberText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaAgeEnter: function (ClassName,ClassId) {
+    PaAgeEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaAgeText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaClassEnter: function (ClassName,ClassId) {
+    PaClassEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaClassText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaDiaEnter: function (ClassName,ClassId) {
+    PaDiaEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaDiaText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaStartEnter: function (ClassName,ClassId) {
+    PaStartEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaStartText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaFiDEnter: function (ClassName,ClassId) {
+    PaFiDEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaFiDText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
-
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaEndEnter: function (ClassName,ClassId) {
+    PaEndEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaEndText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
 
-
-
-    AboutOtherEventEnter: function (ClassName,ClassId) {
+    AboutOtherEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='AboutOtherEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PreScriptEnter: function (ClassName,ClassId) {
+    PreScriptEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PreScriptext']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DeliveryProcessEventEnter: function (ClassName,ClassId) {
+    DeliveryProcessEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DeliveryProcessEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PharMacyEventEnter: function (ClassName,ClassId) {
+    PharMacyEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PharMacyEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    NursingReEventEnter: function (ClassName,ClassId) {
+    NursingReEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='NursingReEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    OtherEventEnter: function (ClassName,ClassId) {
+    OtherEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='OtherEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    NursionNonForEnter: function (ClassName,ClassId) {
+    NursionNonForEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='NursionNonForText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    ErrorEventEnter: function (ClassName,ClassId) {
+    ErrorEventEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='ErrorEventText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    EvenForPaEnter: function (ClassName,ClassId) {
-      let UpdateData = $("input[name='PaEndText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+    EvenForPaEnter: function (ClassName, ClassId) {
+      let UpdateData = $("input[name='EvenForPaText']").val();
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PaForEvenEnter: function (ClassName,ClassId) {
+    PaForEvenEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PaForEvenText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
 
-    WorkStatusProcessEnter: function (ClassName,ClassId) {
+    WorkStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='WorkStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugInfoStatusProcessEnter: function (ClassName,ClassId) {
+    DrugInfoStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugInfoStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    EnvironmentStatusProcessEnter: function (ClassName,ClassId) {
+    EnvironmentStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='EnvironmentStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PhysiologicalStatusProcessEnter: function (ClassName,ClassId) {
+    PhysiologicalStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PhysiologicalStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    PersonStatusProcessEnter: function (ClassName,ClassId) {
+    PersonStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='PersonStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    CommunicateStatusProcessEvenEnter: function (ClassName,ClassId) {
+    CommunicateStatusProcessEvenEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='CommunicateStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
 
-    OtherStatusProcessEnter: function (ClassName,ClassId) {
+    OtherStatusProcessEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='OtherStatusProcessText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    ProcessMethodEnter: function (ClassName,ClassId) {
+    ProcessMethodEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='ProcessMethodText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    SuggestEnter: function (ClassName,ClassId) {
+    SuggestEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='SuggestText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugNameEnter: function (ClassName,ClassId) {
+    DrugNameEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugNameText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugDoseEvenEnter: function (ClassName,ClassId) {
+    DrugDoseEvenEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugDoseText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugDosageEnter: function (ClassName,ClassId) {
+    DrugDosageEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugDosageText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugFrequencyEnter: function (ClassName,ClassId) {
+    DrugFrequencyEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugFrequencyText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    DrugNumberEnter: function (ClassName,ClassId) {
+    DrugNumberEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='DrugNumberText']").val();
       this.AxiosUpdate(ClassName, UpdateData);
-      console.log(ClassName, UpdateData,ClassId);
+      console.log(ClassName, UpdateData, ClassId);
     },
-    ErrorNameEnter: function (ClassName,ClassId) {
+    ErrorNameEnter: function (ClassName, ClassId) {
       let UpdateData = $("input[name='ErrorNameText']").val();
-      let UpdateColumn=ClassId
-      this.AxiosUpdate(ClassName, UpdateData,UpdateColumn);
-      console.log(ClassName, UpdateData,ClassId);
+      let UpdateColumn = ClassId;
+      this.AxiosUpdate(ClassName, UpdateData, UpdateColumn);
+      console.log(ClassName, UpdateData, ClassId);
     },
 
-
-    AxiosUpdate: function (ClassName,UpdateData,UpdateColumn) {
-      const url =
-        "http://192.168.2.192:8080/UpdateDetailData/"
+    AxiosUpdate: function (ClassName, UpdateData, UpdateColumn) {
+      const url = "http://192.168.2.192:8080/UpdateDetailData/";
 
       axios
         .post(url, {
-          PostPaId: this.PaId , //傳送要更新資料表id
+          PostPaId: this.PaId, //傳送要更新資料表id
           PostPaNumberKey: this.PaNumberKey,
-          PostNursingForKey:this.NursingForKey, //傳送要更新資料表鍵碼
-          PostDrugForKey:this.DrugForKey, //傳送要更新資料表鍵碼
-          PostPharForKey:this.PharForKey, //傳送要更新資料表鍵碼
-          PostTable:ClassName,   //傳送要更新資料表
+          PostNursingForKey: this.NursingForKey, //傳送要更新資料表鍵碼
+          PostDrugForKey: this.DrugForKey, //傳送要更新資料表鍵碼
+          PostPharForKey: this.PharForKey, //傳送要更新資料表鍵碼
+          PostTable: ClassName, //傳送要更新資料表
           PostUpdate: UpdateData, // 傳送要更新資料
-          PostColum:UpdateColumn,
+          PostColum: UpdateColumn,
         })
 
-        .then(function (response) {
-        
+        .then( (response)=> {
           console.log(response);
+          if (response.data.Sucess) {
+            this.$swal.fire("更新成功");
+          } else {
+            this.$swal.fire("更新失敗");
+          }
         })
-        .catch(function (error) {
-          this.EmpResAccount = "";
-          console.log(error);
-      
+        .catch( (error)=> {
+          this.$swal.fire("資料庫錯誤請聯絡資訊"+error);
         });
     },
-    DeletePost: function (PostPaId) {
+    DeletePost: function (PostPaId,key) {
       console.log(PostPaId);
       const url = "http://192.168.2.192:8080/PostDelData";
       axios
@@ -1277,8 +1424,11 @@ export default {
 
         .then((response) => {
           console.log(response);
-          location.reload();
-
+          // location.reload();
+          // $(".MainData tbody tr").html("");
+         this.CallBackMainData.splice(key,1)
+     
+          // this.CallUpdateMain();
           // this.$router.replace=({path:'/Empty'});
         })
         .catch(function (error) {
@@ -1286,8 +1436,33 @@ export default {
           alert("帶入失敗");
         });
     },
+
+  CallUpdateMain:function()
+{
+  const url = "http://192.168.2.192:8080/PostMainData";
+
+    
+axios
+  .post(url, {})
+
+  .then((response) => {
+
+    this.CallBackMainDatap=[];
+    for (let i = 0; i < response.data.length; i++) {
+      this.CallBackMainData.push(response.data[i]);
+    }
+    
+  })
+  .catch(function (error) {
+    alert(error);
+    alert("帶入失敗");
+  });
+}
+
   },
 };
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

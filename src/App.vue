@@ -13,6 +13,8 @@
         <li class="nav-item">
           
           <router-link :to="{ name: '3FStation'}">異常事件通報</router-link> 
+       
+
 
         </li>
       </ul>

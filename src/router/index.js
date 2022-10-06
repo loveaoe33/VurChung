@@ -29,6 +29,11 @@ const routes = [
       name: "HelloWorld",
       component: HelloWorld,
     },
+    {
+      path: "/HelloWorld",
+      name: "HelloWorld",
+      component: HelloWorld,
+    },
 
     {
       path: "/Empty",
