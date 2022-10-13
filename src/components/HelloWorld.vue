@@ -1,4 +1,8 @@
 <template>
+
+  <div container>
+    <input type="button" class="MaxinAxiosUpdate MaxinAxios" value="資料刷新" @click="CallUpdateMain">
+    </div>
   <div class="MainData">
     <table
       id="DrugMainTable"
@@ -961,8 +965,14 @@
     </div>
   </div>
 
-  <FStation @UpdateMainTable="CallUpdateMain"></FStation>
-  <FStation :msg="sds"></FStation>
+
+
+<!-- 
+  <input type="button"  v-if="UpdateBool==true" v-model="UpdateBool" @change="CallUpdateMain"> -->
+  <!-- <input type="button" value="測試"  @click="this.ChangeBool()">
+
+  {{ UpdateBool }}
+  {{ Count }} -->
   <!-- {{ CallBackMainDetetailData }} -->
 
   <!-- 
@@ -976,7 +986,9 @@
 import axios from "axios";
 import "jquery";
 import $ from "jquery";
-import FStation from './FStation.vue';
+import FStation from './FStation.vue'
+import { mapMutations, mapState } from 'vuex';
+
 
 // import Empty from './components/Empty.vue';
 
@@ -989,8 +1001,8 @@ export default {
   },
   created() {
     const url = "http://192.168.2.192:8080/PostMainData";
-
-    
+   
+  
     axios
       .post(url, {})
 
@@ -1005,7 +1017,9 @@ export default {
       });
   },
   data() {
+    
     return {
+      UpdateBoolMain: this.$store.state.UpdateBool,
       /*病患資料 */
       PaNameCheck: true,
       PaGenderCheck: true,
@@ -1099,6 +1113,14 @@ export default {
       },
       Render: true,
     };
+  },
+  computed:
+  {
+...mapState({
+  Count:state=>state.count,
+  UpdateBool: state=>state.UpdateBool,
+}),
+
   },
   methods: {
     ClickTable: function (tableId) {
@@ -1427,25 +1449,25 @@ export default {
           // location.reload();
           // $(".MainData tbody tr").html("");
          this.CallBackMainData.splice(key,1)
-     
-          // this.CallUpdateMain();
-          // this.$router.replace=({path:'/Empty'});
+
         })
         .catch(function (error) {
           alert(error);
           alert("帶入失敗");
         });
     },
-
+...mapMutations(['intercome','ChangeBool','ReChangeBool']),
   CallUpdateMain:function()
 {
+  this.ReChangeBool();
   const url = "http://192.168.2.192:8080/PostMainData";
-
+  console.log("已刷新");
     
 axios
   .post(url, {})
 
   .then((response) => {
+     $(".MainData tbody tr").html("");
 
     this.CallBackMainDatap=[];
     for (let i = 0; i < response.data.length; i++) {
@@ -1525,5 +1547,22 @@ a {
   color: #a33e5f;
 }
 
+.MaxinAxios
+{
+  border-radius:10px;
+  font-size: 18px;
+  width: 100%;
+  background-color: #95e2d5;
+  border: 3px solid ;
+  border-color: #d60909;
+
+}
+
+.MaxinAxios:hover 
+{
+  background-color: #ebf1f0;
+  border-color: #d60f51;
+
+}
 /* ;border:1px orange solid;margin-right:5px;" */
 </style>

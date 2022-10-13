@@ -1,7 +1,13 @@
 import { createApp } from 'vue'
+import { createStore } from 'vuex'
 import App from './App.vue'
 import Router from'./router'
 import axios from 'axios'
+// import Store from './store/store'
+// import Vuex from 'vuex'
+// import map from './modules/map'
+
+
 import "jquery"
 import "bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,13 +22,42 @@ import VueLoaders from 'vue-loaders';
 
 
 
+const store = createStore({
+
+    state () {
+        return {
+          count: 0,
+          UpdateBool: "false",
+        }
+      },
+      
+      mutations:{
+        intercome(state,Paload)
+        {
+            state.count=state.count + Paload;
+            console.log(state.count);
+         
+        },
+        ChangeBool(state)
+        {
+          state.UpdateBool= "true";
+        },
+        ReChangeBool(state)
+        {
+          state.UpdateBool="false";
+        }
+      },
+      actions:{},
+      modules:{},
+
+})
 
 const $=require('jquery')
 window.$=$;
 var app =createApp(App);
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.config.globalProperties.axios=axios
-app.use(Router).use(VueSweetalert2).use(VueLoaders).mount('#app')
+app.use(Router).use(VueSweetalert2).use(VueLoaders).use(store).mount('#app')
 
 
 

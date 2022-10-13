@@ -1726,15 +1726,17 @@
  
 
 
-    {{ msg }}
       
 
 
 
 
   </div>
+<!-- <input type="button" @click="addTestNumber(4)"  value="測試vuex">
+<input type="button" @click="VuexCommitTest"  value="測試vuex2"> -->
 
 
+<!-- <h1>{{ VuexTest }}</h1> -->
 
 
   
@@ -1747,7 +1749,8 @@
 import axios from "axios";
 import "jquery";
 import $ from "jquery";
-// import HelloWorld from './HelloWorld.vue'
+import { mapMutations } from 'vuex';
+
 
 
 export default {
@@ -1755,11 +1758,11 @@ export default {
   // props:["msgs"],
   props: {
     msg: String,
-  
-
+    msg2:String,
   },
   data() {
     return {
+      VuexTest:"",
       ND: "",
       Loadindbind: false,//資料傳送讀取動畫
       NLoadindbind: false,//隱藏動畫
@@ -1849,6 +1852,7 @@ export default {
     };
   },
   created() {
+    // let store = useStore()
     let NDate = new Date();
     const DateString =
       NDate.getFullYear() + "/" + NDate.getMonth() + "/" + NDate.getDate();
@@ -1872,6 +1876,11 @@ export default {
     $(".DrugDetailText").hide(); //表單隱藏隱藏
     $("#DrugEventPainDFind").attr("disabled", "disabled"); //默認的發現異常日期
     $("#DrugEventPainEnd").attr("disabled", "disabled"); //默認的結束日期
+  },
+  computed:
+  {
+    ...mapMutations[( 'addTestNumber')],
+
   },
   methods: {
     alertTrue: function () {
@@ -2216,6 +2225,7 @@ export default {
 
     PostForm: function () {
       var BoleanCheck= this.PostApi();
+      this.ChangeBool();
       if(BoleanCheck!=true) 
       {
          console.log("資料不齊全");
@@ -2302,6 +2312,33 @@ export default {
           this.DrugEventDeal.DrugEventDealOther
         );
       }
+
+      let timerInterval
+      this.$swal.fire({
+  title: '稍等.......',
+  html: '資料傳輸中.',
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: () => {
+    this.$swal.showLoading()
+    const b = this.$swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = this.$swal.getTimerLeft()
+    }, 100)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === this.$swal.DismissReason.timer) {
+    Object.assign(this.$data, this.$options.data());
+    this.$swal.fire("資料傳輸完成");
+    console.log('I was closed by the timer')
+  }
+})
+
+
    var JsonDrugEventData=JSON.stringify(this.DrugEventData)
    console.log(JsonDrugEventData);
    var JsonDrugEventRession=JSON.stringify(this.DrugEventRession);
@@ -2337,7 +2374,6 @@ export default {
             alert(error);
           });
 
-          this.$emit('UpdateMainTable');
 
         }
 
@@ -2413,7 +2449,17 @@ export default {
           });
       }
     },
+    
 
+    ...mapMutations([
+    'ChangeBool',
+    'ReChangeBool',
+    ]),
+    // VuexCommitTest:function ()
+    // {
+      
+    //   return this.store.commmit('addTestNumber');
+    // }
   },
 };
 </script>

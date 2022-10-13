@@ -57,11 +57,13 @@
 <script>
 import $ from "jquery"
 import HelloWorld from './components/HelloWorld.vue'
+import FStation from './components/FStation.vue'
 
 export default {
   name: 'Apps',
   components: {
     HelloWorld,
+    FStation,
 
   },
   data() {
