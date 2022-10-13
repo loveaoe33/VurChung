@@ -1519,8 +1519,8 @@ a {
 
 .hello {
   width: 100%;
-  background-image: url("C:/Users/loveaoe33/Desktop/vue/newvue/src/assets/img/background.jpg")
-    center center no-repeat;
+  /* background-image: url("C:/Users/loveaoe33/Desktop/vue/newvue/src/assets/img/background.jpg")
+    center center no-repeat; */
   position: flex;
   background-size: 100% 100%;
 }

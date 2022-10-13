@@ -18,7 +18,7 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "popper.js": "^1.16.1",
-    "vue": "^3.0.0",
+    "vue": "^3.2.40",
     "vue-axios": "^3.4.0",
     "vue-loaders": "^4.1.4",
     "vue-router": "^4.0.12",
@@ -51,8 +51,7 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {
-    }
+    "rules": {}
   },
   "browserslist": [
     "> 1%",
