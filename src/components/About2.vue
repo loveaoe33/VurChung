@@ -1,3 +1,3 @@
 <template>
-  <h1>about Pagessssss</h1>
+  <h1>about Pagessssssss</h1>
 </template>
