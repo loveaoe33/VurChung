@@ -1178,7 +1178,7 @@ export default {
           this.MDrugFrequency = response.data.DrugFrequency;
           this.MDrugNumber = response.data.DrugNumber;
           this.MEmployeeID = response.data.EmployeeID;
-          this.EmployeeName = response.data.EmployeeName;
+          this.MEmployeeName = response.data.EmployeeName;
           this.MInsertDate = response.data.InsertDate;
           this.MErrorEvent = response.data.ErrorEvent;
           this.MEvenForPa = response.data.EvenForPa;
