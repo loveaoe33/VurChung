@@ -1595,16 +1595,9 @@
                   style="width: 250px"
                   v-model="EmpResAccount"
                   class="form-control EmployeeAccount"
-                  v-if="ACHCHECK"
+                  :disabled="ACHCHECK != 'true'"
                 />
-                <input
-                  type="text"
-                  style="width: 250px"
-                  v-model="EmpResAccount"
-                  v-else
-                  disabled="disabled"
-                  class="form-control EmployeeAccount"
-                />
+
                 <i class="fa-solid fa-user"></i> |<button
                   type="button"
                   class="btn btn-link AcCheck"
@@ -1764,11 +1757,12 @@ export default {
     return {
       VuexTest:"",
       ND: "",
+      disabledTag: false,//確認帳號欄位disabled
       Loadindbind: false,//資料傳送讀取動畫
       NLoadindbind: false,//隱藏動畫
       DrugFalse: false, //給藥錯誤
       CheckBool: false, //確認有無申請過
-      ACHCHECK: true, //帳號檢查有無重複
+      ACHCHECK: 'true', //帳號檢查有無重複
       DrugEvent: false, //藥物異常
       FallEventE: false, //跌倒異常
       MixEvent: false, //混和異常
@@ -2159,9 +2153,10 @@ export default {
               this.$swal.fire("編號重複囉!");
             } else if (response.data == "編號可使用") {
               this.$swal.fire("此帳號可以使用");
-
-              this.ACHCHECK = false;
+              this.disabledTag=true;
+              this.ACHCHECK = 'false';
               this.CheckBool = true;
+              console.log(this.disabledTag);
             }
             console.log(response.data);
             console.log(this.ACHCHECK);
@@ -2412,7 +2407,7 @@ export default {
       }
     },
     UnLockAc: function () {
-      this.ACHCHECK = true;
+      this.ACHCHECK = "true";
       this.CheckBool = false;
       this.EmpResAccount = "";
     },
@@ -2441,7 +2436,7 @@ export default {
             this.ResEmp = "";
             this.ResEmpOri = "";
             this.ResTexarea = "";
-            this.ACHCHECK = true;
+            this.ACHCHECK = "true";
             this.$swal.fire("新增成功!");
           })
           .catch(function (error) {

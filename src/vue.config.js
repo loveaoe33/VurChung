@@ -1,4 +1,8 @@
 const webpack = require('webpack')
+const WebpackObfuscator = require('webpack-obfuscator');
+
+
+
 module.exports = {
     //引入jquery
     chainWebpack: config => {
@@ -8,8 +12,23 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
         }])
-    }
+    },
+
 }
+
+
+
+// configureWebpack(config) {
+//     if (process.env.NODE_ENV === 'production') {
+//     config.plugins.push(new WebpackObfuscator({
+//     rotateStringArray: true
+//     }, []))
+//     }
+// },
+
+
+
+
 
 // module.exports = {
 //     devServer: {
