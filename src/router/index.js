@@ -4,6 +4,8 @@ import About from "@/components/About2.vue";
 import HelloWorld from "@/components/HelloWorld.vue"
 import FStation from "@/components/FStation.vue";
 import Empty from "@/components/Empty.vue";
+import Sensory2 from "@/components/Sensory2.vue"
+import test from "@/components/test.vue"
 
 
 
@@ -29,18 +31,22 @@ const routes = [
       name: "HelloWorld",
       component: HelloWorld,
     },
-    {
-      path: "/HelloWorld",
-      name: "HelloWorld",
-      component: HelloWorld,
-    },
 
     {
       path: "/Empty",
       name: "Empty",
       component: Empty,
     },
-    
+    {
+      path: "/Sensory",
+      name: "Sensory2",
+      component: Sensory2,
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: test,
+    }
   ];
   
   const router = createRouter({

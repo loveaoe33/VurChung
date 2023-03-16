@@ -1,0 +1,457 @@
+<template>
+<div class="ImagePush">
+  <!-- 轮播 -->
+<div id="demo" class="carousel slide carouselArea" data-bs-ride="carousel">
+ 
+ <!-- 指示符 -->
+<div class="carousel-indicators">
+  <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+  <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+  <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+</div>
+
+<!-- 轮播图片 -->
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <img  src="./jp3.jpg" class="d-block" >
+  </div>
+  <div class="carousel-item">
+    <img  src="./jp4.jpg" class="d-block" >
+  </div>
+  <div class="carousel-item">
+    <img  src="https://static.runoob.com/images/mix/img_mountains_wide.jpg" class="d-block" style="width:100%">
+  </div>
+</div>
+
+<!-- 左右切换按钮 -->
+<button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon"></span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+  <span class="carousel-control-next-icon"></span>
+</button>
+</div>
+  </div>
+
+
+<div class="TotalContext">
+  
+  <nav id ="siderbar">
+    <p>疫情發布站</p>
+    <ul>
+  
+    <li class="liTitle">國/內外疫情 </li>
+<div class="form-check">
+  <input class="form-check-input inside" type="radio" value="國內疫情" v-model="SensoryObject.ContextKey" name="flexRadioDefault" id="flexRadioDefault1">
+  <label class="form-check-label" for="flexRadioDefault1">
+    國內疫情
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input outside" type="radio" value="國外疫情" name="flexRadioDefault" v-model="SensoryObject.ContextKey" id="flexRadioDefault2" >
+  <label class="form-check-label" for="flexRadioDefault2">
+    國外疫情
+  </label>
+</div>
+
+
+
+<div class="ContextextArea">
+    <li class="liTitle">標頭  <i class="fa-sharp fa-solid fa-key IconImage"></i></li>
+    <input type="textbox" class="form-control Contextext"  v-model="SensoryObject.ContextTitle" id="FormTitle"  placeholder="Enter Title"><br>
+    <!-- <small id="emailHelp" class="form-text text-muted">文章標題請輸入</small><br> -->
+    <li class="liTitle">內容 <i class="fa-sharp fa-solid fa-comments IconImage"></i></li>
+    <textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="SensoryObject.Context" rows="15"></textarea><br>
+    <li class="liTitle">日期 <i class="fa-sharp fa-solid fa-trademark IconImage"></i></li>
+    <input type="textbox" class="form-control Contextext" v-model="SensoryObject.ContextDate" id="FormDate" ><br>
+    <li class="liTitle">發布者 <i class="fa-sharp fa-solid fa-user IconImage"></i></li>
+    <select class="form-select EmpSelect"  v-model="SensoryObject.ContextEmp" aria-label="Default select example">
+  <option selected>Open this select menu</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+</div>
+    </ul>
+    <button id="PostContext" @click="POSTSensory"  class="btn btn-danger PostContext">新增文章</button>
+  </nav>
+     <div class="ArticleContext">
+      <button id="collapse-btn" class="collapse-btn" @click="SlibarFunction">
+      <i class="fa-sharp fa-solid fa-pen"></i>
+    </button>
+    <p>最新國內外疫情專欄</p>
+      <div class="insideArea"> 
+ 
+        <table id="SensoryContext" class="SensoryContext">
+
+          <thead>
+            <tr>
+                <th>分類</th>
+                <th>抬頭</th>
+                <th>日期</th>
+                <th>發布者</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        
+
+        <tr v-for="(Sensory,index) in SensoryList" :key="index">
+                <td>{{Sensory.SensorKey }}</td>
+                <td>{{ Sensory.Title}}</td>
+                <td>{{ Sensory.Context}}</td>
+                <td>{{ Sensory.Date}}</td>
+                <td>{{ Sensory.Emp}}</td>
+
+                <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-primary ViewButton" value="查看"></td>
+     
+        </tr>
+
+
+        <ul v-for="(user,index) in SensoryList" :key="index">
+        <li>ID為:{{ user.id }},姓名為:{{ user.name}}</li>
+        </ul>
+        {{ SensoryList }}
+        </table>
+
+        <table id="example" class="table">
+        <thead>
+            <tr>
+                <th>分類</th>
+                <th>抬頭</th>
+                <th>日期</th>
+                <th>發布者</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Brenden Wagner</td>
+                <td>Software Engineer</td>
+                <td>San Francisco</td>
+                <td>28</td>
+                <td><input type="button" class="btn btn-primary ViewButton" value="查看"></td>
+     
+            </tr>
+            <tr>
+                <td>Fiona Green</td>
+                <td>Chief Operating Officer (COO)</td>
+                <td>San Francisco</td>
+                <td>48</td>
+                <td><input type="button" class="btn btn-primary ViewButton" value="查看"></td>
+                
+             
+            </tr>
+        </tbody>
+    </table>
+  </div>
+
+
+
+       <div class="outsideArea">{{ Messagetest }}</div>
+    </div>
+
+
+     <input type="button" class="btn btn-primary ViewButton" @click="PrintAllSensort" value="測試查看">
+  </div>
+
+
+
+
+
+
+  </template>
+  
+  <script>
+import { Carousel, Slide } from 'vue-carousel';
+import { mapState } from 'vuex';
+import axios from 'axios';
+// import { computed } from 'vue';
+// import { mapMutations, mapState } from 'vuex';
+
+
+  export default {
+    name: 'Sensory2',
+    components: {
+ Carousel,
+        Slide
+    },
+    data() {
+          return {
+          SensoryObject:{
+          ContextKey:"",
+          ContextTitle:"",
+          Context:"",
+          ContextDate:"",
+          ContextEmp:"",
+          }
+
+          };
+      },
+  
+  
+      methods:
+    {
+      SlibarFunction:function(){
+      const Dom=document.getElementById("siderbar");
+      Dom.classList.toggle("active");
+      const DomBtn=document.getElementById("collapse-btn")
+      DomBtn.classList.toggle("fa-solid fa-bars");
+      
+    },
+    PrintAllSensort:function(){
+      this.$store.dispatch("PrinSensory","");
+    },
+    InsertSensory:function(){
+      for(let [key,value] of Object.entries(this.SensoryObject)){
+          if(value==""){
+            switch(key){
+              case "ContextKey":
+              this.$swal.fire("新增失敗-分類不可為空");
+              break;
+              case "ContextTitle":
+              this.$swal.fire("新增失敗-標頭不可為空");
+              break;
+              case "Context":
+              this.$swal.fire("新增失敗-內容不可為空");
+              break;
+              case "ContextDate":
+              this.$swal.fire("新增失敗-日期不可為空");
+              break;
+              case "ContextEmp":
+              this.$swal.fire("新增失敗-輸入人不可為空");
+              break;
+            }
+            return false;
+          }
+        }
+        return true;
+
+    },
+
+    POSTSensory:function(){
+      const url="http://192.168.2.147:8080/SelectEmpAccount/Sensory/PostData";
+      let InserCheck=this.InsertSensory();
+       if(InserCheck==true)
+       {
+        this.$swal.fire("新增成功");
+        Object.assign(this.$data, this.$options.data());
+        console.log(this.SensoryObject);
+        axios
+          .post(url, {
+            SensryPOST: this.SensoryObject, // 員工帳號參數
+          })
+           
+          .then((response) => {
+            this.$swal.fire(response+"API新增成功");
+
+          })
+          .catch(function (error) {
+            this.$swal.fire(error+"API新增失敗");
+          });
+
+
+       }
+    },
+    
+    test:function(){ 
+        alert("123");
+      },
+      test2(){
+       return "123";
+
+      }
+  },
+  computed:
+  {
+    /*mapState可以簡化code*/
+    ...mapState({
+      Messagetest:state=>state.msg,
+      UserTest:state=>state.userList,
+      SensoryList:state=>state.SensoryList,
+      OneSensoryList:state=>state.OneSensoryList,
+    })
+
+    /*更縮減寫法
+    ...mapState(['msg','userList'])
+    */
+
+    // Messagetest:function(){
+    //   return this.$store.state.msg;
+    // },
+
+    // UserTest:function(){
+    //   return this.$store.state.userList;
+    // }
+  }
+}
+  
+  
+  
+  </script>
+  
+  
+  <style>
+
+  .TotalContext{
+    display: flex;
+  }
+  .carouselArea img{
+    width: 100%;
+    height: 500px;
+  }
+  #siderbar{
+    position: relative;
+
+    background-color: rgb(30, 31, 66);
+    width: 500px;
+    height: 2000px;
+    color: white;
+    transition: 0.4s;
+  }
+
+  #siderbar p{
+    text-align: center;
+    font-size:30px;
+    font-style: italic;
+  }
+  #siderbar ul li a{
+   display: block;
+  }
+  #siderbar.active {
+    margin-left:-500px;
+  }
+
+  .liTitle{
+    font-size:20px;
+    font-style:normal;
+
+  }
+
+  .ContextextArea{
+    margin: 10px 50px 20px 0;
+  }
+  
+ .IconImage{
+  float: left;
+ }
+
+
+  .collapse-btn{
+    padding: 15px;
+    position:absolute;
+    background-color:  rgb(30, 31, 66);
+    border: none;
+    color: white;
+    width:50px;
+    top: 0%;
+    left: 0px;
+
+  }
+
+
+  
+  .collapse-btn:hover{
+    background-color: rgb(83, 83, 99);
+    transition: 0.5s;
+  }
+
+  .PostContext{
+    text-align: center;
+    position: absolute;
+    top: 45%;
+    left: 65px;
+    width: 60%;
+    font-size:30px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+  }
+
+  .PostContext:hover{
+   width: 30%;
+   left: 125px;
+   transition: 0.5s;
+   font-size:20px;
+   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   border-radius: 5px;
+  
+
+
+  }
+
+  .IconImage{
+ 
+    left: 100%;
+  }
+
+.ArticleContext{
+  position: relative;
+  width: 100%;
+  height: 2000px;
+  color: rgb(213, 216, 40);
+   
+
+}
+ .ArticleContext p{
+  
+  text-align: center;
+  font-size: 60px;
+  font-style: oblique;
+ }
+
+ .insideArea{
+  
+  margin: 0px 10px 20px 20px;
+  display: inline;
+  width: 100%;
+  opacity: 1;
+  transition: 0.5s;
+  font-size: 30px;
+
+
+ }
+
+ /* .insideArea:hover{
+  opacity: 0;
+  transition: 0.5s;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+ } */
+
+ .outsideArea{
+  display: inline;
+  position:relative;
+  width: 100%;
+  background-color: rgb(44, 54, 51);
+ }
+
+
+  .insideArea{
+    /* background-color:black; */
+    
+  }
+
+
+  
+
+@media(max-width: 600px){
+  #siderbar {
+    margin-left:-500px;
+  }
+
+  #siderbar.active {
+    margin-left:0px;
+  }
+
+  .ArticleContext p{
+  text-align: center;
+  font-size: 30px;
+  font-style: oblique;
+ }
+}
+
+
+
+
+
+  </style>
+  

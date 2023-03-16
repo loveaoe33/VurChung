@@ -64,6 +64,9 @@
         </tr>
       </tfoot>
     </table>
+    <FStation msg="555"/>
+    
+
     <button
       type="button "
       id="ShowButton"
@@ -979,7 +982,7 @@
  <router-link :to="{ name: 'Home' }">Home</router-link> |
 <router-link :to="{ name: 'About' }">About</router-link>  |
 <router-link :to="{ name: '3FStation'}">3FStation</router-link>  -->
-  <router-view />
+<Sensory2/>
 </template>
 
 <script>
@@ -987,6 +990,7 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 import FStation from './FStation.vue'
+import Sensory2 from "./Sensory2.vue";
 import { mapMutations, mapState } from 'vuex';
 
 
@@ -995,7 +999,7 @@ import { mapMutations, mapState } from 'vuex';
 // import $ from "jquery";
 export default {
   name: "HelloWorld",
-  component:{FStation},
+  component:{FStation,Sensory2},
   props: {
     msg: String,
   },

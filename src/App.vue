@@ -1,5 +1,7 @@
 <template>
+  
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"> <img src="./assets/logo.png" alt="" width="100" height="88" class="d-inline-block align-text-top"></a>
@@ -12,9 +14,9 @@
         </li>
         <li class="nav-item">
           
-          <router-link :to="{ name: '3FStation'}">異常事件通報</router-link> 
-       
-
+          <router-link :to="{ name: 'HelloWorld'}">異常事件通報</router-link>&emsp
+          <router-link :to="{name: 'Sensory2'}">感控公告專區</router-link> &emsp
+          <router-link :to="{name: 'test'}">測試專區</router-link> 
 
         </li>
       </ul>
@@ -26,15 +28,15 @@
   </div>
 </nav>
 
+<router-view />
+<!-- <FStation/> -->
 
 
 
 
 
 
-
-
-  <HelloWorld msg= '555556555' />
+  
 
 
  <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -56,14 +58,17 @@
 
 <script>
 import $ from "jquery"
-import HelloWorld from './components/HelloWorld.vue'
-// import FStation from './components/FStation.vue'
+import Sensory2 from "./components/Sensory2.vue";
+import HelloWorld from "./components/HelloWorld.vue";
+
+import FStation from "./components/FStation.vue";
 
 export default {
   name: 'Apps',
   components: {
+    Sensory2,
     HelloWorld,
-    // FStation,
+    FStation,
   },
   data() {
         return {

@@ -1,6 +1,5 @@
 <template>
 
-
   <div class="AllBodyContext">
     <button
       type="button"
@@ -1734,7 +1733,7 @@
 
   
 
-</template>>
+</template>
 
 
 
@@ -1743,12 +1742,12 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 import { mapMutations } from 'vuex';
-
-
+// import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
   name: "FStation",
   // props:["msgs"],
+  components:{},
   props: {
     msg: String,
     msg2:String,
