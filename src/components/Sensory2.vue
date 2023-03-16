@@ -229,7 +229,7 @@ import axios from 'axios';
     },
 
     POSTSensory:function(){
-      const url="http://192.168.2.147:8080/SelectEmpAccount/Sensory/PostData";
+      const url="http://192.168.2.147:8080/Sensory/PostData";
       let InserCheck=this.InsertSensory();
        if(InserCheck==true)
        {
