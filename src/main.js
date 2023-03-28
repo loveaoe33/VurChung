@@ -34,7 +34,7 @@ const store = createStore({
           UpdateBool: "false",
           msg: "vuex測試",
           userList:[{id:"1",name:"leo"},{id:"2",name:"tina"}],
-          SensoryList:[{}],
+          SensoryList:[],
           OneSensory:{},
         }
       },
@@ -64,7 +64,6 @@ const store = createStore({
 
       },
       actions:{
-
       
       //所有文章
       PrinSensory({commit}){
@@ -84,19 +83,16 @@ const store = createStore({
         //   });
 
         {
-          const url = "http://192.168.2.147:8080/PintAllSensory";
+          const url = "http://localhost:8080/Sensory/PrintAllSensory";
           axios
-            .get(url, {
-              SensoryID: this.EmpResAccount, // 員工帳號參數
+            .post(url,{
             })
     
             .then(function (response) {
-              alert(response.data);
-              console.log(response);
-              commit("AllSensory",response);
+              console.log(response.data);
+              commit("AllSensory",response.data);
             })
             .catch(function (error) {
-              this.EmpResAccount = "";
               alert(error);
               alert("帶入失敗");
               
@@ -108,7 +104,7 @@ const store = createStore({
       PrinSensoryForId({commit},SensoryID){
         if(SensoryID==""||SensoryID==null)
         {
-        const url = "http://192.168.2.147:8080/PintAllSensory";
+        const url = "http://localhost:8080/Sensory/QuerySensoryOne";
           axios
             .get(url, {
               SensoryID: SensoryID, // 文章帳號參數
@@ -117,7 +113,7 @@ const store = createStore({
             .then(function (response) {
               alert(response.data);
               console.log(response);
-              commit("AllSensory",response);
+              commit("OneSensorty",response);
             })
             .catch(function (error) {
               this.EmpResAccount = "";

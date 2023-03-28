@@ -63,13 +63,12 @@
     <li class="liTitle">內容 <i class="fa-sharp fa-solid fa-comments IconImage"></i></li>
     <textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="SensoryObject.Context" rows="15"></textarea><br>
     <li class="liTitle">日期 <i class="fa-sharp fa-solid fa-trademark IconImage"></i></li>
-    <input type="textbox" class="form-control Contextext" v-model="SensoryObject.ContextDate" id="FormDate" ><br>
+    <input type="textbox" class="form-control Contextext" v-model="SensoryObject.ContextDate" readonly id="FormDate" ><br>
     <li class="liTitle">發布者 <i class="fa-sharp fa-solid fa-user IconImage"></i></li>
     <select class="form-select EmpSelect"  v-model="SensoryObject.ContextEmp" aria-label="Default select example">
-  <option selected>Open this select menu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
+  <option selected value="楊珉珊">感控：楊珉珊</option>
+  <option  value="黃立帆">資訊：黃立帆</option>
+
 </select>
 </div>
     </ul>
@@ -82,7 +81,7 @@
     <p>最新國內外疫情專欄</p>
       <div class="insideArea"> 
  
-        <table id="SensoryContext" class="SensoryContext">
+        <table id="SensoryContext" class="table">
 
           <thead>
             <tr>
@@ -90,68 +89,35 @@
                 <th>抬頭</th>
                 <th>日期</th>
                 <th>發布者</th>
-                <th>操作</th>
+                <th>查看</th>
+                <th>刪除</th>
+
             </tr>
         </thead>
         
 
-        <tr v-for="(Sensory,index) in SensoryList" :key="index">
-                <td>{{Sensory.SensorKey }}</td>
-                <td>{{ Sensory.Title}}</td>
-                <td>{{ Sensory.Context}}</td>
-                <td>{{ Sensory.Date}}</td>
-                <td>{{ Sensory.Emp}}</td>
-
-                <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-primary ViewButton" value="查看"></td>
-     
-        </tr>
-
-
-        <ul v-for="(user,index) in SensoryList" :key="index">
-        <li>ID為:{{ user.id }},姓名為:{{ user.name}}</li>
-        </ul>
-        {{ SensoryList }}
-        </table>
-
-        <table id="example" class="table">
-        <thead>
-            <tr>
-                <th>分類</th>
-                <th>抬頭</th>
-                <th>日期</th>
-                <th>發布者</th>
-                <th>操作</th>
-            </tr>
-        </thead>
         <tbody>
-            <tr>
-                <td>Brenden Wagner</td>
-                <td>Software Engineer</td>
-                <td>San Francisco</td>
-                <td>28</td>
-                <td><input type="button" class="btn btn-primary ViewButton" value="查看"></td>
-     
-            </tr>
-            <tr>
-                <td>Fiona Green</td>
-                <td>Chief Operating Officer (COO)</td>
-                <td>San Francisco</td>
-                <td>48</td>
-                <td><input type="button" class="btn btn-primary ViewButton" value="查看"></td>
-                
-             
-            </tr>
-        </tbody>
-    </table>
+        <tr v-for="(Sensory,index) in SensoryList" :key="index">
+
+        <td>{{ Sensory.sensorKey }}</td>
+
+        <td>{{ Sensory.sensorTitle }}</td>
+
+        <td>{{ Sensory.sensorDate }}</td>
+
+        <td>{{ Sensory.sensorEmp }}</td>
+        <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-primary ViewButton" value="查看"></td>
+        <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-danger ViewButton" value="刪除"></td>
+
+        </tr>
+         </tbody>
+        </table>
   </div>
 
 
 
        <div class="outsideArea">{{ Messagetest }}</div>
     </div>
-
-
-     <input type="button" class="btn btn-primary ViewButton" @click="PrintAllSensort" value="測試查看">
   </div>
 
 
@@ -187,7 +153,14 @@ import axios from 'axios';
 
           };
       },
-  
+  created(){
+    this.PrintAllSensort();  
+    const DateObject=new Date();
+    let TDay=DateObject.getDate();
+    let TMount= DateObject.getMonth();
+    let TYear=DateObject.getFullYear();
+    this.SensoryObject.ContextDate=`${TYear}-${TMount}-${TDay}`
+  },
   
       methods:
     {
@@ -229,24 +202,25 @@ import axios from 'axios';
     },
 
     POSTSensory:function(){
-      const url="http://192.168.2.147:8080/Sensory/PostData";
+      const url="http://localhost:8080/Sensory/PostData";
       let InserCheck=this.InsertSensory();
        if(InserCheck==true)
        {
-        this.$swal.fire("新增成功");
-        Object.assign(this.$data, this.$options.data());
         console.log(this.SensoryObject);
         axios
           .post(url, {
-            SensryPOST: this.SensoryObject, // 員工帳號參數
+            SensryPOST: this.SensoryObject, 
           })
            
           .then((response) => {
-            this.$swal.fire(response+"API新增成功");
+            Object.assign(this.$data, this.$options.data());
+            console.log(response);
+            this.$swal.fire("文章新增成功");
+            this.PrintAllSensort();
 
           })
           .catch(function (error) {
-            this.$swal.fire(error+"API新增失敗");
+            this.$swal.fire(error+"文章新增失敗");
           });
 
 
