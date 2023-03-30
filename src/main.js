@@ -60,7 +60,16 @@ const store = createStore({
         OneSensorty(state,Sensory){
           state.OneSensory=Sensory;
 
-        }
+        },
+        AreaSensort(state,Sensory){
+        state.SensoryList=Sensory;
+        },
+        DeleSensory(state,SensoryIndex)
+         {
+            console.log(SensoryIndex)
+             state.SensoryList.splice(SensoryIndex,1)
+         }
+
 
       },
       actions:{
@@ -99,7 +108,50 @@ const store = createStore({
             });
         }
       },
+      PrinSensoryArea({commit},Area){
+        const url = "http://localhost:8080/Sensory/QueryArea";
+        axios
+          .get(url, {
+            SensoryArea: Area, // 文章分類
+          })
+  
+          .then(function (response) {
+            alert(response.data);
+            console.log(response);
+            commit("AreaSensorty",response);
+          })
+          .catch(function (error) {
+            this.EmpResAccount = "";
+            alert(error);
+     
+            
+          });
 
+      },
+      PrinDelete({commit},SensoryIndex,SensoryID){
+        console.log(commit,SensoryIndex,SensoryID);
+      if(SensoryIndex && SensoryID!="")
+      {
+        const url = "http://localhost:8080/Sensory/DeleteSesory";
+        axios
+          .get(url, {
+            SensoryID: SensoryID, // 文章帳號參數
+          })
+  
+          .then(function (response) {
+            console.log(response);
+            commit("DeleSensory",SensoryIndex);
+          })
+          .catch(function (error) {
+            this.EmpResAccount = "";
+            alert(error);
+            
+          });
+
+      }
+      
+
+      },
       //單一文章呼叫
       PrinSensoryForId({commit},SensoryID){
         if(SensoryID==""||SensoryID==null)
@@ -118,11 +170,9 @@ const store = createStore({
             .catch(function (error) {
               this.EmpResAccount = "";
               alert(error);
-              alert("帶入失敗");
               
             });
-        
-      }
+        }
       }
 
       },

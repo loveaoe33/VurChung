@@ -78,9 +78,14 @@
       <button id="collapse-btn" class="collapse-btn" @click="SlibarFunction">
       <i class="fa-sharp fa-solid fa-pen"></i>
     </button>
-    <p>最新國內外疫情專欄</p>
+    <p>{{ SensryTitle }}</p>
+
       <div class="insideArea"> 
- 
+        <select class="form-select form-select-sm SelectItem" @change="SelectOnChange($event.target.value)" aria-label=".form-select-sm example">
+  <option value="所有疫情" selected>所有疫情</option>
+  <option value="國內疫情">國內疫情</option>
+  <option value="國外疫情">國外疫情</option>
+</select>
         <table id="SensoryContext" class="table">
 
           <thead>
@@ -106,8 +111,8 @@
         <td>{{ Sensory.sensorDate }}</td>
 
         <td>{{ Sensory.sensorEmp }}</td>
-        <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-primary ViewButton" value="查看"></td>
-        <td><input type="button"  id="{{ Sensory.id }}" @click="POSTSensory" class="btn btn-danger ViewButton" value="刪除"></td>
+        <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory" class="btn btn-primary ViewButton" value="查看"></td>
+        <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
 
         </tr>
          </tbody>
@@ -143,6 +148,7 @@ import axios from 'axios';
     },
     data() {
           return {
+          SensryTitle:"國內外疫情專區",
           SensoryObject:{
           ContextKey:"",
           ContextTitle:"",
@@ -200,6 +206,15 @@ import axios from 'axios';
         return true;
 
     },
+    SelectOnChange:function(Area){
+     alert(Area)
+  },
+    DeleSensory:function(SesoryIndex,SensoryID){
+       console.log(SesoryIndex);
+    // alert(SensoryIndex+SensoryID);
+       this.$store.dispatch("PrinDelete",SesoryIndex,SensoryID);
+  },
+
 
     POSTSensory:function(){
       const url="http://localhost:8080/Sensory/PostData";
@@ -235,6 +250,7 @@ import axios from 'axios';
 
       }
   },
+  
   computed:
   {
     /*mapState可以簡化code*/
@@ -381,6 +397,18 @@ import axios from 'axios';
   transition: 0.5s;
   font-size: 30px;
 
+
+ }
+
+ .insideArea .SelectItem
+ {
+  top:0%;
+  width: 10%;
+  font-size: 10px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: rgb(220, 220, 226);
+  border-block-color:rgb(94, 133, 192);
+  margin: 0px 10px 20px 20px;
 
  }
 
