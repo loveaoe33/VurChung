@@ -81,15 +81,32 @@
     <p>{{ SensryTitle }}</p>
 
       <div class="insideArea"> 
-        <select class="form-select form-select-sm SelectItem" @change="SelectOnChange($event.target.value)" aria-label=".form-select-sm example">
+  <select class="form-select form-select-sm SelectItem" @change="SelectOnChange($event.target.value)" aria-label=".form-select-sm example">
   <option value="所有疫情" selected>所有疫情</option>
   <option value="國內疫情">國內疫情</option>
   <option value="國外疫情">國外疫情</option>
 </select>
+
+
+<table id="SensoryView"  class="table" v-bind:class="[ViewBool?ActiveTable:HideTable]">
+          <thead>
+        <th class="ViewTitle" style="color: red;"><button @click="PrePage">上一頁</button>疫情分類:{{ OneSensoryList.sensorKey}}-日期{{ OneSensoryList.sensorDate}}-抬頭:{{ OneSensoryList.sensorTitle}}</th>
+      </thead>
+      <tbody>
+        <tr>
+         <td><textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="OneSensoryList.sensorContext" rows="15" ></textarea></td>
+        </tr>
+      </tbody>
+      <tfood>
+        發布人:{{ OneSensoryList.sensorEmp }}
+      </tfood>
+
+        </table>
+        
         <table id="SensoryContext" class="table">
 
           <thead>
-            <tr>
+            <tr> 
                 <th>分類</th>
                 <th>抬頭</th>
                 <th>日期</th>
@@ -111,7 +128,7 @@
         <td>{{ Sensory.sensorDate }}</td>
 
         <td>{{ Sensory.sensorEmp }}</td>
-        <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory" class="btn btn-primary ViewButton" value="查看"></td>
+        <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory(Sensory.id)" class="btn btn-primary ViewButton" value="查看"></td>
         <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
 
         </tr>
@@ -120,7 +137,7 @@
   </div>
 
 
-
+  {{ ViewBool }}
        <div class="outsideArea">{{ Messagetest }}</div>
     </div>
   </div>
@@ -148,6 +165,7 @@ import axios from 'axios';
     },
     data() {
           return {
+          ViewBool:true,
           SensryTitle:"國內外疫情專區",
           SensoryObject:{
           ContextKey:"",
@@ -207,12 +225,28 @@ import axios from 'axios';
 
     },
     SelectOnChange:function(Area){
-     alert(Area)
+     if(Area=="國外疫情"){
+     this.SensryTitle="國外疫情"
+     }else if(Area=="國內疫情"){
+      this.SensryTitle="國內疫情"
+     }else
+     {
+      this.SensryTitle="國內外疫情"
+     }
+     this.$store.dispatch("PrinSensoryArea",Area)
   },
-    DeleSensory:function(SesoryIndex,SensoryID){
-       console.log(SesoryIndex);
+  ViewSensory:function(SensoryID){
+    this.ViewBool=false;
+this.$store.dispatch("PrinSensoryForId",SensoryID);
+  },
+    DeleSensory:function(SensoryIndex,SensoryID){
+       console.log("id:"+SensoryID);
+       const DipaObject={};
+       DipaObject.SensoryIndex=SensoryIndex;
+       DipaObject.SensoryID=SensoryID;
+       console.log(DipaObject);
     // alert(SensoryIndex+SensoryID);
-       this.$store.dispatch("PrinDelete",SesoryIndex,SensoryID);
+       this.$store.dispatch("PrinDelete",DipaObject);
   },
 
 
@@ -241,6 +275,9 @@ import axios from 'axios';
 
        }
     },
+    PrePage:function(){
+      this.ViewBool=true;
+    },
     
     test:function(){ 
         alert("123");
@@ -258,7 +295,7 @@ import axios from 'axios';
       Messagetest:state=>state.msg,
       UserTest:state=>state.userList,
       SensoryList:state=>state.SensoryList,
-      OneSensoryList:state=>state.OneSensoryList,
+      OneSensoryList:state=>state.OneSensory,
     })
 
     /*更縮減寫法
@@ -452,7 +489,13 @@ import axios from 'axios';
 }
 
 
+.ContextextArea.ActiveTable{
 
+}
+.ContextextArea.HideTble
+{
+ opacity: 0;
+}
 
 
   </style>

@@ -35,7 +35,13 @@ const store = createStore({
           msg: "vuex測試",
           userList:[{id:"1",name:"leo"},{id:"2",name:"tina"}],
           SensoryList:[],
-          OneSensory:{},
+          OneSensory:{
+            sensorTitle:"",
+            sensorDate:"",
+            sensorKey:"",
+            sensorContext:"",
+            sensorEmp:"",
+          },
         }
       },
       
@@ -61,13 +67,14 @@ const store = createStore({
           state.OneSensory=Sensory;
 
         },
-        AreaSensort(state,Sensory){
-        state.SensoryList=Sensory;
+        AreaSensory(state,Sensory){
+            state.SensoryList=Sensory;
         },
         DeleSensory(state,SensoryIndex)
          {
             console.log(SensoryIndex)
              state.SensoryList.splice(SensoryIndex,1)
+
          }
 
 
@@ -108,42 +115,43 @@ const store = createStore({
             });
         }
       },
+      //篩選文章
       PrinSensoryArea({commit},Area){
         const url = "http://localhost:8080/Sensory/QueryArea";
         axios
-          .get(url, {
+          .post(url, {
             SensoryArea: Area, // 文章分類
           })
   
           .then(function (response) {
-            alert(response.data);
             console.log(response);
-            commit("AreaSensorty",response);
+            commit("AreaSensory",response.data);
           })
           .catch(function (error) {
-            this.EmpResAccount = "";
+        
             alert(error);
      
             
           });
 
       },
-      PrinDelete({commit},SensoryIndex,SensoryID){
-        console.log(commit,SensoryIndex,SensoryID);
-      if(SensoryIndex && SensoryID!="")
+      //文章刪除
+      PrinDelete({commit},DipaObject){
+      if(DipaObject.SensoryIndex && DipaObject.SensoryID!="")
       {
         const url = "http://localhost:8080/Sensory/DeleteSesory";
         axios
-          .get(url, {
-            SensoryID: SensoryID, // 文章帳號參數
+          .post(url, {
+            SensoryID: DipaObject.SensoryID, // 文章帳號參數
           })
   
-          .then(function (response) {
+          .then( (response)=> {
             console.log(response);
-            commit("DeleSensory",SensoryIndex);
+            commit("DeleSensory",DipaObject.SensoryIndex);
+          
           })
           .catch(function (error) {
-            this.EmpResAccount = "";
+  
             alert(error);
             
           });
@@ -152,31 +160,31 @@ const store = createStore({
       
 
       },
+      
       //單一文章呼叫
       PrinSensoryForId({commit},SensoryID){
-        if(SensoryID==""||SensoryID==null)
-        {
+    
         const url = "http://localhost:8080/Sensory/QuerySensoryOne";
           axios
-            .get(url, {
+            .post(url, {
               SensoryID: SensoryID, // 文章帳號參數
             })
     
             .then(function (response) {
-              alert(response.data);
               console.log(response);
-              commit("OneSensorty",response);
+              commit("OneSensorty",response.data[0]);
             })
             .catch(function (error) {
               this.EmpResAccount = "";
               alert(error);
               
             });
-        }
+        
       }
-
-      },
+    
+    },
       modules:{},
+      
 
 })
 
