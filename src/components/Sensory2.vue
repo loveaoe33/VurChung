@@ -65,10 +65,9 @@
     <li class="liTitle">日期 <i class="fa-sharp fa-solid fa-trademark IconImage"></i></li>
     <input type="textbox" class="form-control Contextext" v-model="SensoryObject.ContextDate" readonly id="FormDate" ><br>
     <li class="liTitle">發布者 <i class="fa-sharp fa-solid fa-user IconImage"></i></li>
-    <select class="form-select EmpSelect"  v-model="SensoryObject.ContextEmp" aria-label="Default select example">
+<select class="form-select EmpSelect"  v-model="SensoryObject.ContextEmp" aria-label="Default select example">
   <option selected value="楊珉珊">感控：楊珉珊</option>
   <option  value="黃立帆">資訊：黃立帆</option>
-
 </select>
 </div>
     </ul>
@@ -80,7 +79,7 @@
     </button>
     <p>{{ SensryTitle }}</p>
 
-      <div class="insideArea"> 
+<div class="insideArea"> 
   <select class="form-select form-select-sm SelectItem" @change="SelectOnChange($event.target.value)" aria-label=".form-select-sm example">
   <option value="所有疫情" selected>所有疫情</option>
   <option value="國內疫情">國內疫情</option>
@@ -417,7 +416,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   position: relative;
   width: 100%;
   height: 2000px;
-  color: rgb(213, 216, 40);
+  color: rgb(233, 22, 50);
    
 
 }
@@ -444,13 +443,16 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
  {
   top:0%;
   width: 10%;
-  font-size: 10px;
+  font-size: 15px;
+  font-weight: bolder;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: rgb(220, 220, 226);
-  border-block-color:rgb(94, 133, 192);
+  border-block-color:rgb(192, 94, 107);
   margin: 0px 10px 20px 20px;
 
  }
+
+
 
  /* .insideArea:hover{
   opacity: 0;
@@ -475,7 +477,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
 
   
 
-@media(max-width: 600px){
+@media(max-width: 750px){
   #siderbar {
     margin-left:-500px;
   }
@@ -486,9 +488,14 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
 
   .ArticleContext p{
   text-align: center;
-  font-size: 30px;
+  font-size: 25px;
   font-style: oblique;
  }
+ .insideArea .SelectItem
+{
+  width: 40%;
+}
+
 }
  .ViewTitle .PreButton{
   font-size: 20px;
@@ -564,5 +571,6 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
 .ContextextArea textarea{
   resize: none;
 }
+
   </style>
   
