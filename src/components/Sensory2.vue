@@ -87,10 +87,11 @@
   <option value="國外疫情">國外疫情</option>
 </select>
 
-
-<table id="SensoryView"  class="table" v-bind:class="[ViewBool?ActiveTable:HideTable]">
-          <thead>
-        <th class="ViewTitle" style="color: red;"><button @click="PrePage">上一頁</button>疫情分類:{{ OneSensoryList.sensorKey}}-日期{{ OneSensoryList.sensorDate}}-抬頭:{{ OneSensoryList.sensorTitle}}</th>
+<table id="SensoryView"  class="table" v-bind:class="{ActiveTable:ViewBoolT,HideTable:ViewBoolF}">
+      <thead>
+        <th class="ViewTitle" style="color: red;"><button class=" PreButton" @click="PrePage"><i class="fa-solid fa-xmark"></i></button>疫情分類:{{ OneSensoryList.sensorKey}}-日期{{ OneSensoryList.sensorDate}}-抬頭:{{ OneSensoryList.sensorTitle}}</th>
+        <th ></th>
+        
       </thead>
       <tbody>
         <tr>
@@ -98,12 +99,12 @@
         </tr>
       </tbody>
       <tfood>
-        發布人:{{ OneSensoryList.sensorEmp }}
+     發布人:{{ OneSensoryList.sensorEmp }}
       </tfood>
 
         </table>
         
-        <table id="SensoryContext" class="table">
+        <table id="SensoryContext" class="table " v-bind:class="{ActiveSensoryContextTable:ViewBoolF,HideSensoryContextTable:ViewBoolT}">
 
           <thead>
             <tr> 
@@ -137,8 +138,7 @@
   </div>
 
 
-  {{ ViewBool }}
-       <div class="outsideArea">{{ Messagetest }}</div>
+       <div class="outsideArea"></div>
     </div>
   </div>
 
@@ -165,7 +165,8 @@ import axios from 'axios';
     },
     data() {
           return {
-          ViewBool:true,
+          ViewBoolT:true,
+          ViewBoolF:false,
           SensryTitle:"國內外疫情專區",
           SensoryObject:{
           ContextKey:"",
@@ -183,7 +184,7 @@ import axios from 'axios';
     let TDay=DateObject.getDate();
     let TMount= DateObject.getMonth();
     let TYear=DateObject.getFullYear();
-    this.SensoryObject.ContextDate=`${TYear}-${TMount}-${TDay}`
+    this.SensoryObject.ContextDate=`${TYear}-${TMount+1}-${TDay}`
   },
   
       methods:
@@ -236,7 +237,8 @@ import axios from 'axios';
      this.$store.dispatch("PrinSensoryArea",Area)
   },
   ViewSensory:function(SensoryID){
-    this.ViewBool=false;
+    this.ViewBoolT=false;
+    this.ViewBoolF=true;
 this.$store.dispatch("PrinSensoryForId",SensoryID);
   },
     DeleSensory:function(SensoryIndex,SensoryID){
@@ -276,7 +278,8 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
        }
     },
     PrePage:function(){
-      this.ViewBool=true;
+      this.ViewBoolT=true;
+    this.ViewBoolF=false;
     },
     
     test:function(){ 
@@ -487,16 +490,55 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   font-style: oblique;
  }
 }
+ .ViewTitle .PreButton{
+  font-size: 20px;
+  border: 0;
+}
 
+.ArticleContext .ActiveTable{
+  
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 100%;
+  opacity: 0;
+  font-size: 5px;;
+  transition: 1s;
+  z-index: -100;
 
-.ContextextArea.ActiveTable{
 
 }
-.ContextextArea.HideTble
+.ArticleContext .HideTable
 {
- opacity: 0;
+  position: absolute;
+    top: 10%;
+    left: 0px;
+    width: 100%;
+ opacity: 1;
+ transition: 1s;
+
 }
 
+.ArticleContext .ActiveSensoryContextTable{
+  position: absolute;
+    top: 35%;
+    left: 0px;
+    width: 100%;
+ transition: 1s;
 
+}
+
+.ArticleContext .HideSensoryContextTable {
+  position: absolute;
+    top: 10%;
+    left: 0px;
+    width: 100%;
+ transition: 1s;
+}
+
+.HideTable tfood{
+ font-size: 20px;
+ font-family:Arial, Helvetica, sans-serif
+}
   </style>
   
