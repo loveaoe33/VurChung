@@ -89,7 +89,7 @@
 
 <table id="SensoryView"  class="table" v-bind:class="{ActiveTable:ViewBoolT,HideTable:ViewBoolF}">
       <thead>
-        <th class="ViewTitle" style="color: red;"><button class=" PreButton" @click="PrePage"><i class="fa-solid fa-xmark"></i></button>疫情分類:{{ OneSensoryList.sensorKey}}-日期{{ OneSensoryList.sensorDate}}-抬頭:{{ OneSensoryList.sensorTitle}}</th>
+        <th class="ViewTitle" style="color: red;"><button class=" PreButton" @click="PrePage"><i class="fa-solid fa-xmark"></i></button><span>疫情分類:</span>{{ OneSensoryList.sensorKey}}<span>日期:</span>{{ OneSensoryList.sensorDate}}<span>抬頭:</span>{{ OneSensoryList.sensorTitle}}</th>
         <th ></th>
         
       </thead>
@@ -99,7 +99,7 @@
         </tr>
       </tbody>
       <tfood>
-     發布人:{{ OneSensoryList.sensorEmp }}
+      <span>發布人:</span>{{ OneSensoryList.sensorEmp }}
       </tfood>
 
         </table>
@@ -535,10 +535,34 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     width: 100%;
  transition: 1s;
 }
+.HideTable{
+  font-size: 23px;
+}
+.HideTable span{
+  color: black;
+  font-size: 25px;
+}
 
 .HideTable tfood{
- font-size: 20px;
+ color: red;
+ font-size: 23px;
+ font-weight: bolder;
+
  font-family:Arial, Helvetica, sans-serif
+ 
+}
+
+.HideTable tfood span{
+  font-weight: bolder;
+  color: black;
+  font-size:25px;
+}
+
+.HideTable textarea{
+  resize: none;
+}
+.ContextextArea textarea{
+  resize: none;
 }
   </style>
   
