@@ -179,11 +179,7 @@ import axios from 'axios';
       },
   created(){
     this.PrintAllSensort();  
-    const DateObject=new Date();
-    let TDay=DateObject.getDate();
-    let TMount= DateObject.getMonth();
-    let TYear=DateObject.getFullYear();
-    this.SensoryObject.ContextDate=`${TYear}-${TMount+1}-${TDay}`
+    this.CatchDate();
   },
   
       methods:
@@ -194,6 +190,13 @@ import axios from 'axios';
       const DomBtn=document.getElementById("collapse-btn")
       DomBtn.classList.toggle("fa-solid fa-bars");
       
+    },
+    CatchDate:function(){
+    const DateObject=new Date();
+    let TDay=DateObject.getDate();
+    let TMount= DateObject.getMonth();
+    let TYear=DateObject.getFullYear();
+    this.SensoryObject.ContextDate=`${TYear}-${TMount+1}-${TDay}`
     },
     PrintAllSensort:function(){
       this.$store.dispatch("PrinSensory","");
@@ -241,13 +244,45 @@ import axios from 'axios';
 this.$store.dispatch("PrinSensoryForId",SensoryID);
   },
     DeleSensory:function(SensoryIndex,SensoryID){
-       console.log("id:"+SensoryID);
+
+      this.$swal.fire({
+  title: '輸入刪除碼',
+  input: 'text',
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'Post',
+  showLoaderOnConfirm: true,
+  preConfirm: (PassCode) => {
+    return fetch(`http://localhost:8080/Sensory/Code/${PassCode}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .catch(error => {
+        this.$swal.showValidationMessage(
+          `Request failed: ${error}`
+        )
+      })
+  },
+  allowOutsideClick: () => !this.$swal.isLoading()
+}).then((result) => {
+  if (result.value.ReTuCheck=="OK") {
        const DipaObject={};
        DipaObject.SensoryIndex=SensoryIndex;
        DipaObject.SensoryID=SensoryID;
        console.log(DipaObject);
-    // alert(SensoryIndex+SensoryID);
        this.$store.dispatch("PrinDelete",DipaObject);
+  }else{
+    this.$swal.fire("驗證碼錯誤");
+  }
+  
+})
+
+
   },
 
 
@@ -266,6 +301,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
             Object.assign(this.$data, this.$options.data());
             console.log(response);
             this.$swal.fire("文章新增成功");
+            this.CatchDate();
             this.PrintAllSensort();
 
           })
@@ -416,6 +452,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   position: relative;
   width: 100%;
   height: 2000px;
+  font-weight: bolder;
   color: rgb(233, 22, 50);
    
 
