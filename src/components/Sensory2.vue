@@ -122,11 +122,11 @@
         </tr>
       </tbody>
       <tfood>
-      <span>發布人:</span>{{ OneSensoryList.sensorEmp }}
+      <span>發布人:</span>{{ OneSensoryList.sensorEmp }}<br>
       
-      <span>網址:</span><span v-if="OneSensoryList.url!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.url }} </a></span>
-      <span>檔案下載:</span><span v-if="OneSensoryList.fileUrl!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.title }} </a></span>
-      <span>Qrcode:</span><span v-if="OneSensoryList.qrcodeUrl!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.title }} </a></span>
+      <span>網址:</span><span v-if="OneSensoryList.url!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.url }} </a></span><br>
+      <span>檔案下載:</span><span v-if="OneSensoryList.fileUrl!=null"><a style="color:red" :href="FileUrlFun(OneSensoryList.fileUrl,'File')" download>{{ OneSensoryList.sensorTitle }} </a></span><br>
+      <span>Qrcode:</span><span v-if="OneSensoryList.qrcodeUrl!=null">  <img :src="FileUrlFun(OneSensoryList.qrcodeUrl,'Qr')" width="80" height="80" ></span>
 
       </tfood>
 
@@ -177,9 +177,8 @@
 
 
 
-  <img src="C:/SensoryQr/[B@1d6047f11.jpg" with="600" heigh="400" alt="一張圖片">
 
-
+  <a href="./[B@2f8569重仁骨科醫院麻醉科常備藥品處方集.docx" download>sdsds</a>
 
   </template>
   
@@ -412,6 +411,17 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     },
     UrlFun:function(Url){
     return Url;
+    },
+    FileUrlFun:function(Url,Class){
+    if(Class=="File")
+    {
+      const FileUrl=`./SensoryFile/${Url}`;   
+      return FileUrl;
+    }else{
+      const QrUrl=`./SensoryQr/${Url}`;
+      return QrUrl;
+    }
+
     },
     POSTSensory:function(){
       const url="http://localhost:8080/Sensory/PostData";
@@ -692,7 +702,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
 
 .ArticleContext .ActiveSensoryContextTable{
   position: absolute;
-    top: 35%;
+    top: 42%;
     left: 0px;
     width: 100%;
  transition: 1s;
