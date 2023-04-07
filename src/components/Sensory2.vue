@@ -47,7 +47,7 @@
         <li class="liTitle">檔案 <i class="fa-solid fa-file IconImage"></i></li>
     <input type="file" class="form-control Contextext" ref="fileClear" @change="fileChange($event)"><br>
     <li class="liTitle">QRCode <i class="fa-solid fa-cubes-stacked IconImage"></i></li>
-    <input type="file" class="form-control Contextext" ref="QrClear" @change="QrChange($event)"><br>
+    <input type="file" class="form-control Contextext" ref="QrClear" accept="image/git,image/jpeg" @change="QrChange($event)"><br>
     </form>
       </div>
       <div class="modal-footer">
@@ -123,6 +123,11 @@
       </tbody>
       <tfood>
       <span>發布人:</span>{{ OneSensoryList.sensorEmp }}
+      
+      <span>網址:</span><span v-if="OneSensoryList.url!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.url }} </a></span>
+      <span>檔案下載:</span><span v-if="OneSensoryList.fileUrl!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.title }} </a></span>
+      <span>Qrcode:</span><span v-if="OneSensoryList.qrcodeUrl!=null"><a style="color:red"  :href="UrlFun(OneSensoryList.url)">{{ OneSensoryList.title }} </a></span>
+
       </tfood>
 
         </table>
@@ -154,7 +159,11 @@
         <td>{{ Sensory.sensorEmp }}</td>
         <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory(Sensory.id)" class="btn btn-primary ViewButton" value="查看"></td>
         <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
-        <td><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="UpLoad"></td>
+        <td  v-if=" Sensory.fileUrl!=null &&  Sensory.qrcodeUrl!=null" style="color:red;"><i class="fa-sharp fa-solid fa-check"></i>已完成</td>
+        <td  v-else-if=" Sensory.fileUrl==null &&  Sensory.qrcodeUrl==null" ><input type="button" @click="SetId(Sensory.id)" data-bs-toggle="modal" href="#exampleModalToggle"  role="button" class="btn btn-info UpLoadButton"  value="File/Qrcode"></td>
+
+        <td v-else-if="Sensory.FileUrl==null" ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少Qrcode"></td>
+        <td v-else ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少檔案"></td>
 
         </tr>
          </tbody>
@@ -168,6 +177,7 @@
 
 
 
+  <img src="C:/SensoryQr/[B@1d6047f11.jpg" with="600" heigh="400" alt="一張圖片">
 
 
 
@@ -192,6 +202,8 @@ import axios from 'axios';
           
           UpLoads: new FormData(),
           UploadId:"",
+          ModalBind:"",
+          Passcode:"",
           ViewBoolT:true,
           ViewBoolF:false,
           SensryTitle:"國內外疫情專區",
@@ -312,6 +324,44 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   
 })
   },
+  /*
+  Uploadverify:function(SensoryId){
+    this.$swal.fire({
+  title: '輸入上傳碼',
+  input: 'text',
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'Post',
+  showLoaderOnConfirm: true,
+  preConfirm: (PassCode) => {
+    return fetch(`http://localhost:8080/Sensory/Code/${PassCode}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .catch(error => {
+        this.$swal.showValidationMessage(
+          `Request failed: ${error}`
+        )
+      })
+  },
+  allowOutsideClick: () => !this.$swal.isLoading()
+}).then((result) => {
+  if (result.value.ReTuCheck=="OK") {
+    this.Passcode="A0738"
+    this.UploadId=SensoryId;
+  }else{
+    this.$swal.fire("上傳碼錯誤");
+  }
+  
+})
+  },
+  */
+  
     fileChange:function(e){
     
      
@@ -331,7 +381,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     SetId:function(UploadId){
     this.UploadId=UploadId;
  
-    },
+     },
     FileUpload:function(){
       if(this.UpLoads.has("file")||this.UpLoads.has("Qr"))
       {
@@ -359,6 +409,9 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
       else{
         this.$swal.fire("至少需上傳一項");
       }
+    },
+    UrlFun:function(Url){
+    return Url;
     },
     POSTSensory:function(){
       const url="http://localhost:8080/Sensory/PostData";
