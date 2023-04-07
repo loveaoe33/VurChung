@@ -6,7 +6,7 @@ const WebpackObfuscator = require('webpack-obfuscator');
 module.exports = {
     //引入jquery
     chainWebpack: config => {
-        publicPath = "./"
+        publicPath = ". /"
         config.plugin('provide').use(webpack.ProvidePlugin, [{
             $: 'jquery',
             jquery: 'jquery',

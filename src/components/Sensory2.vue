@@ -35,7 +35,29 @@
 
 
 <div class="TotalContext">
-  
+  <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">圖/檔案上傳</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
+        <li class="liTitle">檔案 <i class="fa-solid fa-file IconImage"></i></li>
+    <input type="file" class="form-control Contextext" ref="fileClear" @change="fileChange($event)"><br>
+    <li class="liTitle">QRCode <i class="fa-solid fa-cubes-stacked IconImage"></i></li>
+    <input type="file" class="form-control Contextext" ref="QrClear" @change="QrChange($event)"><br>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary"  data-bs-toggle="modal" @click="FileUpload" data-bs-dismiss="modal">上傳</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <nav id ="siderbar">
     <p>疫情發布站</p>
     <ul>
@@ -64,6 +86,8 @@
     <textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="SensoryObject.Context" rows="15"></textarea><br>
     <li class="liTitle">日期 <i class="fa-sharp fa-solid fa-trademark IconImage"></i></li>
     <input type="textbox" class="form-control Contextext" v-model="SensoryObject.ContextDate" readonly id="FormDate" ><br>
+    <li class="liTitle">網址 <i class="fa-solid fa-display IconImage"></i></li>
+    <input type="textbox"  class="form-control Contextext" v-model="SensoryObject.Url"  id="FormUrl" ><br>
     <li class="liTitle">發布者 <i class="fa-sharp fa-solid fa-user IconImage"></i></li>
 <select class="form-select EmpSelect"  v-model="SensoryObject.ContextEmp" aria-label="Default select example">
   <option selected value="楊珉珊">感控：楊珉珊</option>
@@ -113,7 +137,7 @@
                 <th>發布者</th>
                 <th>查看</th>
                 <th>刪除</th>
-
+                <th>圖檔</th>
             </tr>
         </thead>
         
@@ -130,6 +154,7 @@
         <td>{{ Sensory.sensorEmp }}</td>
         <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory(Sensory.id)" class="btn btn-primary ViewButton" value="查看"></td>
         <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
+        <td><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="UpLoad"></td>
 
         </tr>
          </tbody>
@@ -164,10 +189,14 @@ import axios from 'axios';
     },
     data() {
           return {
+          
+          UpLoads: new FormData(),
+          UploadId:"",
           ViewBoolT:true,
           ViewBoolF:false,
           SensryTitle:"國內外疫情專區",
           SensoryObject:{
+          Url:"",
           ContextKey:"",
           ContextTitle:"",
           Context:"",
@@ -180,6 +209,7 @@ import axios from 'axios';
   created(){
     this.PrintAllSensort();  
     this.CatchDate();
+  
   },
   
       methods:
@@ -281,20 +311,64 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   }
   
 })
-
-
   },
+    fileChange:function(e){
+    
+     
+      this.UpLoads.append("file",e.target.files[0]);
 
 
+
+    },
+    QrChange:function(e){
+      
+      this.UpLoads.append("Qr",e.target.files[0]);
+
+
+
+
+    },
+    SetId:function(UploadId){
+    this.UploadId=UploadId;
+ 
+    },
+    FileUpload:function(){
+      if(this.UpLoads.has("file")||this.UpLoads.has("Qr"))
+      {
+        this.UpLoads.set("SenSoryId",this.UploadId);
+        console.log(this.UpLoads.get("SenSoryId"))
+
+        const Url="http://localhost:8080/Sensory/UpLoadFile";
+      axios.post(Url, this.UpLoads, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    }).then((response) =>{
+      this.$refs.fileClear.value="";
+      this.$refs.QrClear.value="";
+      this.$swal.fire("上傳成功");
+      this.$store.dispatch("PrinSensory");
+      console.log(response);
+    }).catch((error) =>{
+
+      this.$swal.fire(error+"上傳錯誤");
+
+    })
+
+      }
+      else{
+        this.$swal.fire("至少需上傳一項");
+      }
+    },
     POSTSensory:function(){
       const url="http://localhost:8080/Sensory/PostData";
       let InserCheck=this.InsertSensory();
        if(InserCheck==true)
-       {
-        console.log(this.SensoryObject);
+       
+      {
         axios
           .post(url, {
-            SensryPOST: this.SensoryObject, 
+            SensryPOST:this.SensoryObject,
           })
            
           .then((response) => {
@@ -423,7 +497,7 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
   .PostContext{
     text-align: center;
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 65px;
     width: 60%;
     font-size:30px;

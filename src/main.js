@@ -42,6 +42,9 @@ const store = createStore({
             sensorKey:"",
             sensorContext:"",
             sensorEmp:"",
+            senSoryUrl:"",
+            senSoryFile:"",
+            senSoryQrcode:"",
           },
         }
       },
