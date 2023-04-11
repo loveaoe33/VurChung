@@ -1,6 +1,7 @@
 <template>
 
   <div class="AllBodyContext">
+    
     <button
       type="button"
       class="btn btn-primary NewEvent"
@@ -1722,7 +1723,6 @@
 
 
 
-
   </div>
 <!-- <input type="button" @click="addTestNumber(4)"  value="測試vuex">
 <input type="button" @click="VuexCommitTest"  value="測試vuex2"> -->
@@ -1731,7 +1731,8 @@
 <!-- <h1>{{ VuexTest }}</h1> -->
 
 
-  
+
+
 
 </template>
 
@@ -1742,15 +1743,14 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 import { mapMutations } from 'vuex';
-// import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "FStation",
-  // props:["msgs"],
-  components:{},
+  components:{
+
+  },
   props: {
-    msg: String,
-    msg2:String,
+    // msg: String,
+    // msg2:String,
   },
   data() {
     return {

@@ -6,7 +6,7 @@ import FStation from "@/components/FStation.vue";
 import Empty from "@/components/Empty.vue";
 import Sensory2 from "@/components/Sensory2.vue"
 import test from "@/components/test.vue"
-
+import Warning from "@/components/Warning.vue"
 
 
 const routes = [
@@ -46,6 +46,11 @@ const routes = [
       path: "/test",
       name: "test",
       component: test,
+    },
+    {
+      path:"/Warning",
+      name: "Warning",
+      component: Warning,
     }
   ];
   

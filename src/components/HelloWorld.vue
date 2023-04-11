@@ -64,7 +64,7 @@
         </tr>
       </tfoot>
     </table>
-    <FStation msg="555"/>
+
     
 
     <button
@@ -966,7 +966,9 @@
         </div>
       </div>
     </div>
+    
   </div>
+
 
 
 
@@ -982,16 +984,15 @@
  <router-link :to="{ name: 'Home' }">Home</router-link> |
 <router-link :to="{ name: 'About' }">About</router-link>  |
 <router-link :to="{ name: '3FStation'}">3FStation</router-link>  -->
-<Sensory2/>
+<FStation />
 </template>
 
 <script>
 import axios from "axios";
 import "jquery";
 import $ from "jquery";
-import FStation from './FStation.vue'
-import Sensory2 from "./Sensory2.vue";
 import { mapMutations, mapState } from 'vuex';
+import FStation from "./FStation.vue";
 
 
 // import Empty from './components/Empty.vue';
@@ -999,7 +1000,7 @@ import { mapMutations, mapState } from 'vuex';
 // import $ from "jquery";
 export default {
   name: "HelloWorld",
-  component:{FStation,Sensory2},
+  component:{FStation},
   props: {
     msg: String,
   },
@@ -1464,7 +1465,7 @@ export default {
   CallUpdateMain:function()
 {
   this.ReChangeBool();
-  const url = "http://192.168.2.147:8080/PostMainData";
+  const url = "http://localhost:8080/PostMainData";
   console.log("已刷新");
     
 axios
