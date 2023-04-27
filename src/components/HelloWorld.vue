@@ -1005,7 +1005,9 @@ export default {
     msg: String,
   },
   created() {
-    const url = "http://localhost:8080/PostMainData";
+    // const url = "http://localhost:8080/PostMainData";
+    const url="http://192.168.2.147:8080/PostAccountCheck";
+
    
   
     axios
@@ -1131,7 +1133,9 @@ export default {
     ClickTable: function (tableId) {
       console.log(tableId);
 
-      const url = "http://localhost:8080/DetailMainData";
+      // const url = "http://localhost:8080/DetailMainData";
+      const url="http://192.168.2.147:8080/DetailMainData";
+
       axios
         .post(url, {
           DetailId: tableId,
@@ -1415,7 +1419,9 @@ export default {
     },
 
     AxiosUpdate: function (ClassName, UpdateData, UpdateColumn) {
-      const url = "http://localhost:8080/UpdateDetailData/";
+      // const url = "http://localhost:8080/UpdateDetailData/";
+      const url="http://192.168.2.147:8080/UpdateDetailData";
+
 
       axios
         .post(url, {
@@ -1443,7 +1449,10 @@ export default {
     },
     DeletePost: function (PostPaId,key) {
       console.log(PostPaId);
-      const url = "http://localhost:8080/PostDelData";
+      // const url = "http://localhost:8080/PostDelData";
+      const url="http://192.168.2.147:8080/PostDelData";
+
+      
       axios
         .post(url, {
           PaID: PostPaId,
@@ -1465,7 +1474,9 @@ export default {
   CallUpdateMain:function()
 {
   this.ReChangeBool();
-  const url = "http://localhost:8080/PostMainData";
+  // const url = "http://localhost:8080/PostMainData";
+  const url = "http://192.168.2.147:8080/PostMainData";
+
   console.log("已刷新");
     
 axios

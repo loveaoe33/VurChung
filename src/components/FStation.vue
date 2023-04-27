@@ -2136,8 +2136,8 @@ export default {
     },
 
     POSTAcCheckc: function () {
-      const url = "http://localhost:8080/PostAccountCheck";
-      // const url="http://192.168.0.105:8080/PostAccountCheck";
+      //const url = "http://localhost:8080/PostAccountCheck";
+       const url="http://192.168.2.147:8080/PostAccountCheck";
       if (this.EmpResAccount == "") {
         this.$swal.fire("不可為空!");
       } else {
@@ -2345,8 +2345,10 @@ export default {
    console.log(JsonDrugDetail);
    var JsonDrugEventDeal=JSON.stringify(this.DrugEventDeal);
    console.log(JsonDrugEventDeal);
-   const url="http://localhost:8080/DrugFormData";
-  // const url="http://192.168.0.105:8080/DrugFormData";
+  //  const url="http://localhost:8080/DrugFormData";
+   const url="http://192.168.2.147:8080/DrugFormData";
+
+
    console.log(JsonDrugEventRession);
    axios
           .post(url, {
@@ -2383,8 +2385,9 @@ export default {
       if (this.EmpAccount == "") {
         this.$swal.fire("欄位不可為空值");
       } else {
-        const url = "http://localhost:8080/SelectEmpAccount";
+        // const url = "http://localhost:8080/SelectEmpAccount";
         // const url="http://192.168.0.105:8080/SelectEmpAccount";
+        const url="http://192.168.2.147:8080/SelectEmpAccount";
 
         axios
           .post(url, {
@@ -2416,8 +2419,10 @@ export default {
       } else if (this.ResEmpOri == "選擇職稱") {
         this.$swal.fire("請選擇正確職稱!");
       } else {
-        const url = "http://localhost:8080/PostAccountData";
+        // const url = "http://localhost:8080/PostAccountData";
         // const url="http://192.168.0.105:8080/PostAccountData";
+        const url="http://192.168.2.147:8080/PostAccountCheck";
+
 
        axios
           .post(url, {

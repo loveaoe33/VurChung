@@ -103,7 +103,7 @@ const store = createStore({
         //   });
 
         {
-          const url = "http://localhost:8080/Sensory/PrintAllSensory";
+          const url = "http://192.168.2.147:8080/Sensory/PrintAllSensory";
           axios
             .post(url,{
             })
@@ -121,7 +121,7 @@ const store = createStore({
       },
       //篩選文章
       PrinSensoryArea({commit},Area){
-        const url = "http://localhost:8080/Sensory/QueryArea";
+        const url = "http://192.168.2.147:8080/Sensory/QueryArea";
         axios
           .post(url, {
             SensoryArea: Area, // 文章分類
@@ -143,7 +143,7 @@ const store = createStore({
       PrinDelete({commit},DipaObject){
       if(DipaObject.SensoryIndex && DipaObject.SensoryID!="")
       {
-        const url = "http://localhost:8080/Sensory/DeleteSesory";
+        const url = "http://192.168.2.147:8080/Sensory/DeleteSesory";
         axios
           .post(url, {
             SensoryID: DipaObject.SensoryID, // 文章帳號參數
@@ -168,7 +168,7 @@ const store = createStore({
       //單一文章呼叫
       PrinSensoryForId({commit},SensoryID){
     
-        const url = "http://localhost:8080/Sensory/QuerySensoryOne";
+        const url = "http://192.168.2.147:8080/Sensory/QuerySensoryOne";
           axios
             .post(url, {
               SensoryID: SensoryID, // 文章帳號參數
