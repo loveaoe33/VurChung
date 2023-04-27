@@ -1006,7 +1006,7 @@ export default {
   },
   created() {
     // const url = "http://localhost:8080/PostMainData";
-    const url="http://192.168.2.147:8080/PostAccountCheck";
+    const url="http://192.168.2.147:8080/PostMainData";
 
    
   

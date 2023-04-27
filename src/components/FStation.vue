@@ -2117,7 +2117,7 @@ export default {
     Accheck: function () //Get方式
     {
       const url =
-        "http://localhost:8080/AccountCheck/" + this.EmpResAccount;
+        "http://192.168.2.147:8080/AccountCheck/" + this.EmpResAccount;
         
       axios
         .get(url, {
