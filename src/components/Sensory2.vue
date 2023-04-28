@@ -161,9 +161,8 @@
         <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
         <td  v-if=" Sensory.fileUrl!=null &&  Sensory.qrcodeUrl!=null" style="color:red;"><i class="fa-sharp fa-solid fa-check"></i>已完成</td>
         <td  v-else-if=" Sensory.fileUrl==null &&  Sensory.qrcodeUrl==null" ><input type="button" @click="SetId(Sensory.id)" data-bs-toggle="modal" href="#exampleModalToggle"  role="button" class="btn btn-info UpLoadButton"  value="File/Qrcode"></td>
-
-        <td v-else-if="Sensory.fileUrl==null" ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少Qrcode"></td>
-        <td v-else ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-secondary UpLoadButton"  value="缺少檔案"></td>
+        <td v-else-if="Sensory.fileUrl==null" ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少檔案"></td>
+        <td v-else ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-secondary UpLoadButton"  value="缺少Qrcode"></td>
 
         </tr>
          </tbody>
