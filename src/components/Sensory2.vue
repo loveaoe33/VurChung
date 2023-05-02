@@ -260,6 +260,9 @@ import axios from 'axios';
               case "ContextEmp":
               this.$swal.fire("新增失敗-輸入人不可為空");
               break;
+              case "Url":
+              this.$swal.fire("新增失敗-網址不可為空");
+              break;
             }
             return false;
           }
