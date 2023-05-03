@@ -117,31 +117,6 @@
           
         </thead>
         <tbody>
-<<<<<<< HEAD
-        <tr v-for="(Sensory,index) in SensoryList" :key="index">
-
-        <td>{{ Sensory.sensorKey }}</td>
-
-        <td>{{ Sensory.sensorTitle }}</td>
-
-        <td>{{ Sensory.sensorDate }}</td>
-
-        <td>{{ Sensory.sensorEmp }}</td>
-        <td><input type="button"  id="{{ Sensory.id }}" @click="ViewSensory(Sensory.id)" class="btn btn-primary ViewButton" value="查看"></td>
-        <td><input type="button"  id="{{ Sensory.id }}"  @click="DeleSensory(index,Sensory.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
-        <td  v-if=" Sensory.fileUrl!=null &&  Sensory.qrcodeUrl!=null" style="color:red;"><i class="fa-sharp fa-solid fa-check"></i>已完成</td>
-        <td  v-else-if=" Sensory.fileUrl==null &&  Sensory.qrcodeUrl==null" ><input type="button" @click="SetId(Sensory.id)" data-bs-toggle="modal" href="#exampleModalToggle"  role="button" class="btn btn-info UpLoadButton"  value="File/Qrcode"></td>
-        <td v-else-if="Sensory.fileUrl==null" ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少檔案"></td>
-        <td v-else ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Sensory.id)" role="button" class="btn btn-secondary UpLoadButton"  value="缺少Qrcode"></td>
-
-        </tr>
-         </tbody>
-        </table>
-  </div>
-
-
-       <div class="outsideArea"></div>
-=======
           <tr>
            <td><textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="OneSensoryList.sensorContext" rows="15" ></textarea></td>
           </tr>
@@ -199,7 +174,6 @@
            <span>{{ currentPage }}</span>
            <button @click="Next">下一頁</button>
             </div>
->>>>>>> master
     </div>
   
   
@@ -337,32 +311,6 @@
     inputAttributes: {
       autocapitalize: 'off'
     },
-<<<<<<< HEAD
-    InsertSensory:function(){
-      for(let [key,value] of Object.entries(this.SensoryObject)){
-          if(value==""){
-            switch(key){
-              case "ContextKey":
-              this.$swal.fire("新增失敗-分類不可為空");
-              break;
-              case "ContextTitle":
-              this.$swal.fire("新增失敗-標頭不可為空");
-              break;
-              case "Context":
-              this.$swal.fire("新增失敗-內容不可為空");
-              break;
-              case "ContextDate":
-              this.$swal.fire("新增失敗-日期不可為空");
-              break;
-              case "ContextEmp":
-              this.$swal.fire("新增失敗-輸入人不可為空");
-              break;
-              case "Url":
-              this.$swal.fire("新增失敗-網址不可為空");
-              break;
-            }
-            return false;
-=======
     showCancelButton: true,
     confirmButtonText: 'Post',
     showLoaderOnConfirm: true,
@@ -371,7 +319,6 @@
         .then(response => {
           if (!response.ok) {
             throw new Error(response.statusText)
->>>>>>> master
           }
           return response.json()
         })
@@ -381,102 +328,6 @@
           )
         })
     },
-<<<<<<< HEAD
-    SelectOnChange:function(Area){
-     if(Area=="國外疫情"){
-     this.SensryTitle="國外疫情"
-     }else if(Area=="國內疫情"){
-      this.SensryTitle="國內疫情"
-     }else
-     {
-      this.SensryTitle="國內外疫情"
-     }
-     this.$store.dispatch("PrinSensoryArea",Area)
-  },
-  ViewSensory:function(SensoryID){
-    this.ViewBoolT=false;
-    this.ViewBoolF=true;
-this.$store.dispatch("PrinSensoryForId",SensoryID);
-  },
-    DeleSensory:function(SensoryIndex,SensoryID){
-
-      this.$swal.fire({
-  title: '輸入刪除碼',
-  input: 'text',
-  inputAttributes: {
-    autocapitalize: 'off'
-  },
-  showCancelButton: true,
-  confirmButtonText: 'Post',
-  showLoaderOnConfirm: true,
-  preConfirm: (PassCode) => {
-    return fetch(`http://192.168.2.147:8080/Sensory/Code/${PassCode}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response.json()
-      })
-      .catch(error => {
-        this.$swal.showValidationMessage(
-          `Request failed: ${error}`
-        )
-      })
-  },
-  allowOutsideClick: () => !this.$swal.isLoading()
-}).then((result) => {
-  if (result.value.ReTuCheck=="OK") {
-       const DipaObject={};
-       DipaObject.SensoryIndex=SensoryIndex;
-       DipaObject.SensoryID=SensoryID;
-       console.log(DipaObject);
-       this.$store.dispatch("PrinDelete",DipaObject);
-  }else{
-    this.$swal.fire("驗證碼錯誤");
-  }
-  
-})
-  },
-  /*
-  Uploadverify:function(SensoryId){
-    this.$swal.fire({
-  title: '輸入上傳碼',
-  input: 'text',
-  inputAttributes: {
-    autocapitalize: 'off'
-  },
-  showCancelButton: true,
-  confirmButtonText: 'Post',
-  showLoaderOnConfirm: true,
-  preConfirm: (PassCode) => {
-    return fetch(`http://localhost:8080/Sensory/Code/${PassCode}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response.json()
-      })
-      .catch(error => {
-        this.$swal.showValidationMessage(
-          `Request failed: ${error}`
-        )
-      })
-  },
-  allowOutsideClick: () => !this.$swal.isLoading()
-}).then((result) => {
-  if (result.value.ReTuCheck=="OK") {
-    this.Passcode="A0738"
-    this.UploadId=SensoryId;
-  }else{
-    this.$swal.fire("上傳碼錯誤");
-  }
-  
-})
-  },
-  */
-  
-    fileChange:function(e){
-=======
     allowOutsideClick: () => !this.$swal.isLoading()
   }).then((result) => {
     if (result.value.ReTuCheck=="OK") {
@@ -488,43 +339,9 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     }else{
       this.$swal.fire("驗證碼錯誤");
     }
->>>>>>> master
     
   })
     },
-<<<<<<< HEAD
-    SetId:function(UploadId){
-    this.UploadId=UploadId;
- 
-     },
-    FileUpload:function(){
-      if(this.UpLoads.has("file")||this.UpLoads.has("Qr"))
-      {
-        this.UpLoads.set("SenSoryId",this.UploadId);
-        console.log(this.UpLoads.get("SenSoryId"))
-
-        const Url="http://192.168.2.147:8080/Sensory/UpLoadFile";
-      axios.post(Url, this.UpLoads, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-    }).then((response) =>{
-      this.$refs.fileClear.value="";
-      this.$refs.QrClear.value="";
-      this.$swal.fire("上傳成功");
-      this.$store.dispatch("PrinSensory");
-      console.log(response);
-    }).catch((error) =>{
-
-      this.$swal.fire(error+"上傳錯誤");
-
-    })
-
-      }
-      else{
-        this.$swal.fire("至少需上傳一項");
-      }
-=======
     /*
     Uploadverify:function(SensoryId){
       this.$swal.fire({
@@ -532,7 +349,6 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     input: 'text',
     inputAttributes: {
       autocapitalize: 'off'
->>>>>>> master
     },
     showCancelButton: true,
     confirmButtonText: 'Post',
@@ -562,17 +378,10 @@ this.$store.dispatch("PrinSensoryForId",SensoryID);
     
   })
     },
-<<<<<<< HEAD
-    POSTSensory:function(){
-      const url="http://192.168.2.147:8080/Sensory/PostData";
-      let InserCheck=this.InsertSensory();
-       if(InserCheck==true)
-=======
     */
     
       fileChange:function(e){
       
->>>>>>> master
        
         this.UpLoads.append("file",e.target.files[0]);
   
