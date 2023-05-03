@@ -315,7 +315,7 @@
     confirmButtonText: 'Post',
     showLoaderOnConfirm: true,
     preConfirm: (PassCode) => {
-      return fetch(`http://localhost:8080/Sensory/Code/${PassCode}`)
+      return fetch(`http://192.168.2.147:8080/Sensory/Code/${PassCode}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(response.statusText)
@@ -406,7 +406,7 @@
           this.UpLoads.set("SenSoryId",this.UploadId);
           console.log(this.UpLoads.get("SenSoryId"))
   
-          const Url="http://localhost:8080/Sensory/UpLoadFile";
+          const Url="http://192.168.2.147:8080/Sensory/UpLoadFile";
         axios.post(Url, this.UpLoads, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -443,7 +443,7 @@
   
       },
       POSTSensory:function(){
-        const url="http://localhost:8080/Sensory/PostData";
+        const url="http://192.168.2.147:8080/Sensory/PostData";
         let InserCheck=this.InsertSensory();
          if(InserCheck==true)
          
