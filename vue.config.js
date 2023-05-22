@@ -1,8 +1,10 @@
 const webpack = require('webpack')
 const WebpackObfuscator = require('webpack-obfuscator');
 
-
-
+module.exports = {
+    publicPath: './',
+  };
+/*
 module.exports = {
     //引入jquery
     chainWebpack: config => {
@@ -16,6 +18,7 @@ module.exports = {
     },
 
 }
+*/
 
 
 

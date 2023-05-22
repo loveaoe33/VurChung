@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHashHistory, createRouter } from "vue-router";
 import Home from "@/components/Home.vue";
 import About from "@/components/About2.vue";
 import HelloWorld from "@/components/HelloWorld.vue"
@@ -55,7 +55,7 @@ const routes = [
   ];
   
   const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),  /*打包成靜態資源時要改hash,沒有時要移除hash*/
     routes,
   });
   
