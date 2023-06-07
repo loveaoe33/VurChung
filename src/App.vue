@@ -16,6 +16,7 @@
           
           <span><i class="fa-solid fa-file icon"></i><router-link :to="{ name: 'Warning'}">異常事件通報</router-link></span>
           <span><i class="fa-solid fa-shield-halved icon" ></i><router-link :to="{name: 'Sensory2'}">感控公告專區</router-link></span>
+          <span><i class="fa-solid fa-helicopter-symbol"></i><router-link :to="{name: 'ORForm'}">事件表單</router-link> </span>
           <span><i class="fa-solid fa-user-secret icon"></i><router-link :to="{name: 'test'}">測試專區</router-link> </span>
 
         </li>
@@ -57,7 +58,7 @@
 import $ from "jquery"
 import Sensory2 from "./components/Sensory2.vue";
 import HelloWorld from "./components/HelloWorld.vue";
-
+import ORForm from "./components/ORForm.vue";
 import FStation from "./components/FStation.vue";
 
 export default {
@@ -66,6 +67,7 @@ export default {
     Sensory2,
     HelloWorld,
     FStation,
+    ORForm,
   },
   data() {
         return {

@@ -116,10 +116,12 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              
             ></button>
           </div>
 
           <div class="modal-body">
+            <ORFormVue v-if="MixEvent"/>
             <div class="DrugEventText">
               <input
                 type="text"
@@ -1743,10 +1745,11 @@ import axios from "axios";
 import "jquery";
 import $ from "jquery";
 import { mapMutations } from 'vuex';
+import ORFormVue from './ORForm.vue';
 export default {
   name: "FStation",
   components:{
-
+    ORFormVue,
   },
   props: {
     // msg: String,

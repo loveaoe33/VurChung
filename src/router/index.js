@@ -3,6 +3,7 @@ import Home from "@/components/Home.vue";
 import About from "@/components/About2.vue";
 import HelloWorld from "@/components/HelloWorld.vue"
 import FStation from "@/components/FStation.vue";
+import ORForm from "@/components/ORForm.vue";
 import Empty from "@/components/Empty.vue";
 import Sensory2 from "@/components/Sensory2.vue"
 import test from "@/components/test.vue"
@@ -51,6 +52,11 @@ const routes = [
       path:"/Warning",
       name: "Warning",
       component: Warning,
+    },
+    {
+      path:"/ORForm",
+      name:"ORForm",
+      component:ORForm,
     }
   ];
   
