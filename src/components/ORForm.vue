@@ -76,7 +76,6 @@
         name="OREvent_DiscrableForm"
         aria-label="Default select example"
       >
-        <option value="跌倒相關事件">跌倒相關事件</option>
         <option value="手術相關事件">手術相關事件</option>
         <option value="檢查相關事件">檢查相關事件</option>
         <option value="檢驗相關事件">檢驗相關事件</option>
