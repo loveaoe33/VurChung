@@ -8,9 +8,6 @@
     />
   </div>
   
-  {{ Event_discrable.Event_InEmployee }}
-  {{ Even_Object }}
-  {{ Even_Process }}
   <div
     class="ORShowEmp form-iinline"
     name="ORShowEmp"
@@ -54,7 +51,7 @@
   ><button
     type="button"
     name="OREventReason"
-    @click="ShowOREventReason"
+    @click="ShowReasonImprove('SEE')"
     class="btn btn-link"
   >
     事件原因/改善措施
@@ -65,7 +62,7 @@
     type="button"
     name="OREventFqu"
     class="btn btn-link"
-    @click="ShowOREventFqu"
+    @click="ShowFqueSecurity('SEE')"
   >
     嚴重程度/委員會
   </button>
@@ -117,16 +114,10 @@
         <option value="藥局">藥局</option>
         <option value="公共區域">公共區域</option>
         <option value="其他">其他</option>
+        <option value="不知道">不知道</option>
+
       </select>
-        <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input OREvent_Place_Check"
-                  type="checkbox"
-                  value="不知道"
-                  id="flexCheckChecked"
-                />
-                <label class="form-check-label">不知道請勾選</label>
-        </div> 
+
         <br />
         <br />
     <label>在場人員(通報者填寫):</label>
@@ -272,22 +263,80 @@
 </div>
 
 <div class ="ReasonandImprove">
+  <label>可能原因(主管填寫):</label>
+  <br />
+  <label>近端原因:</label>
+  <textarea class="form-control" type="textarea" v-model="Even_Reason.Event_MaybeReasion" id="Event_MaybeReasion" rows="6"></textarea>
+  <br />
+  <label>根本原因:</label>
+  <textarea class="form-control" type="textarea" v-model="Even_Reason.Event_TrueReasion" id="Event_TrueReasion" rows="6"></textarea>
+  <br />
+  <br />
+  <label>改善措施(主管填寫):</label>
+  <br />
+  <textarea class="form-control" type="textarea" v-model="Even_Reason.Event_Fix" id="Event_Fix" rows="6"></textarea>
+
 
 </div>
  
 
   <div class="Fqu">
+    <label>嚴重程度(病安委員填寫):</label>
+    <br />
+    <label>此事件再發生頻率:</label>
+    <select
+        class="form-select Even_Frequency"
+        v-model="Even_Frequency.Even_Patient_Frequency"
+        name="Even_Frequency"
+        aria-label="Default select example"
+      >
+        <option value="數週或數月內">數週或數月內</option>
+        <option value="一年數次">一年數次</option>
+        <option value="1-2年一次">1-2年一次</option>
+        <option value="2-5年一次">2-5年一次</option>
+        <option value="5年以上一次">5年以上一次</option>
+        <option value="不知道">不知道</option>
+      </select><br />
+      <label>病人傷害:</label>
+      <select
+        class="form-select Even_Patient_Harm"
+        v-model="Even_Frequency.Even_Patient_Harm"
+        name="Even_Patient_Harm"
+        aria-label="Default select example"
+      >
+        <option value="幾近錯誤：由於不經意或即時介入，並未真正發生在病人身上的事件。">幾近錯誤：由於不經意或即時介入，並未真正發生在病人身上的事件。</option>
+        <option value="無傷害：事件發生在病人身上，但沒有造成任何的傷害。">無傷害：事件發生在病人身上，但沒有造成任何的傷害。</option>
+        <option value="輕微傷害：病人雖發生意外，但是未造成任何傷害也無需額外的醫療照護。">輕微傷害：病人雖發生意外，但是未造成任何傷害也無需額外的醫療照護。</option>
+        <option value="輕度傷害：病人因非疾病因素導致醫療照護的增加。">輕度傷害：病人因非疾病因素導致醫療照護的增加。</option>
+        <option value="中度傷害：病人因非疾病因素導致永久性功能障礙。">中度傷害：病人因非疾病因素導致永久性功能障礙。</option>
+        <option value="重度傷害：病人因非疾病因素導致永久性功能喪失。">重度傷害：病人因非疾病因素導致永久性功能喪失。</option>
+        <option value="嚴重傷害：病人因非疾病因素導致死亡。">嚴重傷害：病人因非疾病因素導致死亡。</option>
+        <option value="有傷害，但無法判定傷害嚴重程度。">有傷害，但無法判定傷害嚴重程度。</option>
+        <option value="不知道">不知道</option>
+      </select><br />
+      <label>病人安全委員會:</label>
+      <select
+        class="form-select Even_Patient_Harm"
+        v-model="Security_Committee.Security_Response"
+        name="Even_Patient_Harm"
+        aria-label="Default select example"
+      >
+        <option value="極度或高度危險事件，建議成立小組調查根本原因及研擬改善措施。">極度或高度危險事件，建議成立小組調查根本原因及研擬改善措施。</option>
+        <option value="中度或低度危險事件，建議由該部門提出改善方案，納入委員會追蹤。">中度或低度危險事件，建議由該部門提出改善方案，納入委員會追蹤。</option>
+        <option value="可能造成醫療爭議，建議轉交院長室由專人處理。">可能造成醫療爭議，建議轉交院長室由專人處理。</option>
+      </select><br />
+      <label>其他建議:</label>
+      <textarea class="form-control" type="textarea" v-model="Security_Committee.Security_Response" id="Event_Fix" rows="6"></textarea>
 
-    </div>
+  </div>
 </template>
 <script>
-import { ref, reactive, onMounted,onBeforeMount } from "vue";
+import { ref, onMounted,onBeforeMount } from "vue";
 
 export default {
   setup() {
     // eslint-disable-next-line no-unused-vars
     const Loadindbind = ref(false);
-
     const Even_Employee = ref({
       Employee_ShowEmp: "456",
       Employee_EmpAccount: "",
@@ -324,6 +373,12 @@ export default {
       Influence_True_Season: "",
       Influence_Improve: "",
     });
+    // eslint-disable-next-line no-unused-vars
+    const Even_Reason=ref({
+      Event_MaybeReasion:"",
+      Event_TrueReasion:"",
+      Event_Fix:"",
+    })
     // eslint-disable-next-line no-unused-vars
     const Even_Frequency = ref({
       Even_Patient_Frequency: "",
@@ -370,6 +425,16 @@ export default {
     
     } ;
 
+    const ShowReasonImprove=(Swicth)=>{
+      AllHide();
+    const element=document.querySelector(".ReasonandImprove");
+    (Swicth=="hide")?element.classList.add('hidden'):element.classList.remove('hidden');
+    }
+    const ShowFqueSecurity=(Swicth)=>{
+      AllHide();
+    const element=document.querySelector(".Fqu");
+    (Swicth=="hide")?element.classList.add('hidden'):element.classList.remove('hidden');
+    }
     const AllHide=()=>{
       FormArray.value.forEach(element => {
         let elements=document.querySelector(element)
@@ -384,7 +449,7 @@ export default {
     //嚴重程度與委員會
     // eslint-disable-next-line no-unused-vars
     const ShowOREventFqu=()=>{
-
+   
     } ;  
 
     onMounted(()=>{
@@ -393,26 +458,8 @@ export default {
     });
     onBeforeMount(()=>{
     });
-    const text = ref("12");
-    const person = reactive({
-      Name: "立凡",
-    });
 
-    const person2 = reactive([
-      {
-        Name: "立凡2",
-      },
-      {
-        Name: "立凡3",
-      },
-    ]);
-    onMounted(() => {
-      person2[0].Name = "onMounted改立凡4";
-    });
     return {
-      text,
-      person,
-      person2,
       Loadindbind,
       Event_discrable,
       Even_Process,
@@ -421,8 +468,11 @@ export default {
       Even_Influence,
       Even_Object,
       Even_Employee,
+      Even_Reason,
       ShowOREventDiscrable,
       ShowOREventProcess,
+      ShowReasonImprove,
+      ShowFqueSecurity,
       AllHide,
     };
   },
