@@ -125,15 +125,249 @@
 
 </div>
 <div class="FEvetnProcess">
-    2
+  <label class="Event_Main_Title">事件描述(通報者填寫)</label><br /><br />
+  <label class="Event_Title">發生時間:</label><br />
+  <input class="form-check-input "  v-model="FEvetnProcess.FEvetn_TimeBool.KnowBool" type="radio" value="知道" id="flexCheckChecked"/>
+    <label >知道</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_TimeBool.KnowBool" type="radio" value="不知道" id="flexCheckChecked"/>
+    <label>不知道</label>
+    <textarea
+     v-if="FEvetnProcess.FEvetn_TimeBool.KnowBool=='知道'"
+      class="form-control know_TextArea"
+      type="textarea"
+      v-model="FEvetnProcess.FEvetn_TimeBool.knowText"
+      name="know_Text"
+      rows="2"
+    ></textarea><br />
+    <label class="Event_Title">發生地點:</label><br />
+    <input class="form-check-input "  v-model="FEvetnProcess.FEvetn_Place.OutSideBool" type="radio" value="院內區" id="flexCheckChecked"/>
+    <label >院內區</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.OutSideBool" type="radio" value="院外區" id="flexCheckChecked"/>
+    <label>院外區</label>
+    <textarea
+     v-if="FEvetnProcess.FEvetn_Place.OutSideBool=='院外區'"
+      class="form-control OutSide_TextArea"
+      type="textarea"
+      v-model="FEvetnProcess.FEvetn_Place.OutSideBoolText"
+      name="know_Text"
+      rows="2"
+    ></textarea><br />
+    <label class="Event_Title">地板潮濕:</label><br />
+    <input class="form-check-input "  v-model="FEvetnProcess.FEvetn_Place.Place_Wather.Place_WatherBoole" type="radio" value="是" id="flexCheckChecked"/>
+    <label >是</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_Wather.Place_WatherBoole" type="radio" value="否" id="flexCheckChecked"/>
+    <label>否</label>
+    <textarea
+     v-if="FEvetnProcess.FEvetn_Place.Place_Wather.Place_WatherBoole=='是'"
+      class="form-control Place_Wather"
+      type="textarea"
+      v-model="FEvetnProcess.FEvetn_Place.Place_Wather.Place_WatherText"
+      name="know_Text"
+      rows="2"
+    ></textarea><br />
+
+    <label class="Event_Title">單位:</label><br />
+    <input class="form-check-input "  v-model="FEvetnProcess.Place_Department" type="radio" value="門診" id="flexCheckChecked"/>
+    <label >門診</label>
+    <input class="form-check-input" v-model="FEvetnProcess.Place_Department" type="radio" value="病房(三樓)" id="flexCheckChecked"/>
+    <label>病房(三樓)</label>
+    <input class="form-check-input" v-model="FEvetnProcess.Place_Department" type="radio" value="病房(四樓)" id="flexCheckChecked"/>
+    <label>病房(四樓)</label>
+    <input class="form-check-input" v-model="FEvetnProcess.Place_Department" type="radio" value="病房(五樓)" id="flexCheckChecked"/>
+    <label>病房(五樓)</label>
+    <input class="form-check-input" v-model="FEvetnProcess.Place_Department" type="radio" value="病房(六樓)" id="flexCheckChecked"/>
+    <label>病房(六樓)</label>
+    <label class="Event_Title">跌倒位置:</label><br />
+    <input class="form-check-input "  v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="病床邊" id="flexCheckChecked"/>
+    <label >病床邊</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="病室內" id="flexCheckChecked"/>
+    <label>病室內</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="病室外" id="flexCheckChecked"/>
+    <label>病室外</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="浴室廁所(內)" id="flexCheckChecked"/>
+    <label>浴室廁所(內)</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="浴室廁所(外)" id="flexCheckChecked"/>
+    <label>浴室廁所(外)</label><br />
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="病房走道" id="flexCheckChecked"/>
+    <label>病房走道</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="樓(電梯間)" id="flexCheckChecked"/>
+    <label>樓(電梯間)</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_Place.Place_vPosition" type="radio" value="公共區域" id="flexCheckChecked"/>
+    <label>公共區域</label><br />
+    <label class="Event_Title">在場人員:</label><br />
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="主照顧者" id="flexCheckChecked"/>
+    <label>主照顧者</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="護理人員" id="flexCheckChecked"/>
+    <label>護理人員</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="照顧服務員" id="flexCheckChecked"/>
+    <label>照顧服務員</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="訪客" id="flexCheckChecked"/>
+    <label>訪客</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="病患" id="flexCheckChecked"/>
+    <label>病患</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="外包人員" id="flexCheckChecked"/>
+    <label>外包人員</label><br />
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="其他人員" id="flexCheckChecked"/>
+    <label>其他人員</label>
+    <input class="form-check-input" v-model="FEvetnProcess.FEvetn_InEmployee" type="checkbox" value="不知道" id="flexCheckChecked"/>
+    <label>不知道</label><br />
+
+    <label class="Event_Title">事件描述:</label><br />
+    <textarea
+      class="form-control FEvetn_Describle"
+      type="textarea"
+      v-model="FEvetnProcess.FEvetn_Describle"
+      name="FEvetn_Describle"
+      rows="6"
+    ></textarea><br />
+    <label class="Event_Main_Title">事發處理(通報人填寫):</label><br /><br />
+    <label class="Event_Title">立即通知:</label><br />
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="醫師"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 醫師 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="護理人員"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 護理人員 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="主管"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 主管 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="家屬"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 家屬 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="清潔人員"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      
+      <label class="form-check-label"> 清潔人員 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="其他人員"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 其他人員 </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="不知道"
+        id="NotifyEmployeeCheck"
+        v-model="FEvetnProcess.Now_Notify"
+
+      />
+      <label class="form-check-label"> 不知道 </label>
+    </div><br />
+    <div v-if="FEvetnProcess.Now_Notify.includes('家屬')">
+    <textarea
+      class="form-control"
+      type="textarea"
+      v-model="FEvetnProcess.Notify_Add"
+      id="Event_Fix"
+      rows="2"
+    ></textarea>
+    <label style="color:brown">請填入家屬資訊</label>
+    </div>
+
+
+    
+
+
+    <label class="Event_Title">立即處理:</label><br />
+    <div class="form-check form-check-inline">
+    <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="監測生命徵象" id="flexCheckChecked"/>
+    <label>監測生命徵象</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="加強照護防範 " id="flexCheckChecked"/>
+    <label>加強照護防範</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="予以慰問及支持" id="flexCheckChecked"/>
+    <label>予以慰問及支持</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="急救" id="flexCheckChecked"/>
+    <label>急救</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="傷口照護" id="flexCheckChecked"/>
+    <label>傷口照護</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="地板清潔" id="flexCheckChecked"/>
+    <label>地板清潔</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="其他" id="flexCheckChecked"/>
+    <label>其他</label><br />
+    </div>
+    <div class="form-check form-check-inline">
+      
+    <input class="form-check-input" v-model="FEvetnProcess.Now_Process" type="checkbox" value="不知道" id="flexCheckChecked"/>
+    <label>不知道</label><br />
+    </div>
+    <label class="Event_Title">其他處置:</label><br />
+    <textarea
+      class="form-control"
+      type="textarea"
+      v-model="FEvetnProcess.Other_Process"
+      id="Event_Fix"
+      rows="6"
+    ></textarea>
+
+
 </div>
 <div class="ReasonImprove">
     3
 </div>
-<div class="FqueSecurity">
-    <label>嚴重程度(病安委員填寫):</label>
+<div class="FqueSecurity Event_Main_Title">
+    <label >嚴重程度(病安委員填寫):</label>
     <br />
-    <label>此事件再發生頻率:</label>
+    <br />
+    <label class="Event_Title">此事件再發生頻率:</label>
     <select
       class="form-select Even_Patient_Frequency"
       v-model="FqueSecurity.Even_Patient_Frequency"
@@ -147,7 +381,7 @@
       <option value="5年以上一次">5年以上一次</option>
       <option value="不知道">不知道</option></select
     ><br />
-    <label>病人傷害:</label>
+    <label class="Event_Title">病人傷害:</label>
     <select
       class="form-select Even_Patient_Harm"
       v-model="FqueSecurity.Even_Patient_Harm"
@@ -184,7 +418,7 @@
       </option>
       <option value="不知道">不知道</option></select
     ><br />
-    <label>病人安全委員會:</label>
+    <label class="Event_Title">病人安全委員會:</label>
     <select
       class="form-select Even_Patient_Harm"
       v-model="FqueSecurity.Security_Suggest"
@@ -205,7 +439,7 @@
         可能造成醫療爭議，建議轉交院長室由專人處理。
       </option></select
     ><br />
-    <label>其他建議:</label>
+    <label class="Event_Title">其他建議:</label>
     <textarea
       class="form-control"
       type="textarea"
@@ -226,7 +460,10 @@ export default {
 
     },
     setup() {
+      // eslint-disable-next-line no-unused-vars
+      const mapString=ref('家屬');
         // eslint-disable-next-line no-unused-vars
+        const MergeString=ref('');
         const FEvetn_Influ=ref({
             Influ_Name:"",
             Influ_Sex:"",
@@ -240,18 +477,29 @@ export default {
         });
         // eslint-disable-next-line no-unused-vars
         const FEvetnProcess=ref({
+          FEvetn_TimeBool:{
+               KnowBool:"",
+               knowText:"",
+            },
             FEvetn_Time:"",
             FEvetn_Place:{
-                Place_Position:"",
+                Place_Position:{
+                  OutSideBool:"",
+                  OutSideBoolText:"",
+                },
                 Place_Department:"",
                 Place_vPosition:"",
-                Place_Wather:"",
+                Place_Wather:{
+                  Place_WatherBoole:"",
+                  Place_WatherText:"",
+                },
             },
             FEvetn_InEmployee:[],
             FEvetn_Describle:"",
             Now_Notify:[],
             Now_Process:[],
             Other_Process:"",
+            Notify_Add:"", //家屬值判斷與新增
 
         });
          // eslint-disable-next-line no-unused-vars
@@ -338,7 +586,13 @@ export default {
       FEvetn_Influ.value.Influ_Age=Age;
       }
 
-    }
+    };
+    //   const Now_Notify_Add=()=>{
+    //  MergeString.value=`家屬:(${FEvetnProcess.value.Notify_Add})`;
+    //  FEvetnProcess.value.Now_Notify.map((value)=>{
+    //   (value.includes(mapString))? MergeString: value
+    //  })
+    // }
         onMounted(()=>{
             AllHide();
         });
@@ -372,6 +626,52 @@ export default {
     font-size: 20px;
     text-shadow: 3px 3px 3px #bfc4a8;
 
+}
+
+.know_TextArea{
+opacity: 0;
+animation: fade-in 1s ease-in-out forwards;
+}
+
+@keyframes fade-in{
+0%{
+  opacity:0;
+  transform: translateY(100%);
+}
+100%{
+  opacity:1;
+  transform: translateY(0%);
+}
+}
+
+.OutSide_TextArea {
+  opacity: 0;
+  animation: fade-in2 1s ease-in-out forwards;
+}
+
+@keyframes fade-in2 {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+.Place_Wather{
+  opacity: 0;
+  animation: fade-in3 1s ease-in-out forwards;
+}
+@keyframes fade-in3 {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
 }
 
 </style>
