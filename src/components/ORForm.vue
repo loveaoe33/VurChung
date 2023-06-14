@@ -69,7 +69,7 @@
 
   <hr />
   <div class="ClassAndDiscrible">
-    <label>選擇事件(通報者填寫):</label><br />
+    <label class="Event_Main_Title">選擇事件(通報者填寫):</label><br />
     <select
       class="form-select OREvent_DiscrableForm"
       v-model="Even_Object"
@@ -86,9 +86,10 @@
       <option value="治安相關事件">治安相關事件</option></select
     ><br />
 
-    <label>描述事件(通報者填寫):</label>
+    <label class="Event_Main_Title">描述事件(通報者填寫):</label>
     <br />
-    <label class="form-check-label">發生時間:</label>
+    <br />
+    <label class="form-check-label Event_Title">發生時間:</label>
     <input type="textbox" class="form-control" />
     <div class="form-check form-check-inline">
       <input
@@ -100,7 +101,7 @@
       <label class="form-check-label">不知道請勾選</label>
     </div>
     <br /><br />
-    <label class="form-check-label">發生地點:</label>
+    <label class="form-check-label Event_Title">發生地點:</label>
     <select
       class="form-select OREvent_DiscrableForm"
       v-model="Even_Object"
@@ -120,7 +121,7 @@
 
     <br />
     <br />
-    <label>在場人員(通報者填寫):</label>
+    <label class="Event_Main_Title">在場人員(通報者填寫):</label>
     <br />
     <div class="form-check form-check-inline">
       <input
@@ -210,7 +211,7 @@
       <label class="form-check-label"> 其他病患 </label>
     </div>
     <br />
-    <label class="form-check-label"> 事件描述 </label>
+    <label class="form-check-label Event_Title"> 事件描述: </label>
     <textarea
       class="form-control"
       type="textarea"
@@ -221,9 +222,10 @@
   </div>
 
   <div class="ProcessAndInfluence">
-    <label>事發處理(通報者填寫):</label>
+    <label class="Event_Main_Title">事發處理(通報者填寫):</label>
     <br />
-    <label>立即通知:</label>
+    <br />
+    <label class="Event_Title">立即通知:</label>
     <br />
     <div class="form-check form-check-inline">
       <input
@@ -303,7 +305,7 @@
     </div>
     <br />
     <br />
-    <label>醫療處置:</label>
+    <label class="Event_Title">醫療處置:</label>
     <br />
     <div class="form-check form-check-inline">
       <input
@@ -367,7 +369,7 @@
     </div>
     <br />
     <br />
-    <label>其他處置:</label>
+    <label class="Event_Title">其他處置:</label>
     <textarea
       class="form-control"
       type="textarea"
@@ -376,7 +378,8 @@
       rows="6"
     ></textarea>
     <br />
-    <label>事件影響(通報者填寫):</label>
+    <label class="Event_Main_Title">事件影響(通報者填寫):</label>
+    <br />
     <br />
     <div class="form-check form-check-inline">
       <input
@@ -404,9 +407,10 @@
   </div>
 
   <div class="ReasonandImprove">
-    <label>可能原因(主管填寫):</label>
+    <label class="Event_Main_Title">可能原因(主管填寫):</label>
     <br />
-    <label>近端原因:</label>
+    <br />
+    <label class="Event_Title">近端原因:</label>
     <textarea
       class="form-control"
       type="textarea"
@@ -415,7 +419,7 @@
       rows="6"
     ></textarea>
     <br />
-    <label>根本原因:</label>
+    <label class="Event_Title">根本原因:</label>
     <textarea
       class="form-control"
       type="textarea"
@@ -425,7 +429,7 @@
     ></textarea>
     <br />
     <br />
-    <label>改善措施(主管填寫):</label>
+    <label class="Event_Title">改善措施(主管填寫):</label>
     <br />
     <textarea
       class="form-control"
@@ -437,9 +441,10 @@
   </div>
 
   <div class="Fqu">
-    <label>嚴重程度(病安委員填寫):</label>
+    <label class="Event_Main_Title">嚴重程度(病安委員填寫):</label>
     <br />
-    <label>此事件再發生頻率:</label>
+    <br />
+    <label class="Event_Title">此事件再發生頻率:</label>
     <select
       class="form-select Even_Frequency"
       v-model="Even_Frequency.Even_Patient_Frequency"
@@ -453,7 +458,7 @@
       <option value="5年以上一次">5年以上一次</option>
       <option value="不知道">不知道</option></select
     ><br />
-    <label>病人傷害:</label>
+    <label class="Event_Title">病人傷害:</label>
     <select
       class="form-select Even_Patient_Harm"
       v-model="Even_Frequency.Even_Patient_Harm"
@@ -490,7 +495,7 @@
       </option>
       <option value="不知道">不知道</option></select
     ><br />
-    <label>病人安全委員會:</label>
+    <label class="Event_Title">病人安全委員會:</label>
     <select
       class="form-select Even_Patient_Harm"
       v-model="Security_Committee.Security_Response"
@@ -511,7 +516,7 @@
         可能造成醫療爭議，建議轉交院長室由專人處理。
       </option></select
     ><br />
-    <label>其他建議:</label>
+    <label class="Event_Title">其他建議:</label>
     <textarea
       class="form-control"
       type="textarea"

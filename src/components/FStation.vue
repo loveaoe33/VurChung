@@ -122,6 +122,7 @@
 
           <div class="modal-body">
             <ORFormVue v-if="MixEvent"/>
+            <FstationForm v-if="FallEventE"/>
             <div class="DrugEventText">
               <input
                 type="text"
@@ -1746,10 +1747,12 @@ import "jquery";
 import $ from "jquery";
 import { mapMutations } from 'vuex';
 import ORFormVue from './ORForm.vue';
+import FstationForm from './3Form.vue';
 export default {
   name: "FStation",
   components:{
     ORFormVue,
+    FstationForm,
   },
   props: {
     // msg: String,
@@ -2556,6 +2559,21 @@ span.TextStlye {
   50% {
     transform: translateX(95%);
   }
+}
+
+.Event_Title{
+    font-size:15px;
+    font-family: "Noto Sans TC", sans-serif;
+
+    color:rgb(208, 0, 255);
+    text-shadow: 3px 3px 3px #a8b8c4;
+
+}
+.Event_Main_Title{
+    color: rgb(255, 0, 60);
+    font-size: 20px;
+    text-shadow: 3px 3px 3px #bfc4a8;
+
 }
 
 </style>
