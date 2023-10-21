@@ -35,6 +35,7 @@ const store = createStore({
           UpdateBool: "false",
           msg: "vuex測試",
           userList:[{id:"1",name:"leo"},{id:"2",name:"tina"}],
+          Sensory_Api_Url:"http://localhost:8080/",
           SensoryList:[],
           OneSensory:{
             sensorTitle:"",
@@ -45,6 +46,53 @@ const store = createStore({
             url:"",
             FileUrl:"",
             QrcodeUrl:"",
+          },
+          Update_Article_Bool: "false",
+          Personnel_Api_Url:"http://localhost:8080/",
+          ArticleList:[],
+          ArticleList_Session:[],
+          OneArticle:{
+            Upload_Check:"",
+            articleClass:"",
+            articleContext:"",
+            articleCreate:"",
+            articleEmpl:"",
+            articleFileUrl:"",
+            articleLock:"",
+            articleLv:"",
+            articleTitle:"",
+            articleUrl:"",
+            articleView: "",
+            empClass:"",
+            id:0
+
+
+        },
+        Employee_Login_Session:{
+          id:0,
+          Name:"",
+          Account:"",
+          Password:"",
+          ArticleClass:"",
+          AccountLevel:"",
+          Department:"",
+          CreateDate:"",
+          Upload_Check:"",
+      },
+      jsonData : {
+        "Upload_Check":"OK",
+        "id":3,
+        "articleClass":"全部公告",
+        "articleEmpl":"黃立帆",
+        "articleLv":"",
+        "articleLock":"",
+        "articleUrl":"1",
+        "articleCreate":"2023-10-9",
+        "empClass":"",
+        "articleTitle":"1",
+        "articleContext":"1",
+        "articleFileUrl":null,
+        "articleView":"test,loveaoe33_黃立帆undefined_undefined2_2"
           },
         }
       },
@@ -79,8 +127,37 @@ const store = createStore({
             console.log(SensoryIndex)
              state.SensoryList.splice(SensoryIndex,1)
 
+         },
+         All_Article(state,Article){  
+          state.ArticleList=Article;
+          state.ArticleList_Session=Article;
+         },
+         OneArticle(state,data){
+           state.OneArticle=data;
+ 
+         },
+         Area_Article(state,Article){
+             state.ArticleList=Article;
+         },
+         Quick_Article(state,Article){
+           state.ArticleList=Article;
+         },
+         Quick_Article_None(state){
+           state.ArticleList=state.ArticleList_Session;
+         },
+         DeleArticle(state,ArticleIndex)
+          {
+             console.log(ArticleIndex)
+              state.ArticleList.splice(ArticleIndex,1)
+ 
+          },
+          VuexLogin(state,ProPs_Employee){
+           state.Employee_Login_Session=ProPs_Employee;
+          },
+          Json_Pasre_Process(Json_Array){
+           // const parsedData = JSON.parse(Json_Array);
+           return Json_Array;
          }
-
 
       },
       actions:{
@@ -103,9 +180,9 @@ const store = createStore({
         //   });
 
         {
-          const url = "http://192.168.2.147:8080/Sensory/PrintAllSensory";
           axios
-            .post(url,{
+            .post( this.state.Sensory_Api_Url+"Sensory/PrintAllSensory"
+            ,{
             })
     
             .then(function (response) {
@@ -121,9 +198,9 @@ const store = createStore({
       },
       //篩選文章
       PrinSensoryArea({commit},Area){
-        const url = "http://192.168.2.147:8080/Sensory/QueryArea";
+   
         axios
-          .post(url, {
+          .post(this.state.Sensory_Api_Url+"Sensory/QueryArea", {
             SensoryArea: Area, // 文章分類
           })
   
@@ -143,9 +220,9 @@ const store = createStore({
       PrinDelete({commit},DipaObject){
       if(DipaObject.SensoryIndex && DipaObject.SensoryID!="")
       {
-        const url = "http://192.168.2.147:8080/Sensory/DeleteSesory";
+     
         axios
-          .post(url, {
+          .post(this.state.Sensory_Api_Url+"Sensory/DeleteSesory", {
             SensoryID: DipaObject.SensoryID, // 文章帳號參數
           })
   
@@ -167,10 +244,8 @@ const store = createStore({
       
       //單一文章呼叫
       PrinSensoryForId({commit},SensoryID){
-    
-        const url = "http://192.168.2.147:8080/Sensory/QuerySensoryOne";
           axios
-            .post(url, {
+            .post(this.state.Sensory_Api_Url+"Sensory/QuerySensoryOne", {
               SensoryID: SensoryID, // 文章帳號參數
             })
     
@@ -184,7 +259,138 @@ const store = createStore({
               
             });
         
+      },
+
+      Prin_Article({commit}){   
+  
+        axios
+          .post(this.state.Personnel_Api_Url+"Personnel/Print_Article", {
+            EmployeeObject:`${this.state.Employee_Login_Session.id},${this.state.Employee_Login_Session.Department}`
+          })
+    
+          .then((response) => {
+
+            let Parse_Json=[];
+            response.data.forEach(element => {
+               let Process_Json=JSON.parse(element);
+               Parse_Json.push(Process_Json);
+            })
+        
+            // let   jsonData= JSON.parse(response.data[1]); 
+            // console.log("解析"+jsonData.Upload_Check);
+            commit("All_Article",Parse_Json);
+
+
+          })
+          .catch(function (error) {
+            alert(error);
+            alert("帶入失敗");
+          });
+
+
+
+      },
+      //篩選文章
+      Print_Class_Aricle({commit},Area){  
+        axios
+          .post(this.state.Personnel_Api_Url+"Personnel/Print_Article_Class", {
+            EmployeeObject: `${this.state.Employee_Login_Session.id},${this.state.Employee_Login_Session.Department},${Area}` , // 文章分類
+          })
+  
+          .then(function (response) {
+            let Parse_Json=[];
+            response.data.forEach(element => {
+               let Process_Json=JSON.parse(element);
+               Parse_Json.push(Process_Json);
+            })
+            commit("Area_Article",Parse_Json);
+          })
+          .catch(function (error) {
+        
+            alert(error);
+     
+            
+          });
+
+      },
+      //文章刪除
+      Article_Delete({commit},DipaObject){
+      if(DipaObject.Article_Index!="" && DipaObject.Article_ID!="")
+      {
+        axios
+          .post(this.state.Personnel_Api_Url+"Personnel/Delete_Article", {
+            Article_ID: `${DipaObject.Article_ID},${DipaObject.PassCode}`, // 文章帳號參數
+          })
+  
+          .then( (response)=> {
+            console.log(response);
+            commit("DeleArticle",DipaObject.Article_Index);
+          
+          })
+          .catch(function (error) {
+  
+            alert(error);
+            
+          });
+
       }
+      
+
+      },
+      
+      //單一文章呼叫
+      Prin_Article_ForId({commit},Article_ID){
+    
+          axios
+            .post(this.state.Personnel_Api_Url+"Personnel/One_Article", {
+              Article_ID:`${Article_ID},${this.state.Employee_Login_Session.Account},${this.state.Employee_Login_Session.Name}` , // 文章帳號參數
+            })
+    
+            .then(function (response) {
+              console.log(response.data[0])
+              commit("OneArticle",response.data[0]);
+            })
+            .catch(function (error) {
+              alert(error);
+              
+            });
+        
+      },
+            //快搜
+            Quick_Search({commit},Quick_String){
+    
+                axios
+                  .post(this.state.Personnel_Api_Url+"Personnel/Quick_Search", {
+                    EmployeeObject:`${this.state.Employee_Login_Session.id},${Quick_String}`
+                  })
+          
+                  .then(function (response) {
+               
+          
+
+                    if(response.data== '')
+                    {
+                      commit("Quick_Article_None");
+
+
+                    }else
+                    {
+                      let Parse_Json=[];
+                      response.data.forEach(element => {
+                         let Process_Json=JSON.parse(element);
+                         Parse_Json.push(Process_Json);
+                      })
+                      commit("Quick_Article",Parse_Json);
+
+                    }
+                  })
+                  .catch(function (error) {
+                    alert(error);
+                    
+                  });
+              
+            }
+
     
     },
       modules:{},

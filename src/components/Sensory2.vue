@@ -198,6 +198,8 @@
       },
       data() {
             return {
+            Sensory_Api_Url:"http://localhost:8080/",
+
             paginationTrue:true,
             paginationFalse:false,
             currentPage: 1,
@@ -405,9 +407,8 @@
         {
           this.UpLoads.set("SenSoryId",this.UploadId);
           console.log(this.UpLoads.get("SenSoryId"))
-  
-          const Url="http://192.168.2.147:8080/Sensory/UpLoadFile";
-        axios.post(Url, this.UpLoads, {
+                   
+        axios.post(this.Sensory_Api_Url+"Sensory/UpLoadFile", this.UpLoads, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -443,13 +444,12 @@
   
       },
       POSTSensory:function(){
-        const url="http://192.168.2.147:8080/Sensory/PostData";
         let InserCheck=this.InsertSensory();
          if(InserCheck==true)
          
         {
           axios
-            .post(url, {
+            .post(this.Sensory_Api_Url+"Sensory/PostData", {
               SensryPOST:this.SensoryObject,
             })
              
