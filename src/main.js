@@ -161,7 +161,10 @@ const store = createStore({
 
       },
       actions:{
-      
+        Copy_Login({commit},LoginEmploye){
+          commit("VuexLogin",LoginEmploye);
+  
+        },
       //所有文章
       PrinSensory({commit}){
 
