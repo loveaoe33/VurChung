@@ -78,7 +78,7 @@
       },
       data() {
             return {
-              Personnel_Api_Url:"http://192.16.2.147:8080/",
+              Personnel_Api_Url:"http://192.168.2.147:8080/",
               LoginObject:{
               Account:"",
               Password:"",
