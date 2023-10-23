@@ -220,7 +220,6 @@
            <span>{{ currentPage }}</span>
            <button class="Style_button" @click="Next">下一頁</button>
             </div>
-            {{ Perosnnel_Article.Article_quick_Search   }}
     </div>
   
   
@@ -228,7 +227,6 @@
          
       </div>
     </div>
-{{ One_Article_List }}
     </template>
     
     <script>
