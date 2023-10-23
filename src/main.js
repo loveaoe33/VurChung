@@ -35,7 +35,7 @@ const store = createStore({
           UpdateBool: "false",
           msg: "vuex測試",
           userList:[{id:"1",name:"leo"},{id:"2",name:"tina"}],
-          Sensory_Api_Url:"http://localhost:8080/",
+          Sensory_Api_Url:"http://192.168.2.147:8080/",
           SensoryList:[],
           OneSensory:{
             sensorTitle:"",
@@ -48,7 +48,7 @@ const store = createStore({
             QrcodeUrl:"",
           },
           Update_Article_Bool: "false",
-          Personnel_Api_Url:"http://localhost:8080/",
+          Personnel_Api_Url:"http://192.168.2.147:8080/",
           ArticleList:[],
           ArticleList_Session:[],
           OneArticle:{
