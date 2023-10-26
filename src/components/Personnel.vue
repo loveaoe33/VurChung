@@ -67,6 +67,7 @@
     <option value="全部公告" selected>全部公告</option>
     <option value="人事">人事</option>
     <option value="行政">行政</option>
+    <option value="感控">感控</option>
     <option value="門診">門診</option>
     <option value="放射">放射</option>
     <option value="藥局">藥局</option>
@@ -99,6 +100,7 @@
     <option value="" selected>無</option>
     <option value="人事">人事</option>
     <option value="行政">行政</option>
+    <option value="感控">感控</option>
     <option value="門診">門診</option>
     <option value="放射">放射</option>
     <option value="藥局">藥局</option>
@@ -143,6 +145,7 @@
     <option value="全部公告" selected>全部公告</option>
     <option value="人事">人事</option>
     <option value="行政">行政</option>
+    <option value="感控">感控</option>
     <option value="門診">門診</option>
     <option value="放射">放射</option>
     <option value="藥局">藥局</option>
@@ -366,7 +369,7 @@
           this.$swal.fire({
               title: '帳戶申請',
               html: 
-              ' <label class="form-check-label" for="flexRadioDefault2">使用者姓名:</label><input type="textbox" id="Employee_Name" class="form-control Employee_Name"placeholder="姓名"></br><label class="form-check-label" for="flexRadioDefault2">使用者帳號:</label><input type="textbox" id="Employee_Acount" class="form-control Employee_Acount"    placeholder="帳號"><br><label class="form-check-label" for="flexRadioDefault2">使用者密碼:</label><input type="password" id="Employee_Password" class="form-control Contextext Employee_Password"  placeholder="密碼"><br><label class="form-check-label" for="flexRadioDefault2">使用者權限:</label><input type="number" id="Employee_Level" class="form-control Contextext Employee_Level"    placeholder="權限等級"><br><label class="form-check-label" for="flexRadioDefault2">使用者部門:</label> <select class="form-select form-select-sm SelectItem Employee_Department" id="Employee_Department" ><option value="人事">人事</option><option value="行政">行政</option><option value="門診">門診</option><option value="放射">放射</option><option value="藥局">藥局</option><option value="櫃台">櫃台</option><option value="開刀房">開刀房</option><option value="護理部">護理部</option><option value="復健">復健</option></select>',
+              ' <label class="form-check-label" for="flexRadioDefault2">使用者姓名:</label><input type="textbox" id="Employee_Name" class="form-control Employee_Name"placeholder="姓名"></br><label class="form-check-label" for="flexRadioDefault2">使用者帳號:</label><input type="textbox" id="Employee_Acount" class="form-control Employee_Acount"    placeholder="帳號"><br><label class="form-check-label" for="flexRadioDefault2">使用者密碼:</label><input type="password" id="Employee_Password" class="form-control Contextext Employee_Password"  placeholder="密碼"><br><label class="form-check-label" for="flexRadioDefault2">使用者權限:</label><input type="number" id="Employee_Level" class="form-control Contextext Employee_Level"    placeholder="權限等級"><br><label class="form-check-label" for="flexRadioDefault2">使用者部門:</label> <select class="form-select form-select-sm SelectItem Employee_Department" id="Employee_Department" ><option value="人事">人事</option><option value="行政">行政</option><option value="感控">感控</option><option value="門診">門診</option><option value="放射">放射</option><option value="藥局">藥局</option><option value="櫃台">櫃台</option><option value="開刀房">開刀房</option><option value="護理部">護理部</option><option value="復健">復健</option></select>',
 
               showDenyButton: true,
               showCancelButton: true,
