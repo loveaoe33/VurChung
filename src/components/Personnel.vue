@@ -505,7 +505,7 @@
     showLoaderOnConfirm: true,
     preConfirm: (PassCode) => {
       PassCode_Post=PassCode;
-      return fetch(`http://localhost:8080/Personnel/Code/${PassCode}`)
+      return fetch(this.Personnel_Api_Url+`/Personnel/Code/${PassCode}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(response.statusText)
