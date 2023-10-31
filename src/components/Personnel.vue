@@ -89,7 +89,7 @@
       <li class="liTitle">內容 <i class="fa-sharp fa-solid fa-comments IconImage"></i></li>
       <textarea class="form-control Contextext" id="exampleFormControlTextarea1" v-model="Perosnnel_Article.ArticleContext" rows="15"></textarea><br>
       <li class="liTitle">日期 <i class="fa-sharp fa-solid fa-trademark IconImage"></i></li>
-      <input type="textbox" class="form-control Contextext" v-model="Perosnnel_Article.ArticleCreate" readonly id="FormDate" ><br>
+      <input type="textbox" class="form-control Contextext" v-model="Perosnnel_Article.ArticleCreate"  id="FormDate" ><br>
       <li class="liTitle">網址 <i class="fa-solid fa-display IconImage"></i></li>
       <input type="textbox"  class="form-control Contextext" v-model="Perosnnel_Article.ArticleUrl"  id="" ><br>
       <li class="liTitle">發布者 <i class="fa-sharp fa-solid fa-user IconImage"></i></li>
