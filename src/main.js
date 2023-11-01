@@ -318,7 +318,7 @@ const store = createStore({
       },
       //文章刪除
       Article_Delete({commit},DipaObject){
-      if(DipaObject.Article_Index!="" && DipaObject.Article_ID!="")
+      if(DipaObject.Article_ID!="")
       {
         axios
           .post(this.state.Personnel_Api_Url+"Personnel/Delete_Article", {
