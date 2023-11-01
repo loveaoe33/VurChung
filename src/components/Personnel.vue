@@ -201,7 +201,7 @@
           
   
           <tbody>
-          <tr v-for="(Article,index) in displayedData" :key="index">
+          <tr v-for="(Article,index) in displayedData" :key="index+1">
   
           <td>{{ Article.articleClass }}</td>
   
