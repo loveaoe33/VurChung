@@ -532,6 +532,7 @@
          this.$store.dispatch("Article_Delete",DipaObject);
     }else{
       this.$swal.fire("驗證碼錯誤");
+      console.log(DipaObject);
     }
     
   })
