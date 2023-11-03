@@ -157,7 +157,7 @@
     <option value="護理部">護理部</option>
     <option value="復健">復健</option>
   </select>
-  <input type="textbox" class="form-control Quick_Search" @keyup.enter="Quick_Search" v-model="Perosnnel_Article.Article_quick_Search" width="49px" id="FormTitle"  placeholder="快搜"><br>
+  <input type="textbox" class="form-control Quick_Search" @keyup.enter="Quick_Search,Init_Preious()" v-model="Perosnnel_Article.Article_quick_Search" width="49px" id="FormTitle"  placeholder="快搜"><br>
 
   <table id="SensoryView"  class="table" v-bind:class="{ActiveTable:ViewBoolT,HideTable:ViewBoolF}">
         <thead>
