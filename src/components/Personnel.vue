@@ -192,7 +192,6 @@
                   <th>抬頭</th>
                   <th>內容</th>
                   <th>發布者</th>
-                  <th>日期</th>
                   <th>查看</th>
                   <th>刪除</th>
                   <th>圖檔</th>
@@ -210,7 +209,6 @@
           <td>{{ Article.articleContext }}</td>
   
           <td>{{ Article.articleEmpl }}</td>
-          <td>{{ Article.articleCreate }}</td>   
 
           <td><input type="button"  id="{{ Article.id }}" @click="ViewSensory(Article.id)" class="btn btn-primary ViewButton" value="查看"></td>
           <td><input type="button"  id="{{ Article.id }}"  @click="Dele_Article(index,Article.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
