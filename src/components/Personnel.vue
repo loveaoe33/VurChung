@@ -143,7 +143,7 @@
       <p>{{ Article_Class_Title }}</p>
   
   <div class="insideArea"> 
-    <select class="form-select form-select-sm SelectItem"  @change="SelectOnChange($event.target.value),Init_Preious" aria-label=".form-select-sm example">
+    <select class="form-select form-select-sm SelectItem"  @change="SelectOnChange($event.target.value),Init_Preious()" aria-label=".form-select-sm example">
     <option value="全部公告" selected>全部公告</option>
     <option value="人事">人事</option>
     <option value="行政">行政</option>
@@ -333,8 +333,12 @@
 
         },
         Init_Preious:function(){
-          this.currentPage==1;
-        },
+            while(this.currentPage>1)
+            {
+              this.currentPage--;
+
+            }
+          },
         Preious:function(){
          if(this.currentPage>1){
           this.currentPage--;
