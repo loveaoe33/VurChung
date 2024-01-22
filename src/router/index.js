@@ -10,6 +10,7 @@ import test from "@/components/test.vue";
 import Warning from "@/components/Warning.vue";
 import Personnel from "@/components/Personnel.vue";
 import Login from "@/components/Login.vue";
+import Personnel_Attend from "@/components/Personnel_Attend.vue";
 
 const router=createRouter({
   
@@ -73,6 +74,14 @@ const router=createRouter({
         meta: { requiresAuth: true } // 添加 meta 字段以指示需要身份验证
   ,
       },
+      {
+        path:"/Personnel_Attend",
+        name:"Personnel_Attend",
+        component:Personnel_Attend,
+      },
+
+
+      
     ],
     history: createWebHistory(),
 

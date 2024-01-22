@@ -22,11 +22,8 @@
            </span>
           <!--   user name Input-->
            <input class="form-input" id="txt-input" type="text" v-model="LoginObject.Account"  placeholder="@UserName" required>
-       
         <br>
-       
              <!--   Password -->
-       
         <span class="input-item">
           <i class="fa fa-key"></i>
          </span>
@@ -37,8 +34,7 @@
        <span>
           <i class="fa fa-eye" aria-hidden="true"  type="button" id="eye"></i>
        </span>
-       
-       
+
         <br>
   <!--        buttons -->
   <!--      button LogIn -->
