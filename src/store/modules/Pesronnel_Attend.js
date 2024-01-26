@@ -5,8 +5,8 @@ const state = {
     // 模組的狀態
     Attend_Api_Url:"http://192.168.2.147:8080/AttendController/",
     user: null,
-    DepartMent: [],    //部門
-    Employee_List:[],   //部門員工資料
+    DepartMent: ["1hird item","2hird item","3hird item","4hird item","5hird item","6hird item","7hird item","8hird item","9hird item",],    //部門
+    Employee_List:["1hird item","2hird item"],   //部門員工資料
     Appli_List:[],      //申請列表
     Report_List:[],      //報表輸出
     Employee_Object:{    //員工處理物件
@@ -21,7 +21,7 @@ const state = {
       Emp_ID:"",
       Emp_Name:"",
       Department_Key:"",
-      Account_Lv:"",
+      Account_Lv:0,
     },
 
     Appli_Object:{   //申請處理物件

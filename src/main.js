@@ -21,9 +21,12 @@ import VueLoaders from 'vue-loaders';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import Personnel_Attend from "./store/modules/Pesronnel_Attend";
+import "./css/Attend.css"
 
 // import DataTable from 'datatables.net-dt';
 // import 'datatables.net-responsive-dt';
+
+
 
 
 
@@ -408,6 +411,7 @@ const $=require('jquery')
 window.$=$;
 var app =createApp(App);
 app.component('EasyDataTable', Vue3EasyDataTable);
+
 app.config.globalProperties.axios=axios
 app.use(Router).use(VueSweetalert2).use(VueLoaders).use(store).mount('#app')
 
