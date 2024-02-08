@@ -1,0 +1,342 @@
+<template>
+    <div
+    class="modal fade"
+    id="AppliModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" style="color: black;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">積借休申請</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body" style="color: black;">
+          <div class="modal-body-employee">
+          <span class="Title">員編:</span>
+          <span class="Context">{{ Login_Object.Emp_ID }}</span>
+
+          <span class="Title">員工:</span>
+          <span class="Context">{{ Login_Object.Emp_Name }}</span>
+
+          <span class="Title">部門:</span>
+          <span class="Context">{{  Login_Object.Department_Key  }}</span>
+
+          <span class="Title">剩餘時數:</span>
+          <span class="Context">{{  Login_Object.Last_Time  }}</span>
+
+
+          </div><br />
+          申請理由:<br /><input
+            type="text"
+            class="form-control"
+            v-model="Appli_Object.ReasonMark"
+            @keyup="Radio_Event()"
+          /><br />
+          <div class="appli-radio-buttons">
+          
+          <label for="Over_Time">加班</label>
+          <input type="radio" id="Over_Time" v-model="Appli_Object.Reason" @change ="Radio_Event()" value="Over_Time">
+          <br>
+          <label for="Rest">補休</label>
+          <input type="radio" id="Rest" v-model="Appli_Object.Reason"  @change ="Radio_Event()" value="Rest" >
+
+          <label for="Person_Holi">事假</label>
+          <input type="radio" id="Person_Holi" v-model="Appli_Object.Reason"  @change ="Radio_Event()" value="Person_Holi" >
+
+          <label for="Public_Holi">公假</label>
+          <input type="radio" id="Public_Holi" v-model="Appli_Object.Reason" @change ="Radio_Event()" value="Public_Holi" >
+          </div>
+         
+
+          申請時數:<br /><input
+            type="number"
+            class="form-control"
+            min="0"
+            v-model="Appli_Object.Appli_Time"
+            :disabled="Raidio_Check"
+            @change="Time_Check($event.target.value)"
+          /><br />
+          目前資料:<br />
+         <div class="Post_Context">
+          <span class="Title">員編:</span>
+          <span class="Context">{{ Login_Object.Emp_ID }}</span><br />
+          <span class="Title">員工:</span>
+          <span class="Context">{{ Login_Object.Emp_Name }}</span><br />
+          <span class="Title">部門:</span>
+          <span class="Context">{{ Login_Object.Department_Key }}</span><br />
+          <span class="Title">申請理由:</span>
+          <span class="Context">{{ Appli_Object.ReasonMark }}</span><br />
+          <span class="Title">申請時數:</span>
+          <span class="Context">{{ Appli_Object.Appli_Time }}</span><br />
+          <span class="Title">申請後時數:</span>
+          <span class="Context">{{ Appli_Object.Total_Time  }}</span><br />
+    </div><br>
+
+          訊息:<span style="color: red">{{ Insert_Msg }}</span>
+
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="Save_Appli"
+            @click="Save_Appli()"
+            :disabled="Appli_Disable"
+          >
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div>
+      <h1>員工報表區</h1>
+      <div class="Top_button">
+      <input type="text" class="Search_text" v-model="searchName">
+
+      <button class="button-17" role="button">已申請</button>
+      <button class="button-17" role="button">已審核</button>
+  
+      <button class="button-17" role="button"    data-bs-toggle="modal" data-bs-target="#AppliModal">申請加班/補休</button>
+  
+      <button class="button-17" role="button">列印此頁面</button>
+      <button class="button-17" role="button" data-bs-toggle="modal" data-bs-target="#HistoryModal"  >列印歷史總紀錄</button>
+      <div class="Mark_Div"><input type="textbox"  maxlength="2" class="form-control Mark_text" placeholder="備註"></div>
+
+      </div>
+
+  
+      <EasyDataTable
+    buttons-pagination
+    :rows-per-page="10"
+    show-index
+    v-model:items-selected="itemsSelected"
+    @click-row="showRow"
+    :headers="headers"
+    :items="tableData"
+    :sort-by="sortBy"
+    :sort-type="sortType"
+    :search-field="name"
+    :search-value="searchName"
+    multi-sort
+    theme-color="#1d90ff"
+      table-class-name="customize-table"
+  
+    
+    v-if="Login_Employee_Lv==0"
+  > 
+  
+  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 " #item-Pass="item">
+          <button class="button-18" @click="handleButtonClick(item)">通過</button>
+          <button class="button-19" @click="handleButtonClick(item)">不通過</button>
+  
+        </template>
+  <template #expand="item">
+        <div style="padding: 15px">
+          {{item.Nane}} won championships in {{item.championships.join(",")}}
+        </div>
+      </template>
+      <template #loading>
+      <img
+        src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+        style="width: 100px; height: 80px;"
+      />
+    </template>
+  </EasyDataTable>
+  
+   row clicked:<br />  {{ Appli_Object }}
+    <div id="row-clicked"></div>
+    
+    </div>
+  </template>
+  
+  <script>
+  import { onMounted,ref } from 'vue';
+  // eslint-disable-next-line no-unused-vars
+  import  { Header, Item } from "vue3-easy-data-table";
+  // eslint-disable-next-line no-unused-vars
+  import { useStore } from 'vuex';
+  
+  
+  export default {
+    name: 'DataTable',
+
+    components: {
+      EasyDataTable: require('vue3-easy-data-table').EasyDataTable,
+    },
+
+    setup() {
+      const store = useStore();
+      const Login_Employee_Lv=store.state.Personnel_Attend.Login_Object.Account_Lv;
+      const { Emp_ID, Emp_Name, Department_Key, Last_Time } = store.state.Personnel_Attend.Login_Object;
+      const Insert_Msg=ref("");
+      const Raidio_Check=ref(true);
+      const Appli_Disable=ref(true);
+      const Login_Object=ref({
+      Emp_ID:"",
+      Emp_Name:"",
+      Department_Key:"",
+      Last_Time:"",
+      })
+
+      const Appli_Object=ref({
+        Emp_ID:"",
+        Employee:"",
+        DepartMent:"",
+        Reason:"",
+        ReasonMark:"",
+        Appli_Time:"",
+        Total_Time:"",
+      })
+      const headers = ref([
+  
+        { text: 'Name', value: 'name' },
+        { text: 'Age', value: 'age',sortable: true},
+        { text: 'Time2', value: 'ages' },
+        { text: 'Time3', value: 'agea' },
+        { text: 'Time4', value: 'aged' },
+        { text: 'Time5', value: 'agefw' },
+        { text: 'Time6', value: 'aged' },
+        { text: '', value: 'Pass' },
+  
+  
+     
+  
+        
+        
+      ]);
+      const sortBy = ["age", "age"];
+      const sortType = ["desc", "asc"];
+      const itemsSelected= ref([]);
+      const searchField = ["name"];
+        const searchName = ref("");
+      
+  
+  
+  
+      const handleButtonClick = (row) => { console.log('Button clicked for row:', row);};
+  
+      const showRow = (item) => {
+  
+    document.getElementById('row-clicked').innerHTML = JSON.stringify(item);
+  };
+      const Radio_Event=()=>{
+    
+        if(Appli_Object.value.Reason=="Public_Holi"){
+          Raidio_Check.value=true;
+          Appli_Object.value.Appli_Time=0
+          Appli_Object.value.Total_Time=Last_Time;
+          Time_Check(Appli_Object.value.Appli_Time);
+        }
+        else{
+          Raidio_Check.value=false;
+          Time_Check(Appli_Object.value.Appli_Time);
+
+        }
+    };
+      const Time_Check=(item)=>{
+        if(item=="" || item==null){
+          Appli_Object.value.Total_Time=Last_Time;
+        }else{
+          let Process_Number=(Appli_Object.value.Reason=="Public_Holi" ||Appli_Object.value.Reason=="Over_Time")?item:-item
+          Appli_Object.value.Total_Time=parseFloat(Process_Number)+parseFloat(Login_Object.value.Last_Time);
+        }
+  
+        Msg_Event();
+      }
+      const isEmptyObject=(obj)=>{
+        let NaNCheck=isNaN(obj.value.Appli_Time);
+  
+        if(obj.value?.Emp_ID=="" || obj.value?.Employee=="" ||obj.value?.DepartMent=="" ||obj.value?.Reason=="" || obj.value?.ReasonMark=="" || NaNCheck!=false ||obj.value?.Total_Time=="")
+        {
+          return false;
+        }else{
+          return true;
+        }
+      }
+      const Msg_Event=()=>{
+        console.log("reas"+Appli_Object.value.Reason+"appl"+Appli_Object.value.Appli_Time);
+        if(isEmptyObject(Appli_Object) && Appli_Object.value.Reason!="Public_Holi" && Appli_Object.value.Appli_Time!=0 ){
+          Insert_Msg.value="資料正確";
+        }else if(isEmptyObject(Appli_Object) && Appli_Object.value.Reason!="Public_Holi" && Appli_Object.value.Appli_Time==0 ){
+          Insert_Msg.value="只有公假可為0";
+        }else if(isEmptyObject(Appli_Object)&& Appli_Object.value.Reason=="Public_Holi" && Appli_Object.value.Appli_Time==0){
+          Insert_Msg.value="資料正確";
+        }else{
+          Insert_Msg.value="資料不正確";
+
+        }
+      }
+      const Save_Appli=()=>{
+        
+      }
+      const tableData = ref([
+        { id:1,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 30 },
+        { id:2,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
+        { id:3,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
+        { id:4,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 26 },
+        { id:5,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 24 },
+        { id:6,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 62 },
+        { id:7,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 25 },
+        { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
+        { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
+        { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 },
+        { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
+        { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
+        { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 }, 
+         
+  
+  
+      ]);
+
+      onMounted(() => {
+        Login_Object.value={  Emp_ID, Emp_Name, Department_Key, Last_Time   };
+        Appli_Object.value.Total_Time=Last_Time;
+        Appli_Object.value.Emp_ID=Emp_ID;
+        Appli_Object.value.Employee=Emp_Name;
+        Appli_Object.value.DepartMent=Department_Key;
+      });
+      return {
+        Login_Employee_Lv,
+        headers,
+        tableData,
+        itemsSelected,
+        sortType,
+        sortBy,
+        searchField,
+        searchName,
+        Appli_Object,
+        Login_Object,
+        Insert_Msg,
+        Raidio_Check,
+        Appli_Disable,
+        handleButtonClick,
+        Time_Check,
+        showRow,
+        Radio_Event,
+      };
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* Add your styles here if needed */
+  </style>
+  

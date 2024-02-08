@@ -122,7 +122,7 @@
      color: white;
      width: 112%;
      height:75%;
-   
+     overflow: auto; /* 控制溢出行为，可以使用 auto 或 scroll 等值 */
      margin-left: -20px;
    
      
@@ -166,13 +166,15 @@
    }
    
    #Right_Area_Box{
-     font-family: Arial;
-       font-size: 18px;
-       line-height: 30px;
+    font-family: '標楷體', KaiTi, serif;
+    font-size: 18px;
+       line-height: 10px;
        font-weight: bold;
-       color: white;
+       color: rgb(29, 27, 27);
        width: 100%;
        height: 100%;
+       padding: 20px;
+
        border-radius: 10px;
        box-shadow: 0 0 0 5px rgb(244, 244, 244);
        overflow: hidden;
@@ -181,6 +183,71 @@
    
    
    }
+
+   #Change_Box{
+   margin-top: 10px;
+   display:block;
+   width: 100%;
+  
+  }
+
+  .Right_Area h3{
+    font-family: '標楷體', KaiTi, serif;
+
+    font-size: 25px;
+    margin-top: 10px;
+    display: inline-block;
+    color: red;
+    display: flex;
+     justify-content: center; /* 在水平方向上置中 */
+     background-color:white;
+
+   }
+   .Right_Area span{
+    text-decoration: underline;
+    text-decoration-style:solid;
+    text-decoration-color: red;
+    line-height: 1.5;
+    font-family: Arial;
+    font-size: 20px;
+    margin-left: 20px;
+    display: inline-block;
+    color: rgb(245, 242, 242);
+    font-family: '標楷體', KaiTi, serif;
+              
+
+   }
+
+   
+
+
+
+  .Right_Area .password_A,.password_B{
+              
+    position: relative;
+    right: -15px;
+    border: 2px solid;
+    border-radius: 8px;
+   width: 150px;
+  }
+
+  .Right_Area .password_A{
+
+    right: -38px;
+
+  }
+
+  .Right_Area .password_A:focus,.password_B:focus{
+
+    border: 6px solid;
+    border-radius: 8px;
+    border-color: red;
+  }
+
+
+
+
+   
    #Announcement_Box{
      font-family: Arial;
      padding: 40px ;
@@ -501,8 +568,42 @@
    .button-17.button-18.button-19:disabled {
      box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
    }
+   .appli-radio-buttons{
+    display: flex; /* 使用 flex 布局 */
+   }
+   .appli-radio-buttons input[type="radio"]{
+    margin-right: 10px; /* 设置单选按钮之间的间距 */
 
-   .Search_text{
+   }
+   .modal-body-employee .Context{
+    margin-right: 18px;
+    color:#d10d0d;
+    
+   }
+   .Post_Context{
+    border-radius: 15px;
+    border-style:none;
+    box-shadow: rgba(211, 18, 18, 0.2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+    box-sizing: border-box;
+
+    margin-left: 10px;
+    display: flex;
+
+   }
+   .Post_Context .Title{
+    writing-mode: vertical-lr; /* 将文本排列方向设置为垂直从左到右 */
+  text-orientation: upright; /* 控制文本的方向为正向 */
+   }
+   .Post_Context .Context{
+    
+    margin-right: 18px;
+    color:#d10d0d;
+    writing-mode: vertical-lr; /* 将文本排列方向设置为垂直从左到右 */
+    text-orientation: upright; /* 控制文本的方向为正向 */
+    white-space: normal; /* 控制文本换行方式为普通换行 */
+   }
+
+   .Search_text {
 
     
 
@@ -516,6 +617,10 @@
     
    }
 
+  .Mark_Div{
+    margin-left: 110px;
+  }
+
    .Top_button{
    
     margin: 10px 40px 0px 5px;
@@ -525,9 +630,9 @@
    
 
 
-.Inside_button
-{
-
-
-}
+   #Change_Box .button-17{
+    margin-top:25px;
+    color: rgb(14, 13, 13);
+    margin-left: 50%;
+  }
   

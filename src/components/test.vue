@@ -72,7 +72,6 @@ export default {
   },
   setup() {
     const store = useStore();
-
     const Login_Employee_Lv=store.state.Personnel_Attend.Login_Object.Account_Lv;
     const headers = ref([
 
@@ -134,6 +133,7 @@ export default {
       sortBy,
       searchField,
       searchName,
+      
       handleButtonClick,
       showRow,
     };
