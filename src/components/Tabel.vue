@@ -94,8 +94,8 @@
           <button
             type="button"
             class="btn btn-primary"
-            id="Save_Appli"
-            @click="Save_Appli()"
+            id="Post_Appli"
+            @click="Post_Appli"
             :disabled="Appli_Disable"
           >
             Save changes
@@ -127,14 +127,14 @@
     buttons-pagination
     :rows-per-page="10"
     show-index
-    v-model:items-selected="itemsSelected"
+    v-model:items-selected="Appli_itemsSelected"
     @click-row="showRow"
-    :headers="headers"
-    :items="tableData"
-    :sort-by="sortBy"
-    :sort-type="sortType"
-    :search-field="name"
-    :search-value="searchName"
+    :headers="Appli_headers"
+    :items="AppliTableData"
+    :sort-by="Appli_sortBy"
+    :sort-type="Appli_sortType"
+    :search-field="Appli_searchField"
+    :search-value="Appli_searchName"
     multi-sort
     theme-color="#1d90ff"
       table-class-name="customize-table"
@@ -143,14 +143,14 @@
     v-if="Login_Employee_Lv==0"
   > 
   
-  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 " #item-Pass="item">
+  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 " #item-Process="item">
           <button class="button-18" @click="handleButtonClick(item)">通過</button>
           <button class="button-19" @click="handleButtonClick(item)">不通過</button>
   
         </template>
   <template #expand="item">
         <div style="padding: 15px">
-          {{item.Nane}} won championships in {{item.championships.join(",")}}
+          員工:{{item.Emp_Name}}<br>剩餘時數為:{{item.Last_Time}}<br>申請時數:{{item.Appli_Time}}<br>扣除後時數:{{item.Apli_Total}}<br>申請備註:<br>
         </div>
       </template>
       <template #loading>
@@ -162,17 +162,20 @@
   </EasyDataTable>
   
    row clicked:<br />  {{ Appli_Object }}
+   {{ Appli_Objct_Export }}
     <div id="row-clicked"></div>
     
     </div>
   </template>
   
   <script>
-  import { onMounted,ref } from 'vue';
+  import { onMounted,ref, watch } from 'vue';
   // eslint-disable-next-line no-unused-vars
   import  { Header, Item } from "vue3-easy-data-table";
   // eslint-disable-next-line no-unused-vars
   import { useStore } from 'vuex';
+  import axios from "axios";
+// import Swal from "sweetalert2";
   
   
   export default {
@@ -181,14 +184,44 @@
     components: {
       EasyDataTable: require('vue3-easy-data-table').EasyDataTable,
     },
+    props:{
+      fatherALert:Function
+    },
 
-    setup() {
+    setup(props) {
       const store = useStore();
+
+      const Alert=(Msg,Key)=>{
+        props.fatherALert(Msg,Key);
+      };
+      
+      watch( () => store.state.Personnel_Attend.Appli_List,
+      (newValue) => {
+        AppliTableData.value=newValue;
+      });
+      
       const Login_Employee_Lv=store.state.Personnel_Attend.Login_Object.Account_Lv;
+      const Api_Url = store.state.Personnel_Attend.Attend_Api_Url;
       const { Emp_ID, Emp_Name, Department_Key, Last_Time } = store.state.Personnel_Attend.Login_Object;
       const Insert_Msg=ref("");
       const Raidio_Check=ref(true);
       const Appli_Disable=ref(true);
+      const Appli_Objct_Export=ref([]);
+      // const Appli_Objct_Export=ref({
+      //   Apli_Total: "",
+      //   Appli_Date: "",
+      //   Appli_Time: 0,
+      //   Check_State: "",
+      //   Department: "",
+      //   Emp_Key: "",
+      //   Emp_Name: "",
+      //   Last_Time: 0,
+      //   Reason: "",
+      //   Reason_Mark: "",
+      //   Review_Date: "",
+      //   Review_ID_Key: "",
+      //   id: "",
+      // })
       const Login_Object=ref({
       Emp_ID:"",
       Emp_Name:"",
@@ -205,29 +238,63 @@
         Appli_Time:"",
         Total_Time:"",
       })
-      const headers = ref([
-  
-        { text: 'Name', value: 'name' },
-        { text: 'Age', value: 'age',sortable: true},
-        { text: 'Time2', value: 'ages' },
-        { text: 'Time3', value: 'agea' },
-        { text: 'Time4', value: 'aged' },
-        { text: 'Time5', value: 'agefw' },
-        { text: 'Time6', value: 'aged' },
-        { text: '', value: 'Pass' },
-  
-  
-     
-  
-        
-        
+      const Appli_headers=ref([
+       
+        { text: 'Emp_Key', value: 'Emp_Key' },
+        { text: 'Emp_Name', value: 'Emp_Name' },
+        { text: 'Department', value: 'Department' },
+        { text: 'Reason', value: 'Reason' },
+        { text: 'Reason_Mark', value: 'Reason_Mark' },
+        { text: 'Appli_Time', value: 'Appli_Time' },
+        { text: 'Last_Time', value: 'Last_Time',sortable: true},
+        { text: 'Apli_Total', value: 'Apli_Total' },
+        { text: 'Appli_Date', value: 'Appli_Date' },
+        { text: 'Check_State', value: 'Check_State' },
+        { text: 'Process', value: 'Process' },
       ]);
-      const sortBy = ["age", "age"];
-      const sortType = ["desc", "asc"];
-      const itemsSelected= ref([]);
-      const searchField = ["name"];
-        const searchName = ref("");
-      
+
+      const Appli_sortBy = ["Appli_Time", "Last_Time"];
+      const Appli_sortType = ["desc", "asc"];
+      const Appli_itemsSelected= ref([]);
+      const Appli_searchField = ["Emp_Name"];
+        const Appli_searchName = ref("");
+
+
+
+      // const headers = ref([
+  
+      //   { text: 'Name', value: 'name' },
+      //   { text: 'Age', value: 'age',sortable: true},
+      //   { text: 'Time2', value: 'ages' },
+      //   { text: 'Time3', value: 'agea' },
+      //   { text: 'Time4', value: 'aged' },
+      //   { text: 'Time5', value: 'agefw' },
+      //   { text: 'Time6', value: 'aged' },
+      //   { text: '', value: 'Pass' },
+      // ]);
+      // const sortBy = ["age", "age"];
+      // const sortType = ["desc", "asc"];
+      // const itemsSelected= ref([]);
+      // const searchField = ["name"];
+      //   const searchName = ref("");
+      // const tableData = ref([
+      //   { id:1,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 30 },
+      //   { id:2,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
+      //   { id:3,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
+      //   { id:4,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 26 },
+      //   { id:5,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 24 },
+      //   { id:6,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 62 },
+      //   { id:7,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 25 },
+      //   { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
+      //   { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
+      //   { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 },
+      //   { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
+      //   { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
+      //   { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 }, 
+         
+  
+  
+      // ]);
   
   
   
@@ -244,6 +311,8 @@
           Appli_Object.value.Appli_Time=0
           Appli_Object.value.Total_Time=Last_Time;
           Time_Check(Appli_Object.value.Appli_Time);
+        }else if(Appli_Object.value.ReasonMark==""){
+          Raidio_Check.value=true;
         }
         else{
           Raidio_Check.value=false;
@@ -272,39 +341,56 @@
         }
       }
       const Msg_Event=()=>{
+
         console.log("reas"+Appli_Object.value.Reason+"appl"+Appli_Object.value.Appli_Time);
         if(isEmptyObject(Appli_Object) && Appli_Object.value.Reason!="Public_Holi" && Appli_Object.value.Appli_Time!=0 ){
           Insert_Msg.value="資料正確";
+          Appli_Disable.value=false;
         }else if(isEmptyObject(Appli_Object) && Appli_Object.value.Reason!="Public_Holi" && Appli_Object.value.Appli_Time==0 ){
           Insert_Msg.value="只有公假可為0";
+          Appli_Disable.value=true;
         }else if(isEmptyObject(Appli_Object)&& Appli_Object.value.Reason=="Public_Holi" && Appli_Object.value.Appli_Time==0){
           Insert_Msg.value="資料正確";
+          Appli_Disable.value=false;
         }else{
           Insert_Msg.value="資料不正確";
+          Appli_Disable.value=true;
+
 
         }
       }
-      const Save_Appli=()=>{
+      const Post_Appli=()=>{
+        {
+        axios
+          .post(Api_Url + "Insert_TimeData", {
+            Appli_Object: Appli_Object.value, // 員工物件
+          })
+
+          .then(function (response) {
+            if (response.data == "Sucess") {
+              Alert(response.data, "Sucess");
+              Appli_Object.value.Reason="";
+              Appli_Object.value.ReasonMark="";
+              Appli_Object.value.Appli_Time="";
+              Appli_Object.value.Total_Time=0;
+              Appli_Disable.value=true;
+              Insert_Msg.value="";
+
+            } else if (
+              response.data == "false" 
+            ) {
+              Alert(response.data, "fail");
+            }
+          })
+          .catch(function (error) {
+            Alert(error, "Error");
+          });
+      }
         
       }
-      const tableData = ref([
-        { id:1,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 30 },
-        { id:2,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
-        { id:3,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 30 },
-        { id:4,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 26 },
-        { id:5,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 24 },
-        { id:6,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 62 },
-        { id:7,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 25 },
-        { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
-        { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
-        { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 },
-        { id:8,"championships": [2017, 2018, 2019, 2022],name: 'John Doe', age: 60 },
-        { id:9,"championships": [2017, 2018, 2019, 2022],name: 'Jadne Doe', age: 85 },
-        { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 }, 
-         
-  
-  
-      ]);
+      const AppliTableData=ref([]);
+
+
 
       onMounted(() => {
         Login_Object.value={  Emp_ID, Emp_Name, Department_Key, Last_Time   };
@@ -312,25 +398,32 @@
         Appli_Object.value.Emp_ID=Emp_ID;
         Appli_Object.value.Employee=Emp_Name;
         Appli_Object.value.DepartMent=Department_Key;
+        store.state.Personnel_Attend.Appli_Object.Account_Lv == store.state.Personnel_Attend.Login_Employee_Lv;   //Appli固定物件資料
+        store.state.Personnel_Attend.Appli_Object.Export_Depart ==store.state.Personnel_Attend.DepartMent;//Appli固定物件資料
       });
       return {
         Login_Employee_Lv,
-        headers,
-        tableData,
-        itemsSelected,
-        sortType,
-        sortBy,
-        searchField,
-        searchName,
+    
+        Appli_headers,
+
+        AppliTableData,
+        Appli_sortBy,
+        Appli_sortType,
+        Appli_itemsSelected,
+        Appli_searchField,
+        Appli_searchName,
         Appli_Object,
         Login_Object,
         Insert_Msg,
         Raidio_Check,
         Appli_Disable,
+        Appli_Objct_Export,
         handleButtonClick,
         Time_Check,
         showRow,
         Radio_Event,
+        Post_Appli,
+        
       };
     },
   };

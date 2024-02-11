@@ -201,7 +201,10 @@ const state = {
     },
 
     Appli_Object:{   //申請處理物件
-      
+      Admin_Lv:99,
+      Export_Depart:"資訊室",
+      Export_State:"",
+      Export_Swicth:"",
     },
     Attend_Object:{ //審核處理物件
       Attend_Key:"",
@@ -242,6 +245,14 @@ const state = {
 
       }
     },
+    GET_Appli_All(state, Appli_Date) {
+      if(Appli_Date=="查無相關申請"){
+        state.Appli_List=["查無員工資料"];
+      }
+      else{
+        state.Appli_List=Appli_Date ;
+      }
+    },
   };
   
   const actions = {
@@ -249,7 +260,7 @@ const state = {
     setUser({ commit }, user) {
       commit('SET_USER', user);
     },
-
+  
 
     // 初始化部門
     getDepartment({ commit }) {
@@ -275,7 +286,7 @@ const state = {
     setDepartment(DepartMent) {
       {
         axios
-          .post( this.state.Attend_Api_Url+"Insert_Department"
+          .post( state.Attend_Api_Url+"Insert_Department"
           ,{DepartMent: DepartMent,
           })
   
@@ -312,8 +323,38 @@ const state = {
             }
           })
           .catch(function (error) {
-            alert(error);
-            
+            Swal.fire(error);
+          });
+        }
+
+      }
+
+    },
+
+
+    getAppli_All({ commit },State,Switch) {
+      {
+        state.Appli_Object.Export_State=State;
+        state.Appli_Object.Export_Swicth=Switch;
+        if(state.Login_Object.Account_Lv==0 || state.Login_Object.Account_Lv==1){
+          axios
+          .post( state.Attend_Api_Url+"Admin_Search_TimeData"
+          ,{    
+            Appli_Object_Post: state.Appli_Object, // 
+          })
+  
+          .then(function (response) {
+            if(response.data==null){
+              commit('GET_Appli_All', "查無相關申請");
+
+            }else{
+              commit('GET_Appli_All', response.data);
+              console.log(state.Appli_List);
+
+            }
+          })
+          .catch(function (error) {
+            Swal.fire(error);
           });
         }
 

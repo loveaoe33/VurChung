@@ -288,6 +288,12 @@
         <button class="btn-98">
           <span>新增公告</span>
         </button>
+        <button class="btn-98"  @click="Export_All_Applie">
+          <span>總單位已申請</span>
+        </button>
+        <button class="btn-98">
+          <span>總單位已審核</span>
+        </button>
 
         <div id="Left_Area_Department_box">
           <ol>
@@ -332,7 +338,8 @@
     </div>
     <div class="Mid_Area">
       <div id="Mid_Area_box">
-        <Table-component></Table-component>
+        <Table-component :fatherALert="Alert"></Table-component>
+
         <!-- <label class="form-check-label" for="flexRadioDefault2">使用者姓名:</label><input type="textbox" id="Employee_Name" class="form-control Employee_Name"placeholder="姓名"></br><label class="form-check-label" for="flexRadioDefault2">使用者帳號:</label><input type="textbox" id="Employee_Acount" class="form-control Employee_Acount"    placeholder="帳號"><br><label class="form-check-label" for="flexRadioDefault2">使用者密碼:</label><input type="password" id="Employee_Password" class="form-control Contextext Employee_Password"  placeholder="密碼"><br><label class="form-check-label" for="flexRadioDefault2">使用者權限:</label><input type="number" id="Employee_Level" class="form-control Contextext Employee_Level"    placeholder="權限等級"><br><label class="form-check-label" for="flexRadioDefault2">使用者部門:</label> <select class="form-select form-select-sm SelectItem Employee_Department" id="Employee_Department" ><option value="人事">人事</option><option value="行政">行政</option><option value="感控">感控</option><option value="健管">健管</option><option value="門診">門診</option><option value="放射">放射</option><option value="藥局">藥局</option><option value="櫃台">櫃台</option><option value="開刀房">開刀房</option><option value="護理部">護理部</option><option value="復健">復健</option></select> -->
 
         <div></div>
@@ -581,6 +588,9 @@ export default {
         Depart_Disable.value = false;
       }
     };
+    const Export_All_Applie=()=>{
+      store.dispatch("Personnel_Attend/getAppli_All","Process","ALL");
+    }
 
     const options = ref({
       // DataTable options can be configured here
@@ -604,6 +614,8 @@ export default {
       History_Data,
       Api_Url,
       // EmpMapState,
+      Alert,
+      Export_All_Applie,
       get_EmpLst,
       JsonParse,
       Tmpla_Init,
