@@ -263,6 +263,26 @@
        word-wrap: break-word;
    
    }
+   .Announcement-Employee{
+    font-family: '標楷體', KaiTi, serif;
+    color: rgb(9, 9, 9);
+    font-size: 18px;
+
+   }
+
+   .Announcement-Title{
+    font-family: '標楷體', KaiTi, serif;
+    color: rgb(9, 9, 9);
+    font-size: 18px;
+
+
+   }
+
+   .Announcement-Context{
+    font-family: '標楷體', KaiTi, serif;
+    color: rgb(255, 0, 0);
+    font-size: 16px;
+   }
    
    
    
@@ -276,7 +296,7 @@
      justify-content: center; /* 将内容水平居中 */
      align-items: center; /* 将内容垂直居中 */
    
-     animation: marquee 11s linear infinite, appear 2s linear 10s forwards;
+     animation: marquee 25s linear infinite, appear 2s linear 10s forwards;
    }
    
    .marquee-item {

@@ -184,6 +184,7 @@ const state = {
     Employee_List:["1hird item","2hird item"],   //部門員工資料
     Appli_List:[],      //申請列表
     Report_List:[],      //報表輸出
+    Announcement:[], //布告欄
     Employee_Object:{    //員工處理物件
       Emp_ID:"",
       Password:"",
@@ -233,7 +234,11 @@ const state = {
     GET_Department(state, DepartMent) {
       state.DepartMent=DepartMent;
    
-      console.log(DepartMent);
+    },
+    GET_Announcement(state, Announcement){
+      state.Announcement=Announcement;
+      // console.log(state.Announcement);
+
     },
     GET_Department_Employee(state, DepartMent_Employee) {
       if(DepartMent_Employee=="查無員工資料"){
@@ -301,6 +306,34 @@ const state = {
       }
 
     },
+
+        // 初始化布告欄
+        getAnnouncement({ commit }) {
+          {
+            axios
+              .post(state.Attend_Api_Url+"Announcement_List"
+              ,{
+              })
+      
+              .then(function (response) {
+                if(response.data==null)
+                {
+                  Swal.fire("公告取得錯誤");
+                }else{
+                  commit('GET_Announcement', response.data);
+
+                }
+              })
+              .catch(function (error) {
+                Swal.fire(error);              
+              });
+          }
+    
+        },
+
+    
+
+
 
     // admin帶入員工
     getDepartment_Employee({ commit },Depart_Key) {

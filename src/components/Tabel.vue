@@ -143,11 +143,15 @@
     v-if="Login_Employee_Lv==0"
   > 
   
-  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 " #item-Process="item">
+  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 && items.Check_State=='No_Process' " #item-Process="item">
           <button class="button-18" @click="handleButtonClick(item)">通過</button>
           <button class="button-19" @click="handleButtonClick(item)">不通過</button>
   
-        </template>
+  </template>
+  <template  v-else-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 && items.Check_State=='Process' " #item-Process="item">
+          <button class="button-19" @click="handleButtonClick(item)">註銷</button>  
+  </template>
+
   <template #expand="item">
         <div style="padding: 15px">
           員工:{{item.Emp_Name}}<br>剩餘時數為:{{item.Last_Time}}<br>申請時數:{{item.Appli_Time}}<br>扣除後時數:{{item.Apli_Total}}<br>申請備註:<br>

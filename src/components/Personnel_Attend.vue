@@ -1,4 +1,38 @@
 <template>
+
+<div class="modal fade" id="AnnouncementModal" tabindex="-1" aria-labelledby="AnnouncementModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AnnouncementModalLabel">公告新增</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Title:</label>
+            <input type="text"  v-model="Announcement.Announcement_Title" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" v-model="Announcement.Announcement_Context" id="message-text"></textarea>
+          </div>
+        </form>
+        <span class="Announcement-Title">已發布公告:</span><br><span class="Announcement-Context">123</span><br>
+        <span class="Announcement-Employee">發布人:</span><br><span class="Announcement-Context">{{ Announcement.Emp_Name }} </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="Save_Announcement('Insert')" >發布公告</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
   <div
     class="modal fade"
     id="DepartModal"
@@ -256,9 +290,11 @@
       <div id="Announcement_Box">
         <div class="marquee-container">
           <div class="marquee-content">
-            <div class="marquee-item">Item 1</div>
-            <div class="marquee-item">Item 2</div>
-            <div class="marquee-item">Item 3</div>
+            <div class="marquee-item"  v-for="(item, index) in Announcement_List"
+              :key="index">
+              {{ JsonParse(item,"Announcement") }}
+            </div>
+     
             <!-- 添加更多项目根据需要 -->
           </div>
         </div>
@@ -285,7 +321,8 @@
         <button class="btn-98">
           <span>編輯員工</span>
         </button>
-        <button class="btn-98">
+        <button class="btn-98" data-bs-toggle="modal" data-bs-target="#AnnouncementModal" data-bs-whatever="@mdo">
+
           <span>新增公告</span>
         </button>
         <button class="btn-98"  @click="Export_All_Applie">
@@ -405,6 +442,14 @@ export default {
     const Employee_List = ref([]);
     const Login_Object = store.state.Personnel_Attend.Login_Object;
     const Api_Url = store.state.Personnel_Attend.Attend_Api_Url;
+    const Announcement_List=ref([]);
+    const Announcement=ref({
+      Announcement_Id:"",
+      Emp_Name:store.state.Personnel_Attend.Login_Object.Emp_Name,
+      Announcement_Title:"",
+      Announcement_Context:"",
+      State_Key:"",
+    })
     const Insert_Employee = ref({
       Emp_Name: "",
       Emp_Account: "",
@@ -425,6 +470,8 @@ export default {
     const Emp_Disable = ref(true);
     const Tmpla_Init = () => {
       store.dispatch("Personnel_Attend/getDepartment");
+      store.dispatch("Personnel_Attend/getAnnouncement");
+
     };
     const Alert = (Msg, Key) => {
       if (Key == "Sucess") {
@@ -442,6 +489,13 @@ export default {
         Employee_List.value = newValue;
       }
     );
+    watch(
+      () => store.state.Personnel_Attend.Announcement,
+      (newValue) => {
+        // 在这里可以执行其他逻辑
+        Announcement_List.value = newValue;
+      }
+    );
 
     watch(
       () => store.state.Personnel_Attend.DepartMent,
@@ -452,12 +506,17 @@ export default {
     );
 
     const JsonParse = (JsonString, Switch_String) => {
+      console.log("解析後"+JsonString);
+
       try {
         let Proecess_String = JSON.parse(JsonString);
+        console.log("解析後"+Proecess_String);
         if (Switch_String == "Employee") {
           return `員工:${Proecess_String.Emp_ID}_${Proecess_String.Emp_Name}`;
         } else if (Switch_String == "Emp_Key") {
           return Proecess_String.Emp_ID;
+        } else if (Switch_String == "Announcement") {
+          return `【${Proecess_String.Title}】:${Proecess_String.Context}`;
         }
 
         //  return  (JsonString=="查無員工資料")?"查無員工資料":JSON.parse(JsonString)
@@ -503,6 +562,34 @@ export default {
       Depart.value = "";
       Depart_Disable.value = true;
     };
+    const Save_Announcement=(State_Key)=>{
+      Announcement.value.State_Key=State_Key;
+      if(Announcement.value.Announcement_Title=="" || Announcement.value.Announcement_Context==""){
+        Alert("不可為空","fail");
+      }else{
+        axios
+        .post(
+          Api_Url + "Announcement_Post",
+          { Announcement_Post: Announcement.value },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+           (response.data=="Sucess")?Alert(response.data,"Sucess"):Alert(response.data,"fail");
+           Announcement.value.Announcement_Title="";
+           Announcement.value.Announcement_Context="";
+           Announcement.value.State_Key="";
+           store.dispatch("Personnel_Attend/getAnnouncement");
+        })
+        .catch(function (error) {
+          Alert(error,"Error");
+        });
+      }
+      
+    }
     const Save_Depart = () => {
       axios
         .post(
@@ -599,7 +686,9 @@ export default {
     onMounted(() => {
       Tmpla_Init();
     });
-    onBeforeMount(() => {});
+    onBeforeMount(() => {
+
+    });
 
     return {
       Employee_List,
@@ -613,7 +702,10 @@ export default {
       Insert_Employee,
       History_Data,
       Api_Url,
+      Announcement,
+      Announcement_List,
       // EmpMapState,
+      Save_Announcement,
       Alert,
       Export_All_Applie,
       get_EmpLst,
