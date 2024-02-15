@@ -109,7 +109,7 @@
     <div>
       <h1>員工報表區</h1>
       <div class="Top_button">
-      <input type="text" class="Search_text" v-model="searchName">
+      <input type="text" class="Search_text" v-model="Appli_searchName">
 
       <button class="button-17" role="button">已申請</button>
       <button class="button-17" role="button">已審核</button>
@@ -139,18 +139,20 @@
     theme-color="#1d90ff"
       table-class-name="customize-table"
   
-    
-    v-if="Login_Employee_Lv==0"
-  > 
+    > 
   
-  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 && items.Check_State=='No_Process' " #item-Process="item">
-          <button class="button-18" @click="handleButtonClick(item)">通過</button>
-          <button class="button-19" @click="handleButtonClick(item)">不通過</button>
+  <template  v-if="Login_Employee_Lv==0 || Login_Employee_Lv==1  " #item-Process="item">
+    <div v-if="item.Check_State=='No_Process'">
+      <button class="button-18" @click="Pass_Button(item)">通過</button>
+          <button class="button-19" @click="NPass_Button(item)">不通過</button>
+    </div>
+    <div v-else-if="item.Check_State=='Process'">
+      <button class="button-19" @click="Cancel_Button(item)">註銷</button>
+
+        </div>
   
   </template>
-  <template  v-else-if="Login_Employee_Lv==0 || Login_Employee_Lv==1 && items.Check_State=='Process' " #item-Process="item">
-          <button class="button-19" @click="handleButtonClick(item)">註銷</button>  
-  </template>
+
 
   <template #expand="item">
         <div style="padding: 15px">
@@ -261,7 +263,7 @@
       const Appli_sortType = ["desc", "asc"];
       const Appli_itemsSelected= ref([]);
       const Appli_searchField = ["Emp_Name"];
-        const Appli_searchName = ref("");
+      const Appli_searchName = ref("");
 
 
 

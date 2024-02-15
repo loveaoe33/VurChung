@@ -20,7 +20,8 @@
             <textarea class="form-control" v-model="Announcement.Announcement_Context" id="message-text"></textarea>
           </div>
         </form>
-        <span class="Announcement-Title">已發布公告:</span><br><span class="Announcement-Context">123</span><br>
+        <span class="Announcement-Title">已發布公告:</span><br><span v-for="(item, index) in Announcement_List"
+              :key="index"><div v-if="JsonParse(item,'Create_Name')==Announcement.Emp_Name">   {{ JsonParse(item,"Announcement")  }} <button type="button" class="btn btn-primary Announcement_Delete" @click="Delete_Announcement(JsonParse(item,'id'),'Delete')" >刪除公告</button></div></span>
         <span class="Announcement-Employee">發布人:</span><br><span class="Announcement-Context">{{ Announcement.Emp_Name }} </span>
       </div>
       <div class="modal-footer">
@@ -328,7 +329,7 @@
         <button class="btn-98"  @click="Export_All_Applie">
           <span>總單位已申請</span>
         </button>
-        <button class="btn-98">
+        <button class="btn-98" @click="Export_All_review">
           <span>總單位已審核</span>
         </button>
 
@@ -517,7 +518,12 @@ export default {
           return Proecess_String.Emp_ID;
         } else if (Switch_String == "Announcement") {
           return `【${Proecess_String.Title}】:${Proecess_String.Context}`;
+        }else if (Switch_String == "id") {
+          return Proecess_String.id;
+        }else if (Switch_String == "Create_Name") {
+          return Proecess_String.Create_Name;
         }
+        
 
         //  return  (JsonString=="查無員工資料")?"查無員工資料":JSON.parse(JsonString)
       } catch (error) {
@@ -562,6 +568,33 @@ export default {
       Depart.value = "";
       Depart_Disable.value = true;
     };
+
+    const Delete_Announcement=(id,State_Key)=>{
+      Announcement.value.State_Key=State_Key;
+      Announcement.value.Announcement_Id=id;
+        axios
+        .post(
+          Api_Url + "Announcement_Post",
+          { Announcement_Post: Announcement.value },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+           (response.data=="Sucess")?Alert(response.data,"Sucess"):Alert(response.data,"fail");
+           Announcement.value.Announcement_Id="";
+           store.dispatch("Personnel_Attend/getAnnouncement");
+        })
+        .catch(function (error) {
+          Alert(error,"Error");
+        });
+    
+      
+    }
+
+
     const Save_Announcement=(State_Key)=>{
       Announcement.value.State_Key=State_Key;
       if(Announcement.value.Announcement_Title=="" || Announcement.value.Announcement_Context==""){
@@ -676,6 +709,9 @@ export default {
       }
     };
     const Export_All_Applie=()=>{
+      store.dispatch("Personnel_Attend/getAppli_All","No_Process","ALL");
+    }
+    const Export_All_review=()=>{
       store.dispatch("Personnel_Attend/getAppli_All","Process","ALL");
     }
 
@@ -708,6 +744,7 @@ export default {
       Save_Announcement,
       Alert,
       Export_All_Applie,
+      Export_All_review,
       get_EmpLst,
       JsonParse,
       Tmpla_Init,
@@ -716,6 +753,7 @@ export default {
       DepartClick,
       Check_Depart,
       Save_Depart,
+      Delete_Announcement,
     };
   },
 };
