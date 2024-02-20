@@ -202,7 +202,7 @@ const state = {
     },
 
     Appli_Object:{   //申請處理物件
-      Admin_Lv:99,
+      Admin_Lv:0,
       Export_Depart:"資訊室",
       Export_State:"",
       Export_Swicth:"",
@@ -230,6 +230,11 @@ const state = {
     // 模組的 mutations
     SET_USER(state, user) {
       state.user = user;
+    },
+    REMOVE_List(state,Index){
+      
+      let Array_Number=state.Appli_List.findIndex(item => item.id == Index);
+      (Array_Number!==-1)?state.Appli_List.splice(Array_Number,1):alert("索引刪除錯誤");
     },
     GET_Department(state, DepartMent) {
       state.DepartMent=DepartMent;
@@ -287,7 +292,7 @@ const state = {
 
     },
 
-    
+    //新增部門
     setDepartment(DepartMent) {
       {
         axios
@@ -364,11 +369,12 @@ const state = {
 
     },
 
-
+    //取得所有申請
     getAppli_All({ commit },State,Switch) {
       {
         state.Appli_Object.Export_State=State;
         state.Appli_Object.Export_Swicth=Switch;
+        state.Appli_Object.Admin_Lv=state.Login_Object.Account_Lv;
         if(state.Login_Object.Account_Lv==0 || state.Login_Object.Account_Lv==1){
           axios
           .post( state.Attend_Api_Url+"Admin_Search_TimeData"
@@ -394,11 +400,85 @@ const state = {
       }
 
     },
+   //員工取得申請
+    getAppli_Member({ commit },Member_Object_Post) {
+      {
 
+        axios
+        .post( state.Attend_Api_Url+"Member_Search_TimeData"
+        ,{    
+          Member_Object:Member_Object_Post,
+        })
+
+        .then(function (response) {
+          console.log(response);
+
+          if(response.data==null){
+            commit('GET_Appli_All', "查無相關申請");
+
+          }else{
+            commit('GET_Appli_All', response.data);
+            console.log(state.Appli_List);
+
+          }
+        })
+        .catch(function (error) {
+          Swal.fire(error);
+        });
+
+      }
+
+    },
+    //審核申請
+    Review_Appli: async ({ commit }, Review_Data) => {
+      try {
+        console.log(Review_Data.value);
+        const response = await axios.post(state.Attend_Api_Url + "Attend_TimeData", {
+          Attend_TimeData_Post: Review_Data.value,
+        });
     
+        console.log(response);
+    
+        if (response.data === "Error Key...") {
+          Swal.fire("員工Key對應錯誤");
+          return false;
+        } else {
+          Swal.fire("審核成功");
+          commit('REMOVE_List', Review_Data.value.Appli_Id);
+          alert(Review_Data.value.Appli_Id);
+          return true;
+        }
+      } catch (error) {
+        Swal.fire(error);
+        return false;
+      }
+    },
 
+        //審核取消
+        Cancel_Appli: async ({ commit }, Review_Data) => {
+          try {
+            console.log(Review_Data.value);
+            const response = await axios.post(state.Attend_Api_Url + "Cancel_Appli", {
+              Attend_TimeData_Post: Review_Data.value,
+            });
+        
+            console.log(response);
+        
+            if (response.data === "Sucess") {
+              Swal.fire("審核取消");
+              commit('REMOVE_List', Review_Data.value.Appli_Id);
+              return true;
+            } else {
+              Swal.fire("取消失敗");
+              return false;
+            }
+          } catch (error) {
+            Swal.fire(error);
+            return false;
+          }
+        }
 
-  };
+  }
 
   const getters = {
     // 模組的 getters

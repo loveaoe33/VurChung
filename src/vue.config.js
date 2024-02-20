@@ -1,11 +1,18 @@
 const webpack = require('webpack')
 const WebpackObfuscator = require('webpack-obfuscator');
 
-module.exports = { publicPath: process.env.NODE_ENV === 'production' ? '/my-project/' : '/' }
+module.exports = {    devServer: {
+    https: true,
+    port: 8081
+  }, publicPath: process.env.NODE_ENV === 'production' ? '/my-project/' : '/' }
 
 
 
 module.exports = {
+    devServer: {
+        https: true,
+        port: 8081
+      },
     //引入jquery
     chainWebpack: config => {
         publicPath: process.env.NODE_ENV === 'production' ? 'C:/Users/loveaoe33/dist' : './' 

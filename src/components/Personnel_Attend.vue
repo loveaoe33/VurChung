@@ -359,10 +359,13 @@
                 >
                   <span>總時數</span>
                 </button>
-                <button class="btn-98">
-                  <span>總申請</span>
+                <button class="btn-98"  @click="Member_Appli(JsonParse(item, 'Emp_Key'))">
+                  <span>新增特休</span> 
                 </button>
-                <button class="btn-98">
+                <button class="btn-98"  @click="Member_Appli(JsonParse(item, 'Emp_Key'))">
+                  <span>總申請</span> 
+                </button>
+                <button class="btn-98" @click="Member_Review(JsonParse(item, 'Emp_Key'))">
                   <span>總審核</span>
                 </button>
                 <button class="btn-98">
@@ -464,6 +467,11 @@ export default {
       End_Date: "",
       History_Select: "",
     });
+    const Member_Object_Post=ref({
+      State: "",
+      Emp_Key:"",
+      Switch:"",
+    })
     // const EmpMapState=mapState('Personnel_Attend', ['Employee_List']);
     const Insert_Msg = ref("");
     const Depart = ref("");
@@ -507,11 +515,9 @@ export default {
     );
 
     const JsonParse = (JsonString, Switch_String) => {
-      console.log("解析後"+JsonString);
 
       try {
         let Proecess_String = JSON.parse(JsonString);
-        console.log("解析後"+Proecess_String);
         if (Switch_String == "Employee") {
           return `員工:${Proecess_String.Emp_ID}_${Proecess_String.Emp_Name}`;
         } else if (Switch_String == "Emp_Key") {
@@ -715,6 +721,24 @@ export default {
       store.dispatch("Personnel_Attend/getAppli_All","Process","ALL");
     }
 
+
+    const Member_Appli=(item)=>{
+      Member_Object_Post.value.Emp_Key=item;
+      Member_Object_Post.value.State="No_Process"
+      Member_Object_Post.value.Switch="Member"
+
+      store.dispatch("Personnel_Attend/getAppli_Member",Member_Object_Post.value);
+
+    }
+    const Member_Review=(item)=>{
+
+      Member_Object_Post.value.Emp_Key=item;
+      Member_Object_Post.value.State="Process"
+      Member_Object_Post.value.Switch="Member"
+      store.dispatch("Personnel_Attend/getAppli_Member",Member_Object_Post.value);
+
+    }
+
     const options = ref({
       // DataTable options can be configured here
     });
@@ -741,6 +765,8 @@ export default {
       Announcement,
       Announcement_List,
       // EmpMapState,
+      Member_Appli,
+      Member_Review,
       Save_Announcement,
       Alert,
       Export_All_Applie,
