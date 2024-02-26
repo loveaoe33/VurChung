@@ -359,7 +359,7 @@
                 >
                   <span>總時數</span>
                 </button>
-                <button class="btn-98"  @click="Member_Appli(JsonParse(item, 'Emp_Key'))">
+                <button class="btn-98"  @click="Special_Button(JsonParse(item, 'Emp_Key'))">
                   <span>新增特休</span> 
                 </button>
                 <button class="btn-98"  @click="Member_Appli(JsonParse(item, 'Emp_Key'))">
@@ -449,7 +449,7 @@ export default {
     const Announcement_List=ref([]);
     const Announcement=ref({
       Announcement_Id:"",
-      Emp_Name:store.state.Personnel_Attend.Login_Object.Emp_Name,
+      Emp_Name:Login_Object.Emp_Name,
       Announcement_Title:"",
       Announcement_Context:"",
       State_Key:"",
@@ -460,7 +460,7 @@ export default {
       Emp_Password: "",
       Emp_Lv: "",
       Emp_Department: "",
-      Create_Emp: store.state.Personnel_Attend.Login_Object.Emp_Name,
+      Create_Emp: Login_Object.Emp_Name,
     });
     const History_Data = ref({
       Start_Date: "",
@@ -471,6 +471,13 @@ export default {
       State: "",
       Emp_Key:"",
       Switch:"",
+    })
+    const Special_Object=ref({
+      Emp_Key:"",
+      Manager:"",
+      State:"",
+      Remark:"",
+
     })
     // const EmpMapState=mapState('Personnel_Attend', ['Employee_List']);
     const Insert_Msg = ref("");
@@ -570,10 +577,31 @@ export default {
     };
     const Init_Depart = () => {
       Insert_Msg.value = "";
-
       Depart.value = "";
       Depart_Disable.value = true;
     };
+
+    const Special_Button=(item)=>{
+      Special_Object.value={ Emp_Key:item,Manager:Login_Object.EmpKey,State:"Special",Remark:""}
+      axios
+        .post(
+          Api_Url + "Select_Emp_Data",
+          { Emp_Key: item },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+           console.log(response.data);
+        })
+        .catch(function (error) {
+          Alert(error,"Error");
+        });
+
+      
+    }
 
     const Delete_Announcement=(id,State_Key)=>{
       Announcement.value.State_Key=State_Key;
@@ -764,6 +792,7 @@ export default {
       Api_Url,
       Announcement,
       Announcement_List,
+      Special_Object,
       // EmpMapState,
       Member_Appli,
       Member_Review,
@@ -780,6 +809,7 @@ export default {
       Check_Depart,
       Save_Depart,
       Delete_Announcement,
+      Special_Button,
     };
   },
 };

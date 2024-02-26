@@ -224,9 +224,7 @@
       </template>
     </EasyDataTable>
 
-    row clicked:<br />
-    {{ Appli_Object }}
-    {{ Appli_Objct_Export }}
+
     <div id="row-clicked"></div>
   </div>
 </template>
@@ -512,7 +510,7 @@ export default {
     const Cancel_Button = async(item, State) => {
       Review_Object(item, "Cancel", State);
       let Msg = await store.dispatch(
-        "Personnel_Attend/Review_Appli",
+        "Personnel_Attend/Cancel_Appli",
         Review_Data
       );
       Msg == true
