@@ -1,4 +1,45 @@
 <template>
+  {{ Special_Object }}
+
+  <div class="modal fade" id="SpecialModal" tabindex="-1" aria-labelledby="SpecialModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="SpecialModalLabel">特休新增</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">新增特休:</label>
+            <input type="number"  v-model="Special_Object.Plus_Special" placeholder="如需修正請輸入負數"  class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">備註:</label>
+            <textarea class="form-control" v-model="Special_Object.Remark" id="message-text"></textarea>
+          </div>
+        </form>
+        <span class="Special-Employee">員工訊息:</span><br><br>
+        <span class="Special-Context">
+          <label>【員工代號】:</label> {{ Special_Object.Emp_Key }}<br>
+          <label>【剩餘時數】:</label> {{ Special_Object.Last_Time }}<br>
+          <label>【剩餘特休】:</label> {{ Special_Object.Last_Special }}<br>
+          <label>【最後更新時間】:</label> {{ Special_Object.Last_UpdateTime }}<br><br>
+
+        </span>
+      
+        <span class="Special-Manager">審核主管:</span><span class="Special-Context">{{ Login_Object.Emp_Name }} </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="Special_Insert()" >新增特休</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade" id="AnnouncementModal" tabindex="-1" aria-labelledby="AnnouncementModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -22,7 +63,7 @@
         </form>
         <span class="Announcement-Title">已發布公告:</span><br><span v-for="(item, index) in Announcement_List"
               :key="index"><div v-if="JsonParse(item,'Create_Name')==Announcement.Emp_Name">   {{ JsonParse(item,"Announcement")  }} <button type="button" class="btn btn-primary Announcement_Delete" @click="Delete_Announcement(JsonParse(item,'id'),'Delete')" >刪除公告</button></div></span>
-        <span class="Announcement-Employee">發布人:</span><br><span class="Announcement-Context">{{ Announcement.Emp_Name }} </span>
+        <span class="Announcement-Employee">發布人:</span><span class="Announcement-Context">{{ Announcement.Emp_Name }} </span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -359,7 +400,7 @@
                 >
                   <span>總時數</span>
                 </button>
-                <button class="btn-98"  @click="Special_Button(JsonParse(item, 'Emp_Key'))">
+                <button class="btn-98"  data-bs-toggle="modal" data-bs-target="#SpecialModal" data-bs-whatever="@mdo" @click="Special_Button(JsonParse(item, 'Emp_Key'))">
                   <span>新增特休</span> 
                 </button>
                 <button class="btn-98"  @click="Member_Appli(JsonParse(item, 'Emp_Key'))">
@@ -425,6 +466,7 @@
     </div>
     <li v-for="(item, index) in Employee_List" :key="index"></li>
   </div>
+
 </template>
     
 <script>
@@ -474,9 +516,13 @@ export default {
     })
     const Special_Object=ref({
       Emp_Key:"",
+      Plus_Special:0,
       Manager:"",
       State:"",
       Remark:"",
+      Last_Time:"",
+      Last_Special:"",
+      Last_UpdateTime:"",
 
     })
     // const EmpMapState=mapState('Personnel_Attend', ['Employee_List']);
@@ -522,7 +568,7 @@ export default {
     );
 
     const JsonParse = (JsonString, Switch_String) => {
-
+       
       try {
         let Proecess_String = JSON.parse(JsonString);
         if (Switch_String == "Employee") {
@@ -581,8 +627,29 @@ export default {
       Depart_Disable.value = true;
     };
 
+    const Special_Insert=()=>{
+      axios
+        .post(
+          Api_Url + "Insert_Special_TimeData",
+          { Special_Object: Special_Object.value },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+          (response.data==true)?Alert(response.data,"Sucess"):Alert(response.data,"fail");
+        })
+        .catch(function (error) {
+          Alert(error,"Error");
+        });
+
+      
+    }
+
+
     const Special_Button=(item)=>{
-      Special_Object.value={ Emp_Key:item,Manager:Login_Object.EmpKey,State:"Special",Remark:""}
       axios
         .post(
           Api_Url + "Select_Emp_Data",
@@ -594,6 +661,8 @@ export default {
           }
         )
         .then(function (response) {
+          Special_Object.value={ Emp_Key:item,Manager:Login_Object.EmpKey,State:"Special",Remark:"",Last_Time: response.data.Last_Time,Last_Special:response.data.Special_Date,Last_UpdateTime:response.data.Update_Time}
+
            console.log(response.data);
         })
         .catch(function (error) {
@@ -810,6 +879,7 @@ export default {
       Save_Depart,
       Delete_Announcement,
       Special_Button,
+      Special_Insert,
     };
   },
 };

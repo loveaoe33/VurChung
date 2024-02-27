@@ -41,7 +41,7 @@
     will-change: transform,opacity;
     z-index: 0;
    }
-   .Announcement{
+   .Announcement {
    
      color:white;
      background: red;
@@ -49,6 +49,10 @@
      width: 100%;
      padding: 10px;
    }
+
+
+
+
    
    .Left_Area{
      position: relative;
@@ -297,14 +301,24 @@
        word-wrap: break-word;
    
    }
-   .Announcement-Employee{
+   .Announcement-Employee,.Special-Manager{
     font-family: '標楷體', KaiTi, serif;
     color: rgb(9, 9, 9);
     font-size: 18px;
 
    }
 
-   .Announcement-Title{
+  .Special-Context{
+    font-size: 16px;
+    color:red
+
+  }
+  .Special-Context label{
+    color:black
+
+  }
+
+   .Announcement-Title,.Special-Employee{
     font-family: '標楷體', KaiTi, serif;
     color: rgb(9, 9, 9);
     font-size: 18px;
