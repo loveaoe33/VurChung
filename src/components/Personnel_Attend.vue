@@ -1,5 +1,8 @@
 <template>
-  {{ Special_Object }}
+  
+  {{ Post_History }}
+
+
 
   <div class="modal fade" id="SpecialModal" tabindex="-1" aria-labelledby="SpecialModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -13,15 +16,16 @@
 
         <form>
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">新增特休:</label>
-            <input type="number"  v-model="Special_Object.Plus_Special" placeholder="如需修正請輸入負數"  class="form-control" id="recipient-name">
+            <label for="recipient-name" class="col-form-label Special_Title">新增特休:</label>
+            <input type="number"  v-model="Special_Object.Plus_Special"  class="form-control" id="recipient-name">
+            <label style="color:red">※如需修正請輸入負數</label>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">備註:</label>
             <textarea class="form-control" v-model="Special_Object.Remark" id="message-text"></textarea>
           </div>
         </form>
-        <span class="Special-Employee">員工訊息:</span><br><br>
+        <span class="Special-Employee">員工訊息:</span><br>
         <span class="Special-Context">
           <label>【員工代號】:</label> {{ Special_Object.Emp_Key }}<br>
           <label>【剩餘時數】:</label> {{ Special_Object.Last_Time }}<br>
@@ -285,7 +289,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">部門新增</h5>
+          <h5 class="modal-title" id="exampleModalLabel">歷史紀錄</h5>
           <button
             type="button"
             class="btn-close"
@@ -294,16 +298,51 @@
           ></button>
         </div>
         <div class="modal-body">
-          起始日期:<br /><input
+          起始日期:<input
             type="date"
             id="datepicker"
             name="datepicker"
-          /><br /><br />
-          終點日期:<br /><input
+            v-model="Post_History.Start"
+          />
+          終點日期:<input
             type="date"
             id="datepicker"
             name="datepicker"
+            v-model="Post_History.End"
+
           /><br /><br />
+          <div v-if="(Login_Object.Account_Lv==0 || Login_Object.Account_Lv==1) && Admin_Form==true" >
+          <span style="display: inline-block;">選擇部門:</span>
+            <select
+          
+            class="form-select form-select-sm SelectItem Post_History_Department"
+            id="Post_History_Department"
+            style="width:150px;display: inline-block;"
+            v-model="Post_History.Depart"
+          >
+            <option
+              v-for="option in Department_List"
+              :key="option"
+              :value="option"
+            >
+              {{ option }}
+            </option>
+          
+
+          </select>
+          
+
+          </div>
+          <div v-else>
+            <label v-for="(option, index ) in HistoryRadio" :key="index">
+            <input type="radio" :value="option" v-model="Post_History.State">
+            {{ option }}
+          </label><br><br>
+          </div>
+
+          
+
+          
           訊息:<span style="color: red">{{ Insert_Msg }}</span>
         </div>
         <div class="modal-footer">
@@ -317,10 +356,10 @@
           <button
             type="button"
             class="btn btn-primary"
-            id="Save_Depart"
-            :disabled="Depart_Disable"
+            id="Select_History"
+            @click="Post_HistoryData()"
           >
-            Save changes
+          查詢
           </button>
         </div>
       </div>
@@ -373,6 +412,9 @@
         <button class="btn-98" @click="Export_All_review">
           <span>總單位已審核</span>
         </button>
+        <button class="btn-98"  data-bs-toggle="modal" @click="Select_History(Login_Object.Emp_ID,'Admin')"   data-bs-target="#HistoryModal">
+          <span>歷史總紀錄</span>
+        </button>
 
         <div id="Left_Area_Department_box">
           <ol>
@@ -409,7 +451,7 @@
                 <button class="btn-98" @click="Member_Review(JsonParse(item, 'Emp_Key'))">
                   <span>總審核</span>
                 </button>
-                <button class="btn-98">
+                <button class="btn-98"   data-bs-toggle="modal"  @click="Select_History(JsonParse(item, 'Emp_Key'),'Employee')"  data-bs-target="#HistoryModal" data-bs-whatever="@mdo">
                   <span>歷史</span>
                 </button>
               </span>
@@ -484,9 +526,19 @@ export default {
   setup() {
     // eslint-disable-next-line no-unused-vars
     const store = useStore();
+    const HistoryRadio=ref(["申請歷史","審核歷史"])
+    const Post_History=ref({
+      Emp_Key:"",
+      Depart:"",
+      Start:"",
+      End:"",
+      State:"",
+      Select_State:"",
+    })
     const Department_List = ref([]);
     const Employee_List = ref([]);
     const Login_Object = store.state.Personnel_Attend.Login_Object;
+    const Admin_Form=ref(false);
     const Api_Url = store.state.Personnel_Attend.Attend_Api_Url;
     const Announcement_List=ref([]);
     const Announcement=ref({
@@ -495,6 +547,7 @@ export default {
       Announcement_Title:"",
       Announcement_Context:"",
       State_Key:"",
+      Select_State:"",
     })
     const Insert_Employee = ref({
       Emp_Name: "",
@@ -535,6 +588,15 @@ export default {
       store.dispatch("Personnel_Attend/getAnnouncement");
 
     };
+    const DateCheck=(Start,End)=>{
+      if(Start=="" || End==""){
+        Alert("日期內容不可為空","fail")
+        return false;
+      }else{
+        (Start>End)?Alert(`結束日期:${End}不可小於起始日期:${Start}`,"fail"):true;
+      }
+    }
+      
     const Alert = (Msg, Key) => {
       if (Key == "Sucess") {
         Swal.fire(`成功:${Msg}`, "", "success");
@@ -566,6 +628,33 @@ export default {
         Department_List.value = newValue;
       }
     );
+    const Post_HistoryData=()=>{
+      console.log(DateCheck(Post_History.value.Start,Post_History.value.End));
+      if(Post_History.value.State=="Admin")
+      {
+
+        alert("ad");
+      }else if(Post_History.value.State=="Employee"){
+        alert("ad");
+
+      }
+    }
+    const Select_History=(Emp_Key,Switch)=>{
+      Post_History.value.Emp_Key=Emp_Key;
+      Post_History.value.Select_State=Switch;
+      if(Switch=="Admin"){
+        Admin_Form.value=true;
+        
+
+      }else if(Switch=="Employee")
+      {
+        Admin_Form.value=false;
+        Post_History.value.Depart="";
+
+
+      }
+     
+    }
 
     const JsonParse = (JsonString, Switch_String) => {
        
@@ -628,7 +717,8 @@ export default {
     };
 
     const Special_Insert=()=>{
-      axios
+      if(Special_Object.value.Plus_Special!=="" & Special_Object.value.Plus_Special!==0 ){
+        axios
         .post(
           Api_Url + "Insert_Special_TimeData",
           { Special_Object: Special_Object.value },
@@ -640,11 +730,17 @@ export default {
         )
         .then(function (response) {
           (response.data==true)?Alert(response.data,"Sucess"):Alert(response.data,"fail");
+          Special_Button(Special_Object.value.Emp_Key);
         })
         .catch(function (error) {
           Alert(error,"Error");
         });
 
+      }else{
+        Alert("天數不可為空或0", "fail");
+
+      }
+      
       
     }
 
@@ -661,7 +757,7 @@ export default {
           }
         )
         .then(function (response) {
-          Special_Object.value={ Emp_Key:item,Manager:Login_Object.EmpKey,State:"Special",Remark:"",Last_Time: response.data.Last_Time,Last_Special:response.data.Special_Date,Last_UpdateTime:response.data.Update_Time}
+          Special_Object.value={ Emp_Key:item,Plus_Special:0,Manager:Login_Object.Emp_ID,State:"Special",Remark:"",Last_Time: response.data.Last_Time,Last_Special:response.data.Special_Date,Last_UpdateTime:response.data.Update_Time}
 
            console.log(response.data);
         })
@@ -836,6 +932,9 @@ export default {
 
     }
 
+
+
+
     const options = ref({
       // DataTable options can be configured here
     });
@@ -862,7 +961,12 @@ export default {
       Announcement,
       Announcement_List,
       Special_Object,
+      Post_History,
+      HistoryRadio,
+      Admin_Form,
       // EmpMapState,
+      Select_History,
+      Post_HistoryData,
       Member_Appli,
       Member_Review,
       Save_Announcement,

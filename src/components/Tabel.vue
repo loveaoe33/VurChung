@@ -132,7 +132,6 @@
     </div>
   </div>
 
-  <div>
     <h1>員工報表區</h1>
     <div class="Top_button">
       <input type="text" class="Search_text" v-model="Appli_searchName" />
@@ -226,7 +225,7 @@
 
 
     <div id="row-clicked"></div>
-  </div>
+
 </template>
   
   <script>

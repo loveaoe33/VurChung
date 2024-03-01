@@ -197,7 +197,7 @@
        height: 100%;
        border-radius: 10px;
        box-shadow: 0 0 0 5px rgb(236, 5, 5);
-       overflow: hidden;
+       overflow: auto;
        word-wrap: break-word;
    
    
@@ -321,7 +321,7 @@
    .Announcement-Title,.Special-Employee{
     font-family: '標楷體', KaiTi, serif;
     color: rgb(9, 9, 9);
-    font-size: 18px;
+    font-size: 20px;
 
 
    }
@@ -695,7 +695,8 @@
    
     margin: 10px 40px 0px 5px;
     display:flex;
-   }
+     }
+
 
    
 
