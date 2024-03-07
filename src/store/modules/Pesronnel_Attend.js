@@ -429,6 +429,98 @@ const state = {
       }
 
     },
+
+
+
+       //員工取得歷史申請
+       getDate_Appli({ commit },Member_Object_Post) {
+        {
+  
+          axios
+          .post( state.Attend_Api_Url+"Member_Search_TimeData"
+          ,{    
+            Member_Object:Member_Object_Post,
+          })
+  
+          .then(function (response) {
+            console.log(response);
+  
+            if(response.data==null){
+              commit('GET_Appli_All', "查無相關申請");
+  
+            }else{
+              commit('GET_Appli_All', response.data);
+              console.log(state.Appli_List);
+  
+            }
+          })
+          .catch(function (error) {
+            Swal.fire(error);
+          });
+  
+        }
+  
+      },
+
+
+       //員工取得歷史審核
+       getDate_Review({ commit },Member_Object_Post) {
+      {
+
+        axios
+        .post( state.Attend_Api_Url+"Member_Search_TimeData"
+        ,{    
+          Member_Object:Member_Object_Post,
+        })
+
+        .then(function (response) {
+          console.log(response);
+
+          if(response.data==null){
+            commit('GET_Appli_All', "查無相關申請");
+
+          }else{
+            commit('GET_Appli_All', response.data);
+            console.log(state.Appli_List);
+
+          }
+        })
+        .catch(function (error) {
+          Swal.fire(error);
+        });
+
+      }
+
+    }, 
+       //取得所有log
+       getDepart_DateAllLog({ commit },Member_Object_Post) {
+      {
+
+        axios
+        .post( state.Attend_Api_Url+"Member_Search_TimeData"
+        ,{    
+          Member_Object:Member_Object_Post,
+        })
+
+        .then(function (response) {
+          console.log(response);
+
+          if(response.data==null){
+            commit('GET_Appli_All', "查無相關申請");
+
+          }else{
+            commit('GET_Appli_All', response.data);
+            console.log(state.Appli_List);
+
+          }
+        })
+        .catch(function (error) {
+          Swal.fire(error);
+        });
+
+      }
+
+    },
     //審核申請
     Review_Appli: async ({ commit }, Review_Data) => {
       try {
@@ -442,7 +534,10 @@ const state = {
         if (response.data === "Error Key...") {
           Swal.fire("員工Key對應錯誤");
           return false;
-        } else {
+        }else if(response.data =="false"){
+          Swal.fire("審核失敗");
+          return false;
+        }else {
           Swal.fire("審核成功");
           commit('REMOVE_List', Review_Data.value.Appli_Id);
           alert(Review_Data.value.Appli_Id);

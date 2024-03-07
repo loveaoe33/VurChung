@@ -2,7 +2,7 @@
   
   {{ Post_History }}
 
-
+<div class="background">
 
   <div class="modal fade" id="SpecialModal" tabindex="-1" aria-labelledby="SpecialModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -462,7 +462,7 @@
     </div>
     <div class="Mid_Area">
       <div id="Mid_Area_box">
-        <Table-component :fatherALert="Alert"></Table-component>
+        <Table-component :fatherALert="Alert" :HistoryFunction="Select_History"  :Review="Member_Review" :Appli="Member_Appli"></Table-component>
 
         <!-- <label class="form-check-label" for="flexRadioDefault2">使用者姓名:</label><input type="textbox" id="Employee_Name" class="form-control Employee_Name"placeholder="姓名"></br><label class="form-check-label" for="flexRadioDefault2">使用者帳號:</label><input type="textbox" id="Employee_Acount" class="form-control Employee_Acount"    placeholder="帳號"><br><label class="form-check-label" for="flexRadioDefault2">使用者密碼:</label><input type="password" id="Employee_Password" class="form-control Contextext Employee_Password"  placeholder="密碼"><br><label class="form-check-label" for="flexRadioDefault2">使用者權限:</label><input type="number" id="Employee_Level" class="form-control Contextext Employee_Level"    placeholder="權限等級"><br><label class="form-check-label" for="flexRadioDefault2">使用者部門:</label> <select class="form-select form-select-sm SelectItem Employee_Department" id="Employee_Department" ><option value="人事">人事</option><option value="行政">行政</option><option value="感控">感控</option><option value="健管">健管</option><option value="門診">門診</option><option value="放射">放射</option><option value="藥局">藥局</option><option value="櫃台">櫃台</option><option value="開刀房">開刀房</option><option value="護理部">護理部</option><option value="復健">復健</option></select> -->
 
@@ -508,7 +508,7 @@
     </div>
     <li v-for="(item, index) in Employee_List" :key="index"></li>
   </div>
-
+</div>
 </template>
     
 <script>
@@ -628,18 +628,21 @@ export default {
         Department_List.value = newValue;
       }
     );
-    const Post_HistoryData=()=>{
+    const Post_HistoryData=(Url)=>{
       console.log(DateCheck(Post_History.value.Start,Post_History.value.End));
       if(Post_History.value.State=="Admin")
       {
-
+        store.dispatch('Personnel_Attend/getDepart_DateAllLog');
         alert("ad");
       }else if(Post_History.value.State=="Employee"){
+        store.dispatch(`Personnel_Attend/getDate_${Url}`);
+
         alert("ad");
 
       }
     }
     const Select_History=(Emp_Key,Switch)=>{
+      
       Post_History.value.Emp_Key=Emp_Key;
       Post_History.value.Select_State=Switch;
       if(Switch=="Admin"){
@@ -917,6 +920,8 @@ export default {
 
     const Member_Appli=(item)=>{
       Member_Object_Post.value.Emp_Key=item;
+   
+
       Member_Object_Post.value.State="No_Process"
       Member_Object_Post.value.Switch="Member"
 

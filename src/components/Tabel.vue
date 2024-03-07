@@ -136,8 +136,8 @@
     <div class="Top_button">
       <input type="text" class="Search_text" v-model="Appli_searchName" />
 
-      <button class="button-17" role="button">已申請</button>
-      <button class="button-17" role="button">已審核</button>
+      <button class="button-17" @click="HistorySwicth(Login_Object.Emp_ID,'Appli')" role="button">已申請</button>
+      <button class="button-17" @click="HistorySwicth(Login_Object.Emp_ID,'Review')" role="button">已審核</button>
 
       <button
         class="button-17"
@@ -154,6 +154,7 @@
         role="button"
         data-bs-toggle="modal"
         data-bs-target="#HistoryModal"
+        @click="History(Login_Object.Emp_ID,'Employee')"
       >
         列印歷史總紀錄
       </button>
@@ -245,14 +246,29 @@ export default {
   },
   props: {
     fatherALert: Function,
+    HistoryFunction:Function,
+    Review:Function,
+    Appli:Function,
   },
 
   setup(props) {
     const store = useStore();
+    
 
     const Alert = (Msg, Key) => {
       props.fatherALert(Msg, Key);
     };
+
+    
+    const HistorySwicth=(Emp_Key,Switch)=>{
+      (Switch=="Appli")? props.Appli(Emp_Key):props.Review(Emp_Key);
+    }
+
+    const History = (Emp_Key,Switch)=>{
+      props.HistoryFunction(Emp_Key,Switch);
+    }
+
+  
 
     watch(
       () => store.state.Personnel_Attend.Appli_List,
@@ -556,6 +572,8 @@ export default {
       showRow,
       Radio_Event,
       Post_Appli,
+      History,
+      HistorySwicth,
     };
   },
 };
