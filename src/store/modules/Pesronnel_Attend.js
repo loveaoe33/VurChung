@@ -437,15 +437,18 @@ const state = {
         {
   
           axios
-          .post( state.Attend_Api_Url+"Member_Search_TimeData"
+          .post( state.Attend_Api_Url+"SearchEmployee_TimeData_Appli"
           ,{    
             Member_Object:Member_Object_Post,
           })
   
           .then(function (response) {
             console.log(response);
-  
-            if(response.data==null){
+            if(response.data=='false'){
+              Swal.fire("伺服器發生錯誤請洽詢");
+
+            }
+            else if(response.data=='找無資料'){
               commit('GET_Appli_All', "查無相關申請");
   
             }else{
@@ -466,9 +469,9 @@ const state = {
        //員工取得歷史審核
        getDate_Review({ commit },Member_Object_Post) {
       {
-
+        alert("審核");
         axios
-        .post( state.Attend_Api_Url+"Member_Search_TimeData"
+        .post( state.Attend_Api_Url+"SearchEmployee_TimeData_Review"
         ,{    
           Member_Object:Member_Object_Post,
         })
@@ -476,7 +479,7 @@ const state = {
         .then(function (response) {
           console.log(response);
 
-          if(response.data==null){
+          if(response.data=="找無資料"){
             commit('GET_Appli_All', "查無相關申請");
 
           }else{
@@ -494,10 +497,17 @@ const state = {
     }, 
        //取得所有log
        getDepart_DateAllLog({ commit },Member_Object_Post) {
-      {
-
+      { 
+        let url=state.Attend_Api_Url;
+        if(Member_Object_Post.Depart!=="")
+        {
+          url=url+"SearchDepart_TimeData_Log";
+        }else{
+          url=url+"SearchDepart_TimeData_AllLog";
+        }
+        alert(url)
         axios
-        .post( state.Attend_Api_Url+"Member_Search_TimeData"
+        .post( url
         ,{    
           Member_Object:Member_Object_Post,
         })
@@ -505,7 +515,7 @@ const state = {
         .then(function (response) {
           console.log(response);
 
-          if(response.data==null){
+          if(response.data=="找無資料"){
             commit('GET_Appli_All', "查無相關申請");
 
           }else{

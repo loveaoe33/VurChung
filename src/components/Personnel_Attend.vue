@@ -381,7 +381,6 @@
         </div>
       </div>
 
-      <h1>123</h1>
     </div>
     <div class="Left_Area">
       <div id="Left_Area_box">
@@ -593,7 +592,7 @@ export default {
         Alert("日期內容不可為空","fail")
         return false;
       }else{
-        (Start>End)?Alert(`結束日期:${End}不可小於起始日期:${Start}`,"fail"):true;
+        return (Start>End)?Alert(`結束日期:${End}不可小於起始日期:${Start}`,"fail"):true;
       }
     }
       
@@ -628,18 +627,17 @@ export default {
         Department_List.value = newValue;
       }
     );
-    const Post_HistoryData=(Url)=>{
-      console.log(DateCheck(Post_History.value.Start,Post_History.value.End));
-      if(Post_History.value.State=="Admin")
+    const Post_HistoryData=()=>{
+      if(DateCheck(Post_History.value.Start,Post_History.value.End)){
+        if(Post_History.value.Select_State=="Admin")
       {
-        store.dispatch('Personnel_Attend/getDepart_DateAllLog');
-        alert("ad");
-      }else if(Post_History.value.State=="Employee"){
-        store.dispatch(`Personnel_Attend/getDate_${Url}`);
-
-        alert("ad");
-
+        store.dispatch('Personnel_Attend/getDepart_DateAllLog',Post_History.value);
+      }else if(Post_History.value.Select_State=="Employee"){
+        const Url=(Post_History.value.State=="申請歷史")?"Appli":"Review";
+        store.dispatch(`Personnel_Attend/getDate_${Url}`,Post_History.value);
       }
+      }
+
     }
     const Select_History=(Emp_Key,Switch)=>{
       
