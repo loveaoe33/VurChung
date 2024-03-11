@@ -197,14 +197,13 @@
             不通過
           </button>
         </div>
-        <div v-else-if="item.Check_State == 'Process'">
+        <div v-else-if="item.Check_State == 'Process' && item.Review_Result==='Pass'">
           <button class="button-19" @click="Cancel_Button(item)">註銷</button>
         </div>
       </template>
       <template v-else #item-Process="item">
         <div v-if="item.Check_State == 'No_Process'"></div>
         <div v-else-if="item.Check_State == 'Process'">
-          <h1>{{ item.Check_State }}</h1>
         </div>
       </template>
 
@@ -328,9 +327,11 @@ export default {
       { text: "Apli_Total", value: "Apli_Total" },
       { text: "Appli_Date", value: "Appli_Date" },
       { text: "Check_State", value: "Check_State" },
+      { text: "Review_Result", value: "Review_Result" },
       { text: "Process", value: "Process" },
     ]);
 
+    
     const Appli_sortBy = ["Appli_Time", "Last_Time"];
     const Appli_sortType = ["desc", "asc"];
     const Appli_itemsSelected = ref([]);

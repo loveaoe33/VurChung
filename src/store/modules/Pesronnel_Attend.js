@@ -197,7 +197,7 @@ const state = {
       Emp_ID:"E0010",
       Emp_Name:"黃立帆",
       Department_Key:"資訊部",
-      Account_Lv:0,
+      Account_Lv:2,
       Last_Time:5,
     },
 
@@ -469,7 +469,6 @@ const state = {
        //員工取得歷史審核
        getDate_Review({ commit },Member_Object_Post) {
       {
-        alert("審核");
         axios
         .post( state.Attend_Api_Url+"SearchEmployee_TimeData_Review"
         ,{    
@@ -477,7 +476,7 @@ const state = {
         })
 
         .then(function (response) {
-          console.log(response);
+          console.log(response.data);
 
           if(response.data=="找無資料"){
             commit('GET_Appli_All', "查無相關申請");

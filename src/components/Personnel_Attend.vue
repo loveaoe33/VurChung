@@ -343,7 +343,6 @@
           
 
           
-          訊息:<span style="color: red">{{ Insert_Msg }}</span>
         </div>
         <div class="modal-footer">
           <button
@@ -382,7 +381,7 @@
       </div>
 
     </div>
-    <div class="Left_Area">
+    <div v-if="Login_Object.Account_Lv===0 || Login_Object.Account_Lv===1" class="Left_Area">
       <div id="Left_Area_box">
         <button
           class="btn-98"
@@ -459,7 +458,7 @@
         </div>
       </div>
     </div>
-    <div class="Mid_Area">
+    <div class="Mid_Area" id="Mid_Area">
       <div id="Mid_Area_box">
         <Table-component :fatherALert="Alert" :HistoryFunction="Select_History"  :Review="Member_Review" :Appli="Member_Appli"></Table-component>
 
@@ -531,7 +530,7 @@ export default {
       Depart:"",
       Start:"",
       End:"",
-      State:"",
+      State:"申請歷史",
       Select_State:"",
     })
     const Department_List = ref([]);
@@ -638,6 +637,18 @@ export default {
       }
       }
 
+    }
+    const templateArea=()=>{
+      const divClass=document.getElementById("Mid_Area");
+
+      if(Login_Object.Account_Lv>1)
+      {
+      divClass.style.width="80%";
+      }else{
+        divClass.style.width="60%";
+
+      }
+     
     }
     const Select_History=(Emp_Key,Switch)=>{
       
@@ -944,9 +955,10 @@ export default {
 
     onMounted(() => {
       Tmpla_Init();
+      templateArea();
     });
     onBeforeMount(() => {
-
+      
     });
 
     return {
@@ -968,6 +980,7 @@ export default {
       HistoryRadio,
       Admin_Form,
       // EmpMapState,
+      templateArea,
       Select_History,
       Post_HistoryData,
       Member_Appli,
