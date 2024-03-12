@@ -161,7 +161,6 @@
       <div class="Mark_Div">
         <input
           type="textbox"
-          maxlength="2"
           class="form-control Mark_text"
           v-model="Review_Data.Time_Mark"
           placeholder="備註"
@@ -207,14 +206,21 @@
         </div>
       </template>
 
-      <template #expand="item">
+      <template  #expand="item">
         <div style="padding: 15px">
           員工:{{ item.Emp_Name }}<br />剩餘時數為:{{ item.Last_Time
           }}<br />申請時數:{{ item.Appli_Time }}<br />扣除後時數:{{
             item.Apli_Total
-          }}<br />申請備註:<br />
+          }}<br />申請備註:{{ item.Reason_Mark }}<br/>審核備註:{{ item.Time_Mark }}
+        
+
         </div>
       </template>
+      
+
+
+
+
       <template #loading>
         <img
           src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"

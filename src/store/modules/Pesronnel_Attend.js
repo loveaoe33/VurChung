@@ -197,13 +197,13 @@ const state = {
       Emp_ID:"E0010",
       Emp_Name:"黃立帆",
       Department_Key:"資訊部",
-      Account_Lv:2,
+      Account_Lv:0,
       Last_Time:5,
     },
 
     Appli_Object:{   //申請處理物件
       Admin_Lv:0,
-      Export_Depart:"資訊室",
+      Export_Depart:"資訊部",
       Export_State:"",
       Export_Swicth:"",
     },
@@ -375,6 +375,7 @@ const state = {
         state.Appli_Object.Export_State=State;
         state.Appli_Object.Export_Swicth=Switch;
         state.Appli_Object.Admin_Lv=state.Login_Object.Account_Lv;
+        state.Appli_Object.Export_Depart=state.Login_Object.Department_Key;
         if(state.Login_Object.Account_Lv==0 || state.Login_Object.Account_Lv==1){
           axios
           .post( state.Attend_Api_Url+"Admin_Search_TimeData"
@@ -504,7 +505,6 @@ const state = {
         }else{
           url=url+"SearchDepart_TimeData_AllLog";
         }
-        alert(url)
         axios
         .post( url
         ,{    
