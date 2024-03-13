@@ -594,7 +594,10 @@ export default {
         return (Start>End)?Alert(`結束日期:${End}不可小於起始日期:${Start}`,"fail"):true;
       }
     }
-      
+    const TableSwitch=(Key)=>{
+     (Key=="default")?store.state.Personnel_Attend.TabelState="default":store.state.Personnel_Attend.TabelState="Log";//切換Table
+
+    }
     const Alert = (Msg, Key) => {
       if (Key == "Sucess") {
         Swal.fire(`成功:${Msg}`, "", "success");
@@ -630,8 +633,10 @@ export default {
       if(DateCheck(Post_History.value.Start,Post_History.value.End)){
         if(Post_History.value.Select_State=="Admin")
       {
+        TableSwitch("Log");
         store.dispatch('Personnel_Attend/getDepart_DateAllLog',Post_History.value);
       }else if(Post_History.value.Select_State=="Employee"){
+        TableSwitch("default");
         const Url=(Post_History.value.State=="申請歷史")?"Appli":"Review";
         store.dispatch(`Personnel_Attend/getDate_${Url}`,Post_History.value);
       }
@@ -928,17 +933,15 @@ export default {
 
 
     const Member_Appli=(item)=>{
+      TableSwitch("default")
       Member_Object_Post.value.Emp_Key=item;
-   
-
       Member_Object_Post.value.State="No_Process"
       Member_Object_Post.value.Switch="Member"
-
       store.dispatch("Personnel_Attend/getAppli_Member",Member_Object_Post.value);
 
     }
     const Member_Review=(item)=>{
-
+      TableSwitch("default");
       Member_Object_Post.value.Emp_Key=item;
       Member_Object_Post.value.State="Process"
       Member_Object_Post.value.Switch="Member"

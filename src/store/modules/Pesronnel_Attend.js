@@ -180,6 +180,7 @@ const state = {
     // 模組的狀態
     Attend_Api_Url:"http://localhost:8080/AttendController/",
     user: null,
+    TabelState:"default",
     DepartMent: ["123"],    //部門
     Employee_List:["1hird item","2hird item"],   //部門員工資料
     Appli_List:[],      //申請列表

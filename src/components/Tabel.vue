@@ -148,7 +148,7 @@
         申請加班/補休
       </button>
 
-      <button class="button-17" role="button">列印此頁面</button>
+      <button class="button-17" role="button" @click="printExcel()">列印此頁面</button>
       <button
         class="button-17"
         role="button"
@@ -167,8 +167,7 @@
         />
       </div>
     </div>
-
-    <EasyDataTable
+    <EasyDataTable v-if="Tabel_Switch=='default'"
       buttons-pagination
       :rows-per-page="5"
       show-index
@@ -228,7 +227,18 @@
         />
       </template>
     </EasyDataTable>
-
+    <EasyDataTable v-else-if="Tabel_Switch=='Log'"
+      buttons-pagination
+      :rows-per-page="5"
+      show-index
+      @click-row="showRow"
+      :headers="History_Log_Header"
+      :items="AppliTableData"
+      multi-sort
+      theme-color="#1d90ff"
+      table-class-name="customize-table"
+    >
+  </EasyDataTable>
 
     <div id="row-clicked"></div>
 
@@ -241,6 +251,7 @@ import { Header, Item } from "vue3-easy-data-table";
 // eslint-disable-next-line no-unused-vars
 import { useStore } from "vuex";
 import axios from "axios";
+import * as XLSX from "xlsx";
 // import Swal from "sweetalert2";
 
 export default {
@@ -273,14 +284,23 @@ export default {
       props.HistoryFunction(Emp_Key,Switch);
     }
 
-  
+    const Tabel_Switch=ref("default");
 
     watch(
       () => store.state.Personnel_Attend.Appli_List,
       (newValue) => {
+        
         AppliTableData.value = newValue;
       }
     );
+
+    watch(
+      () => store.state.Personnel_Attend.TabelState,
+      (newValue) => {
+        Tabel_Switch.value=newValue;
+      }
+    );
+
 
     const Login_Employee_Lv =
       store.state.Personnel_Attend.Login_Object.Account_Lv;
@@ -322,6 +342,7 @@ export default {
       Appli_Time: "",
       Total_Time: "",
     });
+    const AppliTableData = ref([]);
     const Appli_headers = ref([
       { text: "Emp_Key", value: "Emp_Key" },
       { text: "Emp_Name", value: "Emp_Name" },
@@ -336,8 +357,22 @@ export default {
       { text: "Review_Result", value: "Review_Result" },
       { text: "Process", value: "Process" },
     ]);
+    const LogTableData = ref([]);
 
-    
+    const History_Log_Header=ref([
+    { text: "Emp_ID", value: "Emp_ID" },
+      { text: "Emp_Name", value: "Emp_Name" },
+      { text: "Department", value: "Department" },
+      { text: "Old_Time", value: "Old_Time" },
+      { text: "Insert_Time", value: "Insert_Time" },
+      { text: "New_Time", value: "New_Time" },
+      { text: "Special_Date", value: "Special_Date", sortable: true },
+      { text: "Time_Event", value: "Time_Event" },
+      { text: "Time_Mark", value: "Time_Mark" },
+      { text: "Time_Pon_Mark", value: "Time_Pon_Mark" },
+      { text: "Update_Time", value: "Update_Time" },
+    ])
+
     const Appli_sortBy = ["Appli_Time", "Last_Time"];
     const Appli_sortType = ["desc", "asc"];
     const Appli_itemsSelected = ref([]);
@@ -386,6 +421,15 @@ export default {
 
     // ]);
 
+    const exportExcel=(data, filename)=>{
+     const ws=XLSX.utils.json_to_sheet(data);
+     const wb=XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb,ws,"sheet1")
+     XLSX.writeFile(wb,filename);
+    }
+    const printExcel=()=>{
+      exportExcel(AppliTableData.value,'excel.xlsx');
+    }
     const handleButtonClick = (row) => {
       console.log("Button clicked for row:", row);
     };
@@ -496,8 +540,7 @@ export default {
           });
       }
     };
-    const AppliTableData = ref([]);
-
+    
     const Review_Object = (Item, Switch, State) => {
       if (Switch == "Post") {
         Review_Data.value.Appli_Id = Item.id;
@@ -556,9 +599,10 @@ export default {
     });
     return {
       Login_Employee_Lv,
-
+   
       Appli_headers,
-
+      Tabel_Switch,
+      History_Log_Header,
       AppliTableData,
       Appli_sortBy,
       Appli_sortType,
@@ -572,6 +616,7 @@ export default {
       Appli_Disable,
       Appli_Objct_Export,
       Review_Data,
+      LogTableData,
       Review_Button,
       Cancel_Button,
       handleButtonClick,
@@ -581,6 +626,7 @@ export default {
       Post_Appli,
       History,
       HistorySwicth,
+      printExcel,
     };
   },
 };
