@@ -550,7 +550,6 @@ const state = {
         }else {
           Swal.fire("審核成功");
           commit('REMOVE_List', Review_Data.value.Appli_Id);
-          alert(Review_Data.value.Appli_Id);
           return true;
         }
       } catch (error) {

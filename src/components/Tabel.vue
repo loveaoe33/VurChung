@@ -82,7 +82,7 @@
             class="form-control"
             min="0"
             v-model="Appli_Object.Appli_Time"
-            :disabled="Raidio_Check"
+            :disabled="Radio_Check"
             @change="Time_Check($event.target.value)"
           /><br />
           目前資料:<br />
@@ -308,7 +308,7 @@ export default {
     const { Emp_ID, Emp_Name, Department_Key, Last_Time } =
       store.state.Personnel_Attend.Login_Object;
     const Insert_Msg = ref("");
-    const Raidio_Check = ref(true);
+    const Radio_Check = ref(true);
     const Appli_Disable = ref(true);
     const Appli_Objct_Export = ref([]);
     // const Appli_Objct_Export=ref({
@@ -420,7 +420,32 @@ export default {
     //   { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 },
 
     // ]);
+    const arrayFilter=(Start,data)=>{
+      let end=0;
+      for(let i=Start+1;i<data.length;i++){
+         if(data[Start].Emp_Name==data[i].Emp_Name){
+        end++
+        data[i].Emp_ID="";
+        data[i].Emp_Name="";
+        data[i].Department=""; 
+        data[i].Last_Time="";
+        data[i].Special_Date="";
+        data[i].Time_Pon_Mark=""; 
+        data[i].Update_Time="";
+         }
+      }
+      return end;
 
+    }
+    const tableFilter=(data)=>{
+      let end=0;
+      for(let i=0;i<data.length;i++){
+        end=arrayFilter(i,data);
+        if(data.Emp_ID!=""){
+          arrayFilter(end+1,data);
+      }
+     }
+    }
     const exportExcel=(data, filename)=>{
      const ws=XLSX.utils.json_to_sheet(data);
      const wb=XLSX.utils.book_new();
@@ -428,6 +453,9 @@ export default {
      XLSX.writeFile(wb,filename);
     }
     const printExcel=()=>{
+      if(Tabel_Switch.value=="Log"){
+        tableFilter(AppliTableData.value);
+      }
       exportExcel(AppliTableData.value,'excel.xlsx');
     }
     const handleButtonClick = (row) => {
@@ -439,14 +467,14 @@ export default {
     };
     const Radio_Event = () => {
       if (Appli_Object.value.Reason == "Public_Holi") {
-        Raidio_Check.value = true;
+        Radio_Check.value = true;
         Appli_Object.value.Appli_Time = 0;
         Appli_Object.value.Total_Time = Last_Time;
         Time_Check(Appli_Object.value.Appli_Time);
       } else if (Appli_Object.value.ReasonMark == "") {
-        Raidio_Check.value = true;
+        Radio_Check.value = true;
       } else {
-        Raidio_Check.value = false;
+        Radio_Check.value = false;
         Time_Check(Appli_Object.value.Appli_Time);
       }
     };
@@ -483,12 +511,6 @@ export default {
       }
     };
     const Msg_Event = () => {
-      console.log(
-        "reas" +
-          Appli_Object.value.Reason +
-          "appl" +
-          Appli_Object.value.Appli_Time
-      );
       if (
         isEmptyObject(Appli_Object) &&
         Appli_Object.value.Reason != "Public_Holi" &&
@@ -530,8 +552,11 @@ export default {
               Appli_Object.value.Appli_Time = "";
               Appli_Object.value.Total_Time = 0;
               Appli_Disable.value = true;
+              Radio_Check.value=true;
               Insert_Msg.value = "";
-            } else if (response.data == "false") {
+            } else if(response.data=="OrderRepeat..."){
+              Alert("當月申請有尚未審核請連絡主管", "fail");
+            }else if (response.data == "false") {
               Alert(response.data, "fail");
             }
           })
@@ -612,7 +637,7 @@ export default {
       Appli_Object,
       Login_Object,
       Insert_Msg,
-      Raidio_Check,
+      Radio_Check,
       Appli_Disable,
       Appli_Objct_Export,
       Review_Data,
