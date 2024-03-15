@@ -118,6 +118,17 @@
           >
             Close
           </button>
+          <div v-if="Appli_Object.ButtonState=='Update'">
+          <button
+            type="button"
+            class="btn btn-success"
+            id="Post_Appli"
+            @click="Update_Appli"
+          >
+            Update
+          </button>
+          </div>
+          <div v-else>
           <button
             type="button"
             class="btn btn-primary"
@@ -127,6 +138,7 @@
           >
             Save changes
           </button>
+          </div>
         </div>
       </div>
     </div>
@@ -142,6 +154,7 @@
       <button
         class="button-17"
         role="button"
+        id="button-17"
         data-bs-toggle="modal"
         data-bs-target="#AppliModal"
       >
@@ -188,6 +201,7 @@
         #item-Process="item"
       >
         <div v-if="item.Check_State == 'No_Process'">
+          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20" @click="Print_Appi()"  >編輯</button></div>
           <button class="button-18" @click="Review_Button(item, 'Pass')">
             通過
           </button>
@@ -199,11 +213,18 @@
           <button class="button-19" @click="Cancel_Button(item)">註銷</button>
         </div>
       </template>
+
+
       <template v-else #item-Process="item">
-        <div v-if="item.Check_State == 'No_Process'"></div>
+        <div v-if="item.Check_State == 'No_Process'">
+          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20"  @click="Print_Appi()"  >編輯</button></div>
+        </div>
         <div v-else-if="item.Check_State == 'Process'">
+         Process
         </div>
       </template>
+
+
 
       <template  #expand="item">
         <div style="padding: 15px">
@@ -341,6 +362,7 @@ export default {
       ReasonMark: "",
       Appli_Time: "",
       Total_Time: "",
+      ButtonState:"Insert",
     });
     const AppliTableData = ref([]);
     const Appli_headers = ref([
@@ -423,7 +445,7 @@ export default {
     const arrayFilter=(Start,data)=>{
       let end=0;
       for(let i=Start+1;i<data.length;i++){
-         if(data[Start].Emp_Name==data[i].Emp_Name){
+         if(data[Start].Emp_ID==data[i].Emp_ID){
         end++
         data[i].Emp_ID="";
         data[i].Emp_Name="";
@@ -537,7 +559,44 @@ export default {
         Appli_Disable.value = true;
       }
     };
-    const Post_Appli = () => {
+    
+    const openModal=(buttonName)=>{   
+      var button = document.getElementById(buttonName);
+      button.click();   }
+    const Print_Appi=()=>{  //編輯須帶出單號
+      axios.get(Api_Url + 'Edit_Print', {
+  params: {
+    id: 54,      
+    Emp_Key: 'E0010'
+  }
+})
+.then(response => {
+  console.log(response.data); 
+  if(response.data=="false"){
+    Alert("單號錯誤請聯繫...", "fail");
+  }else{
+    Appli_Object.value.ButtonState=="Update";
+    Appli_Object.value.ReasonMark=response.data.reason
+    Appli_Object.value.Appli_Time=response.data.Appli_Time;
+    Appli_Object.value.ReasonMark=response.data.Reason_Mark;
+    Appli_Object.value.Reason=response.data.Reason;  
+
+    Time_Check(Appli_Object.value.Appli_Time);
+    openModal("button-17");
+  }
+})
+.catch(error => {
+  Alert(error, "fail");
+});
+  }
+ 
+
+
+        
+    const Update_Appli=()=>{   //更新申請
+      return null;
+    }
+    const Post_Appli = () => {   //新增申請
       {
         axios
           .post(Api_Url + "Insert_TimeData", {
@@ -649,6 +708,8 @@ export default {
       showRow,
       Radio_Event,
       Post_Appli,
+      Print_Appi,
+      Update_Appli,
       History,
       HistorySwicth,
       printExcel,

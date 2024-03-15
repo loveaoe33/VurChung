@@ -253,7 +253,7 @@ const state = {
       }
       else{
         state.Employee_List=DepartMent_Employee ;
-
+        console.log(state.Employee_List);
       }
     },
     GET_Appli_All(state, Appli_Date) {
