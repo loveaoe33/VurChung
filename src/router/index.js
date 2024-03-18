@@ -11,6 +11,7 @@ import Warning from "@/components/Warning.vue";
 import Personnel from "@/components/Personnel.vue";
 import Login from "@/components/Login.vue";
 import Personnel_Attend from "@/components/Personnel_Attend.vue";
+import Login_Personnel from "@/components/Login_Personnel.vue";
 
 
 const router=createRouter({
@@ -79,6 +80,11 @@ const router=createRouter({
         path:"/Personnel_Attend",
         name:"Personnel_Attend",
         component:Personnel_Attend,
+      },
+      {
+        path:"/Login_Personnel",
+        name:"Login_Personnel",
+        component:Login_Personnel,
       },
       
 
@@ -153,6 +159,7 @@ const router=createRouter({
 
 //   ];
   document.isAuth=false;
+  document.isAuthAttend=false;
 
   router.beforeEach((to,from,next) => {
    if(to.path=="/Personnel"&& document.isAuth==false){
@@ -162,6 +169,16 @@ const router=createRouter({
    }
 
   });
+
+
+  router.beforeEach((to,from,next) => {
+    if(to.path=="/Personnel_Attend"&& document.isAuthAttend==false){
+     next("Login_Personnel");
+    }else{
+     next();
+    }
+ 
+   });
 
   
   export default router;

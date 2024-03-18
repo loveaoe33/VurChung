@@ -10,7 +10,7 @@
      <header class="head-form">
         <h2>Log In</h2>
         <!--     A welcome message or an explanation of the login form -->
-        <p>login here using your username and password</p>
+        <p>輸入您的布告欄帳號</p>
      </header>
      <!--     End  header Content  -->
      <br>

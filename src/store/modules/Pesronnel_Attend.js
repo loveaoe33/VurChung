@@ -195,11 +195,12 @@ const state = {
       Create_Name:"",
     },
     Login_Object:{    //登入物件
-      Emp_ID:"E0010",
-      Emp_Name:"黃立帆",
-      Department_Key:"資訊部",
-      Account_Lv:0,
-      Last_Time:5,
+      Emp_ID:"",
+      Emp_Name:"",
+      Department_Key:"",
+      Account_Lv:99,
+      Last_Time:0,
+      Special_Date:0,
     },
 
     Appli_Object:{   //申請處理物件
@@ -264,6 +265,7 @@ const state = {
         state.Appli_List=Appli_Date ;
       }
     },
+    
   };
   
   const actions = {

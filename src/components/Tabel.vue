@@ -152,14 +152,20 @@
       <button class="button-17" @click="HistorySwicth(Login_Object.Emp_ID,'Review')" role="button">已審核</button>
 
       <button
-        class="button-17"
+        class="button-17-Hide"
         role="button"
-        id="button-17"
+        id="button-17-Hide"
         data-bs-toggle="modal"
         data-bs-target="#AppliModal"
-      >
-        申請加班/補休
+        style="display: none;"      
+        >
       </button>
+
+      <button         class="button-17"         id="button-17" @click="Open_Appli()">
+        申請加班/補休
+
+        </button>
+ 
 
       <button class="button-17" role="button" @click="printExcel()">列印此頁面</button>
       <button
@@ -260,9 +266,8 @@
       table-class-name="customize-table"
     >
   </EasyDataTable>
-
-    <div id="row-clicked"></div>
-
+    <div id="row-clicked"> </div>
+{{ Appli_Object.ButtonState }}
 </template>
   
   <script>
@@ -560,9 +565,16 @@ export default {
       }
     };
     
-    const openModal=(buttonName)=>{   
+    const openModal=(buttonName,Switch)=>{  
+      Appli_Object.value.ButtonState=Switch;
+
       var button = document.getElementById(buttonName);
       button.click();   }
+
+    const Open_Appli=()=>{
+      Init_Appli();
+      openModal("button-17-Hide","Insert")
+    }
     const Print_Appi=()=>{  //編輯須帶出單號
       axios.get(Api_Url + 'Edit_Print', {
   params: {
@@ -575,14 +587,13 @@ export default {
   if(response.data=="false"){
     Alert("單號錯誤請聯繫...", "fail");
   }else{
-    Appli_Object.value.ButtonState=="Update";
     Appli_Object.value.ReasonMark=response.data.reason
     Appli_Object.value.Appli_Time=response.data.Appli_Time;
     Appli_Object.value.ReasonMark=response.data.Reason_Mark;
     Appli_Object.value.Reason=response.data.Reason;  
 
     Time_Check(Appli_Object.value.Appli_Time);
-    openModal("button-17");
+    openModal("button-17-Hide","Update")
   }
 })
 .catch(error => {
@@ -590,10 +601,19 @@ export default {
 });
   }
  
-
+    const Init_Appli=()=>{
+      Appli_Object.value.Reason = "";
+      Appli_Object.value.ReasonMark = "";
+      Appli_Object.value.Appli_Time = "";
+      Appli_Object.value.Total_Time = 0;
+      Appli_Disable.value = true;
+      Radio_Check.value=true;
+      Insert_Msg.value = "";
+    }
 
         
     const Update_Appli=()=>{   //更新申請
+      Init_Appli();
       return null;
     }
     const Post_Appli = () => {   //新增申請
@@ -606,13 +626,7 @@ export default {
           .then(function (response) {
             if (response.data == "Sucess") {
               Alert(response.data, "Sucess");
-              Appli_Object.value.Reason = "";
-              Appli_Object.value.ReasonMark = "";
-              Appli_Object.value.Appli_Time = "";
-              Appli_Object.value.Total_Time = 0;
-              Appli_Disable.value = true;
-              Radio_Check.value=true;
-              Insert_Msg.value = "";
+              Init_Appli();
             } else if(response.data=="OrderRepeat..."){
               Alert("當月申請有尚未審核請連絡主管", "fail");
             }else if (response.data == "false") {
@@ -703,6 +717,7 @@ export default {
       LogTableData,
       Review_Button,
       Cancel_Button,
+      Open_Appli,
       handleButtonClick,
       Time_Check,
       showRow,

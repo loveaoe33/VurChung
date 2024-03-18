@@ -486,6 +486,9 @@
         <h4>
           剩餘時數: <span>{{ Login_Object.Last_Time }}</span>
         </h4>
+        <h4>
+          剩餘特休: <span>{{ Login_Object.Last_Time }}</span>
+        </h4>
         <br />
 
         <div id="Change_Box">
@@ -510,7 +513,9 @@
 </template>
     
 <script>
-import { onMounted, onBeforeMount, ref, watch } from "vue";
+import {  onMounted, onBeforeMount, onBeforeUnmount,ref, watch } from "vue";
+import { useRoute } from 'vue-router';
+
 // import { mapState } from 'vuex';
 import { useStore } from "vuex";
 import Tabel from "./Tabel.vue";
@@ -524,6 +529,8 @@ export default {
   setup() {
     // eslint-disable-next-line no-unused-vars
     const store = useStore();
+    const route = useRoute();
+
     const HistoryRadio=ref(["申請歷史","審核歷史"])
     const Post_History=ref({
       Emp_Key:"",
@@ -871,8 +878,8 @@ export default {
     };
     const Save_Emp = () => {
       if (
-        store.state.Personnel_Attend.Login_Object.Account_Lv == 0 ||
-        store.state.Personnel_Attend.Login_Object.Account_Lv == 1
+        Login_Object.Account_Lv == 0 ||
+        Login_Object.Account_Lv == 1
       ) {
         axios
           .post(Api_Url + "Insert_Employee", {
@@ -959,9 +966,21 @@ export default {
     onMounted(() => {
       Tmpla_Init();
       templateArea();
+
+      console.log("123"+route.params.Emp_ID);
+      store.state.Personnel_Attend.Login_Object.Emp_ID= route.params.AttendRouter.Emp_ID
+      store.state.Personnel_Attend.Login_Object.Emp_Name=route.params.AttendRouter.Emp_Name
+      store.state.Personnel_Attend.Login_Object.Department_Key=route.params.AttendRouter.Department_Key
+      store.state.Personnel_Attend.Login_Object.Account_Lv=route.params.AttendRouter.Account_Lv
+      store.state.Personnel_Attend.Login_Object.Last_Time=route.params.AttendRouter.Last_Time
+      store.state.Personnel_Attend.Login_Object.Special_Date=route.params.AttendRouter.Special_Date
+
     });
     onBeforeMount(() => {
       
+    });
+    onBeforeUnmount(() => {
+      document.isAuthAttend=false;
     });
 
     return {
