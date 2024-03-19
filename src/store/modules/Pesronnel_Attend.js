@@ -176,6 +176,8 @@ import Swal from "sweetalert2";
 
 // });
 
+// const route = useRoute();
+
 const state = {
     // 模組的狀態
     Attend_Api_Url:"http://localhost:8080/AttendController/",
@@ -198,7 +200,7 @@ const state = {
       Emp_ID:"",
       Emp_Name:"",
       Department_Key:"",
-      Account_Lv:99,
+      Account_Lv:0,
       Last_Time:0,
       Special_Date:0,
     },
@@ -232,6 +234,27 @@ const state = {
     // 模組的 mutations
     SET_USER(state, user) {
       state.user = user;
+    },
+    RESET_State(state){
+      state.Login_Object = {
+        Emp_ID: "",
+        Emp_Name: "",
+        Department_Key: "",
+        Account_Lv: 99,
+        Last_Time: 0,
+        Special_Date: 0
+      };
+      state.Appli_List=[];
+      state.Employee_List=[];
+    },
+    LOGIN_State(state,LoginData){
+      state.Login_Object.Emp_ID= LoginData.query.Emp_ID
+      state.Login_Object.Emp_Name=LoginData.query.Emp_Name
+      state.Login_Object.Department_Key=LoginData.query.Department_Key
+      state.Login_Object.Account_Lv=LoginData.query.Account_Lv
+      state.Login_Object.Last_Time=LoginData.query.Last_Time
+      state.Login_Object.Special_Date=LoginData.query.Special_Date
+
     },
     REMOVE_List(state,Index){
       
@@ -582,7 +605,16 @@ const state = {
             Swal.fire(error);
             return false;
           }
+        },
+        resetState:({commit})=>{
+          commit('RESET_State');
+
+        },
+        loginState:({commit},routeData)=>{
+          commit('LOGIN_State',routeData);
+
         }
+
 
   }
 

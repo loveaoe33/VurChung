@@ -1,6 +1,5 @@
 <template>
   
-  {{ Post_History }}
 
 <div class="background">
 
@@ -381,7 +380,7 @@
       </div>
 
     </div>
-    <div v-if="Login_Object.Account_Lv===0 || Login_Object.Account_Lv===1" class="Left_Area">
+    <div v-if="Login_Object.Account_Lv==0 || Login_Object.Account_Lv==1" class="Left_Area">
       <div id="Left_Area_box">
         <button
           class="btn-98"
@@ -487,7 +486,7 @@
           剩餘時數: <span>{{ Login_Object.Last_Time }}</span>
         </h4>
         <h4>
-          剩餘特休: <span>{{ Login_Object.Last_Time }}</span>
+          剩餘特休: <span>{{ Login_Object.Special_Date }}</span>
         </h4>
         <br />
 
@@ -636,6 +635,7 @@ export default {
         Department_List.value = newValue;
       }
     );
+
     const Post_HistoryData=()=>{
       if(DateCheck(Post_History.value.Start,Post_History.value.End)){
         if(Post_History.value.Select_State=="Admin")
@@ -955,7 +955,9 @@ export default {
       store.dispatch("Personnel_Attend/getAppli_Member",Member_Object_Post.value);
 
     }
-
+   const UnMountData=()=>{   //卸除元件移除狀態管理
+      store.dispatch("Personnel_Attend/resetState");
+   }
 
 
 
@@ -967,20 +969,18 @@ export default {
       Tmpla_Init();
       templateArea();
 
-      console.log("123"+route.params.Emp_ID);
-      store.state.Personnel_Attend.Login_Object.Emp_ID= route.params.AttendRouter.Emp_ID
-      store.state.Personnel_Attend.Login_Object.Emp_Name=route.params.AttendRouter.Emp_Name
-      store.state.Personnel_Attend.Login_Object.Department_Key=route.params.AttendRouter.Department_Key
-      store.state.Personnel_Attend.Login_Object.Account_Lv=route.params.AttendRouter.Account_Lv
-      store.state.Personnel_Attend.Login_Object.Last_Time=route.params.AttendRouter.Last_Time
-      store.state.Personnel_Attend.Login_Object.Special_Date=route.params.AttendRouter.Special_Date
+      store.dispatch("Personnel_Attend/loginState",route);
+
+      // console.log(Login_Object.Account_Lv)
+
+
 
     });
     onBeforeMount(() => {
-      
     });
     onBeforeUnmount(() => {
       document.isAuthAttend=false;
+      UnMountData();
     });
 
     return {

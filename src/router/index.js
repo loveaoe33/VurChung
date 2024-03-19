@@ -172,7 +172,7 @@ const router=createRouter({
 
 
   router.beforeEach((to,from,next) => {
-    if(to.path=="/Personnel_Attend"&& document.isAuthAttend==false){
+    if(to.path=="/Personnel_Attend" && document.isAuthAttend==false){
      next("Login_Personnel");
     }else{
      next();

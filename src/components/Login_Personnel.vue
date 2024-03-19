@@ -96,6 +96,13 @@ export default {
   },
 
   methods: {
+    StringProcess:function(Depart){
+      let index=Depart.idnexOf("_")
+      if(index!= -1){
+        let textBeforeUnderscore = Depart.substring(0, index); // 使用 substring() 方法
+        return textBeforeUnderscore;
+      }
+    },
     checkAuthentication: function () {
       console.log(this.LoginObject);
       if (this.LoginObject.Account == "" || this.LoginObject.Password == "") {
@@ -109,23 +116,22 @@ export default {
           .then((response) => {
             console.log(response.data);
             if (response.data != "OK" || response.data != null) {
-              document.isAuthAttend = true;
               // 用户已认证
               // 继续执行你的逻辑
               console.log("000"+response.data.Emp_ID);
               this.$router.push({
                 name: "Personnel_Attend",
-                params: {
-                  AttendRouter:{
+                query: {
                   Emp_ID: response.data.Emp_ID,
                   Emp_Name: response.data.Emp_Name,
-                  Department_Key: response.data.Department_Key,
-                  Account_Lv: response.data.Account_Lv,
+                  Department_Key:response.data.Department_Key,
+                  Account_Lv:response.data.Account_Lv,
                   Last_Time: response.data.Last_Time,
-                  Special_Date: response.data.Special_Date,
-                  }
+                  Special_Date: response.data.Special_Date,   
                 },
               });
+              document.isAuthAttend = true;
+
             } else {
               this.$swal.fire("帳號或密碼錯誤");
             }
