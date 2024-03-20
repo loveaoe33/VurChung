@@ -115,9 +115,10 @@ export default {
 
           .then((response) => {
             console.log(response.data);
-            if (response.data != "OK" || response.data != null) {
+            if (response.data != null &response.data != "") {
               // 用户已认证
               // 继续执行你的逻辑
+              alert(response.data)
               console.log("000"+response.data.Emp_ID);
               this.$router.push({
                 name: "Personnel_Attend",
