@@ -29,7 +29,7 @@
             <span class="Title">部門:</span>
             <span class="Context">{{ Login_Object.Department_Key }}</span>
 
-            <span class="Title">剩餘時數:</span>
+            <span class="Title">剩餘:</span>
             <span class="Context">{{ Login_Object.Last_Time }}</span>
           </div>
           <br />
@@ -207,7 +207,7 @@
         #item-Process="item"
       >
         <div v-if="item.Check_State == 'No_Process'">
-          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20" @click="Print_Appi()"  >編輯</button></div>
+          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20" @click="Print_Appi(item.id,item.Emp_Key)"  >編輯</button></div>
           <button class="button-18" @click="Review_Button(item, 'Pass')">
             通過
           </button>
@@ -510,8 +510,8 @@ export default {
         Appli_Object.value.Total_Time = Last_Time;
       } else {
         let Process_Number =
-          Appli_Object.value.Reason == "Public_Holi" ||
-          Appli_Object.value.Reason == "Over_Time"
+          (Appli_Object.value.Reason == "Public_Holi" ||
+          Appli_Object.value.Reason == "Over_Time")
             ? item
             : -item;
         Appli_Object.value.Total_Time =
@@ -575,16 +575,16 @@ export default {
       Init_Appli();
       openModal("button-17-Hide","Insert")
     }
-    const Print_Appi=()=>{  //編輯須帶出單號
+    const Print_Appi=(Appli_id,Emp_Key)=>{  //編輯須帶出單號
       axios.get(Api_Url + 'Edit_Print', {
   params: {
-    id: 54,      
-    Emp_Key: 'E0010'
+    id: Appli_id,      
+    Emp_Key: Emp_Key
   }
 })
 .then(response => {
   console.log(response.data); 
-  if(response.data=="false"){
+  if(response.data=="fail"){
     Alert("單號錯誤請聯繫...", "fail");
   }else{
     Appli_Object.value.ReasonMark=response.data.reason
@@ -613,7 +613,24 @@ export default {
 
         
     const Update_Appli=()=>{   //更新申請
-      Init_Appli();
+      {
+        axios
+          .post(Api_Url + "Edit_Appli", {
+            Appli_Object: Appli_Object.value, // 員工物件
+          })
+
+          .then(function (response) {
+            if (response.data == "Sucess") {
+              Alert(response.data, "Sucess");
+              Init_Appli();
+            } else if(response.data=="false"){
+              Alert("更新失敗", "fail");
+            }
+          })
+          .catch(function (error) {
+            Alert(error, "Error");
+          });
+      }
       return null;
     }
     const Post_Appli = () => {   //新增申請

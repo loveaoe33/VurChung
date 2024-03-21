@@ -589,22 +589,22 @@
           <h3>員工資料</h3>
           <br />
           <h4>
-            員編: <span>{{ Login_Object.Emp_ID }}</span>
+            員編:<span>{{Login_Object.Emp_ID}}</span>
           </h4>
           <br />
           <h4>
-            部門: <span>{{ Login_Object.Department_Key }}</span>
+            部門:<span>{{ Login_Object.Department_Key }}</span>
           </h4>
           <br />
           <h4>
-            員工: <span>{{ Login_Object.Emp_Name }}</span>
+            員工:<span>{{ Login_Object.Emp_Name }}</span>
           </h4>
           <br />
           <h4>
-            剩餘時數: <span>{{ Login_Object.Last_Time }}</span>
+            剩餘時數:<span>{{ Login_Object.Last_Time }}</span>
           </h4>
           <h4>
-            剩餘特休: <span>{{ Login_Object.Special_Date }}</span>
+            剩餘特休:<span>{{ Login_Object.Special_Date }}</span>
           </h4>
           <br />
 
@@ -649,7 +649,7 @@
     
 <script>
 import { onMounted, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+// import { useRoute } from "vue-router";
 
 // import { mapState } from 'vuex';
 import { useStore } from "vuex";
@@ -664,12 +664,12 @@ export default {
   setup() {
     // eslint-disable-next-line no-unused-vars
     const store = useStore();
-    const route = useRoute();
-    const Emp_Auto = () => {
-      Announcement.value.Emp_Name = Login_Object.Emp_Name;
-      Insert_Employee.value.Create_Emp = Login_Object.Emp_Name;
-      Update_Object.value.Emp_ID = Login_Object.Emp_ID;
-    };
+    // const route = useRoute();
+    // const Emp_Auto = () => {
+    //   Announcement.value.Emp_Name = Login_Object.Emp_Name;
+    //   Insert_Employee.value.Create_Emp = Login_Object.Emp_Name;
+    //   Update_Object.value.Emp_ID = Login_Object.Emp_ID;
+    // };
     const HistoryRadio = ref(["申請歷史", "審核歷史"]);
     const Post_History = ref({
       Emp_Key: "",
@@ -687,7 +687,7 @@ export default {
     const Announcement_List = ref([]);
     const Announcement = ref({
       Announcement_Id: "",
-      Emp_Name: "",
+      Emp_Name: Login_Object.Emp_Name,
       Announcement_Title: "",
       Announcement_Context: "",
       State_Key: "",
@@ -699,7 +699,7 @@ export default {
       Emp_Password: "",
       Emp_Lv: "",
       Emp_Department: "",
-      Create_Emp: "",
+      Create_Emp: Login_Object.Emp_Name,
     });
     const History_Data = ref({
       Start_Date: "",
@@ -724,7 +724,7 @@ export default {
 
     const Update_Object = ref({
       //更新密碼物件
-      Emp_ID: "",
+      Emp_ID: Login_Object.Emp_ID,
       oldPassword: "",
       NewPassword: "",
       RepeatPassword: "",
@@ -743,7 +743,6 @@ export default {
     const UpdatePassword = () => {
 
       
-      console.log(Update_Object.value);
 
       if (Update_Object.value.NewPassword != Update_Object.value.RepeatPassword) {
         Alert(`兩次密碼不相同`, "fail");
@@ -752,7 +751,7 @@ export default {
         axios
           .post(
             Api_Url + "Update_Employee",
-            { Update_Object_Post: Update_Object },
+            { Update_Object_Post: Update_Object.value },
             {
               headers: {
                 "Content-Type": "application/json",
@@ -761,7 +760,11 @@ export default {
           )
 
           .then(function (response) {
-            if (response.data == "false") {
+            console.log(response);
+
+            if (response.data == "fail") {
+              console.log(response.data);
+
               Alert(`密碼錯誤`, "fail");
             } else if(response.data == "Sucess"){
               Alert(`更改完成即將登出`, "Sucess");
@@ -1156,9 +1159,7 @@ export default {
       Tmpla_Init();
 
       // console.log(Login_Object.Account_Lv)
-      store.dispatch("Personnel_Attend/loginState", route);
       templateArea();
-      Emp_Auto();
     });
     onBeforeMount(() => {
     });

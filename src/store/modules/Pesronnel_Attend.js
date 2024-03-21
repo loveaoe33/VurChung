@@ -248,12 +248,14 @@ const state = {
       state.Employee_List=[];
     },
     LOGIN_State(state,LoginData){
-      state.Login_Object.Emp_ID= LoginData.query.Emp_ID
-      state.Login_Object.Emp_Name=LoginData.query.Emp_Name
-      state.Login_Object.Department_Key=LoginData.query.Department_Key
-      state.Login_Object.Account_Lv=LoginData.query.Account_Lv
-      state.Login_Object.Last_Time=LoginData.query.Last_Time
-      state.Login_Object.Special_Date=LoginData.query.Special_Date
+      state.Login_Object.Emp_ID= LoginData.Emp_ID
+      state.Login_Object.Emp_Name=LoginData.Emp_Name
+      state.Login_Object.Department_Key=LoginData.Department_Key
+      state.Login_Object.Account_Lv=LoginData.Account_Lv
+      state.Login_Object.Last_Time=LoginData.Last_Time
+      state.Login_Object.Special_Date=LoginData.Special_Date
+      console.log(state.Login_Object );
+
 
     },
     REMOVE_List(state,Index){

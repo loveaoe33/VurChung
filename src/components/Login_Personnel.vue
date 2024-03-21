@@ -89,6 +89,14 @@ export default {
         Account: "",
         Password: "",
       },
+      query: {
+        Emp_ID: "",
+        Emp_Name: "",
+        Department_Key:"",
+        Account_Lv:"",
+        Last_Time: "",
+        Special_Date: "",   
+        },
     };
   },
   created() {
@@ -96,13 +104,17 @@ export default {
   },
 
   methods: {
-    StringProcess:function(Depart){
-      let index=Depart.idnexOf("_")
-      if(index!= -1){
-        let textBeforeUnderscore = Depart.substring(0, index); // 使用 substring() 方法
-        return textBeforeUnderscore;
-      }
+
+    loginAuto:function(data){
+      this.query.Emp_ID=data.Emp_ID,
+      this.query.Emp_Name=data.Emp_Name,
+      this.query.Department_Key=data.Department_Key,
+      this.query.Account_Lv=data.Account_Lv,
+      this.query.Last_Time=data.Last_Time,
+      this.query.Special_Date=data.Special_Date
     },
+
+
     checkAuthentication: function () {
       console.log(this.LoginObject);
       if (this.LoginObject.Account == "" || this.LoginObject.Password == "") {
@@ -116,21 +128,12 @@ export default {
           .then((response) => {
             console.log(response.data);
             if (response.data != null &response.data != "") {
-              // 用户已认证
-              // 继续执行你的逻辑
-              alert(response.data)
-              console.log("000"+response.data.Emp_ID);
+              this.loginAuto(response.data);
+              this.$store.dispatch("Personnel_Attend/loginState",this.query);
               this.$router.push({
                 name: "Personnel_Attend",
-                query: {
-                  Emp_ID: response.data.Emp_ID,
-                  Emp_Name: response.data.Emp_Name,
-                  Department_Key:response.data.Department_Key,
-                  Account_Lv:response.data.Account_Lv,
-                  Last_Time: response.data.Last_Time,
-                  Special_Date: response.data.Special_Date,   
-                },
               });
+    
               document.isAuthAttend = true;
 
             } else {
