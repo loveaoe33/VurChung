@@ -360,6 +360,7 @@ export default {
     });
 
     const Appli_Object = ref({
+      Appli_id:"",
       Emp_ID: "",
       Employee: "",
       DepartMent: "",
@@ -587,8 +588,9 @@ export default {
   if(response.data=="fail"){
     Alert("單號錯誤請聯繫...", "fail");
   }else{
+    Appli_Object.value.Appli_id=response.data.id;
     Appli_Object.value.ReasonMark=response.data.reason
-    Appli_Object.value.Appli_Time=response.data.Appli_Time;
+    Appli_Object.value.Appli_Time=(response.data.Appli_Time<0)?-response.data.Appli_Time:response.data.Appli_Time;
     Appli_Object.value.ReasonMark=response.data.Reason_Mark;
     Appli_Object.value.Reason=response.data.Reason;  
 
@@ -602,6 +604,7 @@ export default {
   }
  
     const Init_Appli=()=>{
+      Appli_Object.value.Appli_id="";
       Appli_Object.value.Reason = "";
       Appli_Object.value.ReasonMark = "";
       Appli_Object.value.Appli_Time = "";
@@ -621,9 +624,9 @@ export default {
 
           .then(function (response) {
             if (response.data == "Sucess") {
-              Alert(response.data, "Sucess");
+              Alert("更新完成請刷新", "Sucess");
               Init_Appli();
-            } else if(response.data=="false"){
+            } else if(response.data=="fail"){
               Alert("更新失敗", "fail");
             }
           })
@@ -631,7 +634,6 @@ export default {
             Alert(error, "Error");
           });
       }
-      return null;
     }
     const Post_Appli = () => {   //新增申請
       {

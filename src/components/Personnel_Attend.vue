@@ -478,7 +478,7 @@
             data-bs-toggle="modal"
             data-bs-target="#DepartModal"
           >
-            <span>新增部門</span>
+          <span v-if="Login_Object.Account_Lv == 0">新增部門</span>
           </button>
           <button class="btn-98">
             <span>編輯員工</span>
@@ -897,9 +897,15 @@ export default {
             },
           }
         )
-
+      
         .then(function (response) {
-          Alert(`剩餘時數:${response.data}`, "", "Sucess");
+          console.log(response.data)
+          if(response.data!=null || response.data!=""){
+            Alert(`剩餘時數:${response.data}`, "Sucess");
+
+          }else{
+            Alert(`取值錯誤請聯絡資訊`, "fail");
+          }
         })
         .catch(function (error) {
           Alert(`資料錯誤:${error}`, "Error");

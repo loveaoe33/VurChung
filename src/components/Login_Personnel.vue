@@ -133,9 +133,7 @@ export default {
               this.$router.push({
                 name: "Personnel_Attend",
               });
-    
               document.isAuthAttend = true;
-
             } else {
               this.$swal.fire("帳號或密碼錯誤");
             }

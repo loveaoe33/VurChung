@@ -304,16 +304,20 @@ const state = {
     getDepartment({ commit }) {
       {
         axios
-          .post(state.Attend_Api_Url+"Init"
+          .get(state.Attend_Api_Url+"Init"
           ,{
+            params: {
+              Emp_Key: state.Login_Object.Emp_ID,      
+              Depart: state.Login_Object.Department_Key
+            }
           })
   
           .then(function (response) {
             commit('GET_Department', response.data);
           })
           .catch(function (error) {
-            alert(error);
-            alert("帶入失敗");
+            Swal.fire(`部門帶入失敗${error}------請聯絡資訊`);
+
             
           });
       }

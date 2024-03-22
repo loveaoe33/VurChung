@@ -159,7 +159,7 @@ const router=createRouter({
 
 //   ];
   document.isAuth=false;
-  document.isAuthAttend=false;
+  document.isAuthAttend=true;
 
   router.beforeEach((to,from,next) => {
    if(to.path=="/Personnel"&& document.isAuth==false){
