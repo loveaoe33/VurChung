@@ -197,9 +197,9 @@ const state = {
       Create_Name:"",
     },
     Login_Object:{    //登入物件
-      Emp_ID:"",
-      Emp_Name:"",
-      Department_Key:"",
+      Emp_ID:"e0010",
+      Emp_Name:"黃立帆",
+      Department_Key:"資訊室",
       Account_Lv:0,
       Last_Time:0,
       Special_Date:0,

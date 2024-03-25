@@ -471,17 +471,30 @@
             data-bs-toggle="modal"
             data-bs-target="#EmpModal"
           >
-            <span>新增員工</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >新增員工</span
+            >
           </button>
           <button
+            v-if="Login_Object.Account_Lv == 0"
             class="btn-98"
             data-bs-toggle="modal"
             data-bs-target="#DepartModal"
           >
-          <span v-if="Login_Object.Account_Lv == 0">新增部門</span>
+            <span @mouseleave="stopMarquee" @mouseenter="startMarquee"
+              >新增部門</span
+            >
           </button>
           <button class="btn-98">
-            <span>編輯員工</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >編輯員工</span
+            >
           </button>
           <button
             class="btn-98"
@@ -489,13 +502,28 @@
             data-bs-target="#AnnouncementModal"
             data-bs-whatever="@mdo"
           >
-            <span>新增公告</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >新增公告</span
+            >
           </button>
           <button class="btn-98" @click="Export_All_Applie">
-            <span>總單位已申請</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >總單位已申請</span
+            >
           </button>
           <button class="btn-98" @click="Export_All_review">
-            <span>總單位已審核</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >總單位已審核</span
+            >
           </button>
           <button
             class="btn-98"
@@ -503,7 +531,12 @@
             @click="Select_History(Login_Object.Emp_ID, 'Admin')"
             data-bs-target="#HistoryModal"
           >
-            <span>歷史總紀錄</span>
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >歷史總紀錄</span
+            >
           </button>
 
           <div id="Left_Area_Department_box">
@@ -539,7 +572,12 @@
                     data-bs-whatever="@mdo"
                     @click="Special_Button(JsonParse(item, 'Emp_Key'))"
                   >
-                    <span>新增特休</span>
+                    <span
+                      class="btn-98-text"
+                      @mouseleave="stopMarquee"
+                      @mouseenter="startMarquee"
+                      >新增特休</span
+                    >
                   </button>
                   <button
                     class="btn-98"
@@ -589,7 +627,7 @@
           <h3>員工資料</h3>
           <br />
           <h4>
-            員編:<span>{{Login_Object.Emp_ID}}</span>
+            員編:<span>{{ Login_Object.Emp_ID }}</span>
           </h4>
           <br />
           <h4>
@@ -741,43 +779,40 @@ export default {
     };
 
     const UpdatePassword = () => {
-
-      
-
-      if (Update_Object.value.NewPassword != Update_Object.value.RepeatPassword) {
+      if (
+        Update_Object.value.NewPassword != Update_Object.value.RepeatPassword
+      ) {
         Alert(`兩次密碼不相同`, "fail");
       } else {
         {
-        axios
-          .post(
-            Api_Url + "Update_Employee",
-            { Update_Object_Post: Update_Object.value },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
+          axios
+            .post(
+              Api_Url + "Update_Employee",
+              { Update_Object_Post: Update_Object.value },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
 
-          .then(function (response) {
-            console.log(response);
+            .then(function (response) {
+              console.log(response);
 
-            if (response.data == "fail") {
-              console.log(response.data);
+              if (response.data == "fail") {
+                console.log(response.data);
 
-              Alert(`密碼錯誤`, "fail");
-            } else if(response.data == "Sucess"){
-              Alert(`更改完成即將登出`, "Sucess");
-            }
-          })
-          .catch(function (error) {
-            Alert(`資料錯誤:${error}`, "Error");
-          });
+                Alert(`密碼錯誤`, "fail");
+              } else if (response.data == "Sucess") {
+                Alert(`更改完成即將登出`, "Sucess");
+              }
+            })
+            .catch(function (error) {
+              Alert(`資料錯誤:${error}`, "Error");
+            });
         }
       }
     };
-
-
 
     const DateCheck = (Start, End) => {
       if (Start == "" || End == "") {
@@ -825,7 +860,19 @@ export default {
         Department_List.value = newValue;
       }
     );
+    const startMarquee = (event) => {
+      const MarqueeId = event.target;
+      console.log(MarqueeId);
+      MarqueeId.classList.remove("btn-98-text-Stop");
+      // `${MarqueeId.classList}-text`.classList.remove("btn-98-Stop");
+    };
+    const stopMarquee = (event) => {
+      const MarqueeId = event.target;
+      console.log(MarqueeId);
+      MarqueeId.classList.add("btn-98-text-Stop");
 
+      // `${MarqueeId.classList}-text`.classList.add("btn-98-Stop");
+    };
     const Post_HistoryData = () => {
       if (DateCheck(Post_History.value.Start, Post_History.value.End)) {
         if (Post_History.value.Select_State == "Admin") {
@@ -897,13 +944,12 @@ export default {
             },
           }
         )
-      
-        .then(function (response) {
-          console.log(response.data)
-          if(response.data!=null || response.data!=""){
-            Alert(`剩餘時數:${response.data}`, "Sucess");
 
-          }else{
+        .then(function (response) {
+          console.log(response.data);
+          if (response.data != null || response.data != "") {
+            Alert(`剩餘時數:${response.data}`, "Sucess");
+          } else {
             Alert(`取值錯誤請聯絡資訊`, "fail");
           }
         })
@@ -1167,8 +1213,7 @@ export default {
       // console.log(Login_Object.Account_Lv)
       templateArea();
     });
-    onBeforeMount(() => {
-    });
+    onBeforeMount(() => {});
     onBeforeUnmount(() => {
       document.isAuthAttend = false;
       UnMountData();
@@ -1215,6 +1260,8 @@ export default {
       Special_Button,
       Special_Insert,
       UpdatePassword,
+      stopMarquee,
+      startMarquee,
     };
   },
 };
