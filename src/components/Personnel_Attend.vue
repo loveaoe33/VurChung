@@ -442,21 +442,21 @@
         </div>
       </div>
     </div>
-
-    <div class="Container">
+    
+    <div class="Container"> 
       <div class="Announcement">
         <div id="Announcement_Box">
           <div class="marquee-container">
-            <div class="marquee-content">
+            <div class="marquee-content" >
               <div
-                class="marquee-item"
+                class="marquee-item" 
                 v-for="(item, index) in Announcement_List"
                 :key="index"
               >
                 {{ JsonParse(item, "Announcement") }}
               </div>
 
-              <!-- 添加更多项目根据需要 -->
+              <!--布告 -->
             </div>
           </div>
         </div>
@@ -708,6 +708,7 @@ export default {
     //   Insert_Employee.value.Create_Emp = Login_Object.Emp_Name;
     //   Update_Object.value.Emp_ID = Login_Object.Emp_ID;
     // };
+  
     const HistoryRadio = ref(["申請歷史", "審核歷史"]);
     const Post_History = ref({
       Emp_Key: "",
@@ -797,10 +798,8 @@ export default {
             )
 
             .then(function (response) {
-              console.log(response);
 
               if (response.data == "fail") {
-                console.log(response.data);
 
                 Alert(`密碼錯誤`, "fail");
               } else if (response.data == "Sucess") {
@@ -849,8 +848,9 @@ export default {
       () => store.state.Personnel_Attend.Announcement,
       (newValue) => {
         // 在这里可以执行其他逻辑
-        Announcement_List.value = newValue;
-      }
+        Announcement_List.value=newValue
+        marqueeContext();
+        }
     );
 
     watch(
@@ -862,13 +862,11 @@ export default {
     );
     const startMarquee = (event) => {
       const MarqueeId = event.target;
-      console.log(MarqueeId);
       MarqueeId.classList.remove("btn-98-text-Stop");
       // `${MarqueeId.classList}-text`.classList.remove("btn-98-Stop");
     };
     const stopMarquee = (event) => {
       const MarqueeId = event.target;
-      console.log(MarqueeId);
       MarqueeId.classList.add("btn-98-text-Stop");
 
       // `${MarqueeId.classList}-text`.classList.add("btn-98-Stop");
@@ -946,7 +944,6 @@ export default {
         )
 
         .then(function (response) {
-          console.log(response.data);
           if (response.data != null || response.data != "") {
             Alert(`剩餘時數:${response.data}`, "Sucess");
           } else {
@@ -1025,7 +1022,6 @@ export default {
             Last_UpdateTime: response.data.Update_Time,
           };
 
-          console.log(response.data);
         })
         .catch(function (error) {
           Alert(error, "Error");
@@ -1102,11 +1098,9 @@ export default {
         )
 
         .then(function (response) {
-          console.log(Depart.value);
 
           console.log(response);
           if (response.data == "Deaprtment value Cant Empty..") {
-            console.log(Depart.value);
 
             Alert(response.data, "fail");
           } else {
@@ -1198,6 +1192,34 @@ export default {
         Member_Object_Post.value
       );
     };
+
+    const marqueeContext=()=>{
+      let totalWidth=0
+      const maqueeElem=document.querySelector(".marquee-content")      
+      for(let i=0;i<Announcement_List.value.length;i++){
+        totalWidth+=JsonParse(Announcement_List.value[i],"Announcement").length
+      }
+      // Announcement_List.value.forEach((item)=>{totalWidth+=JsonParse(item.value,"Announcement").length         ;console.log(item);} )
+      const animationDuration = totalWidth /1; // 每秒移動 10px
+      maqueeElem.style.animation=`marqueeAnnoun ${animationDuration}s linear infinite`
+      // marqueeItem.forEach(item=>{ totalWidth+=item.offsetWidth })
+      marqueePosition(totalWidth);
+    }
+    const marqueePosition =(Percent)=>{
+    const styleElemnet=document.createElement("style");
+    const KeyStyle=`
+  @keyframes marqueeAnnoun {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-${Percent+100}%);
+    }
+  }
+`;
+styleElemnet.innerHTML=KeyStyle;
+document.head.appendChild(styleElemnet);
+    }
     const UnMountData = () => {
       //卸除元件移除狀態管理
       store.dispatch("Personnel_Attend/resetState");
@@ -1212,6 +1234,7 @@ export default {
 
       // console.log(Login_Object.Account_Lv)
       templateArea();
+      marqueeContext();
     });
     onBeforeMount(() => {});
     onBeforeUnmount(() => {
@@ -1262,6 +1285,7 @@ export default {
       UpdatePassword,
       stopMarquee,
       startMarquee,
+      marqueeContext,
     };
   },
 };

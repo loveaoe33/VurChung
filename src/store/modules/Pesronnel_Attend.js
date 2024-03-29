@@ -254,7 +254,6 @@ const state = {
       state.Login_Object.Account_Lv=LoginData.Account_Lv
       state.Login_Object.Last_Time=LoginData.Last_Time
       state.Login_Object.Special_Date=LoginData.Special_Date
-      console.log(state.Login_Object );
 
 
     },
@@ -279,7 +278,6 @@ const state = {
       }
       else{
         state.Employee_List=DepartMent_Employee ;
-        console.log(state.Employee_List);
       }
     },
     GET_Appli_All(state, Appli_Date) {
@@ -333,8 +331,13 @@ const state = {
           })
   
           .then(function (response) {
-            Swal.fire("新增成功", "success");
-            console.log(response);
+            if(response.data=="Sucess"){
+              Swal.fire("新增成功", "success");
+
+            }else{
+              Swal.fire("新增失敗", "fail");
+
+            }
           })
           .catch(function (error) {
             Swal.fire(error);
@@ -421,7 +424,6 @@ const state = {
 
             }else{
               commit('GET_Appli_All', response.data);
-              console.log(state.Appli_List);
 
             }
           })
@@ -444,14 +446,12 @@ const state = {
         })
 
         .then(function (response) {
-          console.log(response);
 
           if(response.data==null){
             commit('GET_Appli_All', "查無相關申請");
 
           }else{
             commit('GET_Appli_All', response.data);
-            console.log(state.Appli_List);
 
           }
         })
@@ -476,7 +476,6 @@ const state = {
           })
   
           .then(function (response) {
-            console.log(response);
             if(response.data=='false'){
               Swal.fire("伺服器發生錯誤請洽詢");
 
@@ -486,7 +485,6 @@ const state = {
   
             }else{
               commit('GET_Appli_All', response.data);
-              console.log(state.Appli_List);
   
             }
           })
@@ -509,14 +507,12 @@ const state = {
         })
 
         .then(function (response) {
-          console.log(response.data);
 
           if(response.data=="找無資料"){
             commit('GET_Appli_All', "查無相關申請");
 
           }else{
             commit('GET_Appli_All', response.data);
-            console.log(state.Appli_List);
 
           }
         })
@@ -544,14 +540,12 @@ const state = {
         })
 
         .then(function (response) {
-          console.log(response);
 
           if(response.data=="找無資料"){
             commit('GET_Appli_All', "查無相關申請");
 
           }else{
             commit('GET_Appli_All', response.data);
-            console.log(state.Appli_List);
 
           }
         })
@@ -565,12 +559,10 @@ const state = {
     //審核申請
     Review_Appli: async ({ commit }, Review_Data) => {
       try {
-        console.log(Review_Data.value);
         const response = await axios.post(state.Attend_Api_Url + "Attend_TimeData", {
           Attend_TimeData_Post: Review_Data.value,
         });
     
-        console.log(response);
     
         if (response.data === "Error Key...") {
           Swal.fire("員工Key對應錯誤");
@@ -592,12 +584,10 @@ const state = {
         //審核取消
         Cancel_Appli: async ({ commit }, Review_Data) => {
           try {
-            console.log(Review_Data.value);
             const response = await axios.post(state.Attend_Api_Url + "Cancel_Appli", {
               Attend_TimeData_Post: Review_Data.value,
             });
         
-            console.log(response);
         
             if (response.data === "Sucess") {
               Swal.fire("審核取消");

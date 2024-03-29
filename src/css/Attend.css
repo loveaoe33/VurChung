@@ -8,7 +8,7 @@
 }
 .Announcement{
   background-image: url("~@/assets/img/12345.jpg");
-  
+
 
 }
 .Container{
@@ -363,35 +363,33 @@
      display: flex;
      position: relative;
      width: 100%;
-     overflow: hidden;
     
      justify-content: center; /* 将内容水平居中 */
      align-items: center; /* 将内容垂直居中 */
    
-     animation: marqueeAnnoun 25s linear infinite, appear 2s linear 10s forwards;
+     /*animation: marqueeAnnoun 30s linear infinite; 可在後面在加入一個動畫*/
    }
    
    .marquee-item {
      flex-shrink: 0;
-     margin-right: 20px; /* 每个项目的右边距 */
+     font-size: 40px;
+     margin-right: 10px; /* 每个项目的右边距 */
      padding: 10px;
-     background-color: #3498db; /* 项目背景颜色 */
-     color: #fff; /* 文本颜色 */
+     color: #ffffff; /* 文本颜色 */
      border-radius: 5px; /* 项目圆角 */
-     overflow: hidden;
 
    }
 
    
-   @keyframes marqueeAnnoun {
+   /* @keyframes marqueeAnnoun {
      0% {
        transform: translateX(100%);
      }
      100% {
-       transform: translateX(-100%);
+       transform: translateX(-300%);
      }
      
-   }
+   } */
    @keyframes appear {
      0% {
        opacity: 0;
