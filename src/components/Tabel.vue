@@ -118,156 +118,168 @@
           >
             Close
           </button>
-          <div v-if="Appli_Object.ButtonState=='Update'">
-          <button
-            type="button"
-            class="btn btn-success"
-            id="Post_Appli"
-            @click="Update_Appli"
-          >
-            Update
-          </button>
+          <div v-if="Appli_Object.ButtonState == 'Update'">
+            <button
+              type="button"
+              class="btn btn-success"
+              id="Post_Appli"
+              @click="Update_Appli"
+            >
+              Update
+            </button>
           </div>
           <div v-else>
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="Post_Appli"
-            @click="Post_Appli"
-            :disabled="Appli_Disable"
-          >
-            Save changes
-          </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="Post_Appli"
+              @click="Post_Appli"
+              :disabled="Appli_Disable"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-    <h1>員工報表區</h1>
-    <div class="Top_button">
-      <input type="text" class="Search_text" v-model="Appli_searchName" />
+  <h1>員工報表區</h1>
+  <div class="Top_button">
+    <input type="text" class="Search_text" v-model="Appli_searchName" />
 
-      <button class="button-17" @click="HistorySwicth(Login_Object.Emp_ID,'Appli')" role="button">已申請</button>
-      <button class="button-17" @click="HistorySwicth(Login_Object.Emp_ID,'Review')" role="button">已審核</button>
+    <button
+      class="button-17"
+      @click="HistorySwicth(Login_Object.Emp_ID, 'Appli')"
+      role="button"
+    >
+      已申請
+    </button>
+    <button
+      class="button-17"
+      @click="HistorySwicth(Login_Object.Emp_ID, 'Review')"
+      role="button"
+    >
+      已審核
+    </button>
 
-      <button
-        class="button-17-Hide"
-        role="button"
-        id="button-17-Hide"
-        data-bs-toggle="modal"
-        data-bs-target="#AppliModal"
-        style="display: none;"      
-        >
-      </button>
+    <button
+      class="button-17-Hide"
+      role="button"
+      id="button-17-Hide"
+      data-bs-toggle="modal"
+      data-bs-target="#AppliModal"
+      style="display: none"
+    ></button>
 
-      <button         class="button-17"         id="button-17" @click="Open_Appli()">
-        申請加班/補休
+    <button class="button-17" id="button-17" @click="Open_Appli()">
+      申請加班/補休
+    </button>
 
-        </button>
- 
-
-      <button class="button-17" role="button" @click="printExcel()">列印此頁面</button>
-      <button
-        class="button-17"
-        role="button"
-        data-bs-toggle="modal"
-        data-bs-target="#HistoryModal"
-        @click="History(Login_Object.Emp_ID,'Employee')"
-      >
-        列印歷史總紀錄
-      </button>
-      <div class="Mark_Div">
-        <input
-          type="textbox"
-          class="form-control Mark_text"
-          v-model="Review_Data.Time_Mark"
-          placeholder="備註"
-        />
-      </div>
+    <button class="button-17" role="button" @click="printExcel()">
+      列印此頁面
+    </button>
+    <button
+      class="button-17"
+      role="button"
+      data-bs-toggle="modal"
+      data-bs-target="#HistoryModal"
+      @click="History(Login_Object.Emp_ID, 'Employee')"
+    >
+      列印歷史總紀錄
+    </button>
+    <div class="Mark_Div">
+      <input
+        type="textbox"
+        class="form-control Mark_text"
+        v-model="Review_Data.Time_Mark"
+        placeholder="備註"
+      />
     </div>
-    <EasyDataTable v-if="Tabel_Switch=='default'"
-      buttons-pagination
-      :rows-per-page="5"
-      show-index
-      v-model:items-selected="Appli_itemsSelected"
-      @click-row="showRow"
-      :headers="Appli_headers"
-      :items="AppliTableData"
-      :sort-by="Appli_sortBy"
-      :sort-type="Appli_sortType"
-      :search-field="Appli_searchField"
-      :search-value="Appli_searchName"
-      multi-sort
-      theme-color="#1d90ff"
-      table-class-name="customize-table"
+  </div>
+  <EasyDataTable
+    v-if="Tabel_Switch == 'default'"
+    buttons-pagination
+    :rows-per-page="5"
+    @click-row="showRow"
+    :headers="Appli_headers"
+    :items="AppliTableData"
+    :sort-by="Appli_sortBy"
+    :sort-type="Appli_sortType"
+    :search-field="Appli_searchField"
+    :search-value="Appli_searchName"
+    multi-sort
+    theme-color="#1d90ff"
+    table-class-name="customize-table"
+  >
+    <template
+      v-if="Login_Employee_Lv == 0 || Login_Employee_Lv == 1"
+      #item-Process="item"
     >
-      <template
-        v-if="Login_Employee_Lv == 0 || Login_Employee_Lv == 1"
-        #item-Process="item"
+      <div v-if="item.Check_State == 'No_Process'">
+        <div v-if="item.Emp_Key == Review_Data.Manager">
+          <button class="button-20 tableButton" @click="Print_Appli(item.id, item.Emp_Key)">
+            Edit
+          </button>
+        </div>
+        <button class="button-18 tableButton" @click="Review_Button(item, 'Pass')">
+          Pass
+        </button>
+        <button class="button-19 tableButton" @click="Review_Button(item, 'NPass')">
+          NPass
+        </button>
+      </div>
+      <div
+        v-else-if="
+          item.Check_State == 'Process' && item.Review_Result === 'Pass'
+        "
       >
-        <div v-if="item.Check_State == 'No_Process'">
-          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20" @click="Print_Appi(item.id,item.Emp_Key)"  >編輯</button></div>
-          <button class="button-18" @click="Review_Button(item, 'Pass')">
-            通過
-          </button>
-          <button class="button-19" @click="Review_Button(item, 'NPass')">
-            不通過
-          </button>
+        <button class="button-19" @click="Cancel_Button(item)">註銷</button>
+      </div>
+    </template>
+
+    <template v-else #item-Process="item">
+      <div v-if="item.Check_State == 'No_Process'">
+        <div v-if="item.Emp_Key == Review_Data.Manager">
+          <button class="button-20" @click="Print_Appli(item.id, item.Emp_Key)">編輯</button>
         </div>
-        <div v-else-if="item.Check_State == 'Process' && item.Review_Result==='Pass'">
-          <button class="button-19" @click="Cancel_Button(item)">註銷</button>
-        </div>
-      </template>
+      </div>
+      <div v-else-if="item.Check_State == 'Process'">Process</div>
+    </template>
 
+    <template #expand="item">
+      <div style="padding: 15px">
+        員工:{{ item.Emp_Name }}<br />剩餘時數為:{{ item.Last_Time
+        }}<br />申請時數:{{ item.Appli_Time }}<br />扣除後時數:{{
+          item.Apli_Total
+        }}<br />申請備註:{{ item.Reason_Mark }}<br />審核備註:{{
+          item.Time_Mark
+        }}
+      </div>
+    </template>
 
-      <template v-else #item-Process="item">
-        <div v-if="item.Check_State == 'No_Process'">
-          <div v-if="item.Emp_Key==Review_Data.Manager">  <button class="button-20"  @click="Print_Appi()"  >編輯</button></div>
-        </div>
-        <div v-else-if="item.Check_State == 'Process'">
-         Process
-        </div>
-      </template>
-
-
-
-      <template  #expand="item">
-        <div style="padding: 15px">
-          員工:{{ item.Emp_Name }}<br />剩餘時數為:{{ item.Last_Time
-          }}<br />申請時數:{{ item.Appli_Time }}<br />扣除後時數:{{
-            item.Apli_Total
-          }}<br />申請備註:{{ item.Reason_Mark }}<br/>審核備註:{{ item.Time_Mark }}
-        
-
-        </div>
-      </template>
-      
-
-
-
-
-      <template #loading>
-        <img
-          src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-          style="width: 100px; height: 80px"
-        />
-      </template>
-    </EasyDataTable>
-    <EasyDataTable v-else-if="Tabel_Switch=='Log'"
-      buttons-pagination
-      :rows-per-page="5"
-      show-index
-      @click-row="showRow"
-      :headers="History_Log_Header"
-      :items="AppliTableData"
-      multi-sort
-      theme-color="#1d90ff"
-      table-class-name="customize-table"
-    >
+    <template #loading>
+      <img
+        src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+        style="width: 100px; height: 80px"
+      />
+    </template>
   </EasyDataTable>
-    <div id="row-clicked"> </div>
-{{ Appli_Object.ButtonState }}
+  <EasyDataTable
+    v-else-if="Tabel_Switch == 'Log'"
+    buttons-pagination
+    :rows-per-page="5"
+    show-index
+    @click-row="showRow"
+    :headers="History_Log_Header"
+    :items="AppliTableData"
+    multi-sort
+    theme-color="#1d90ff"
+    table-class-name="customize-table"
+  >
+  </EasyDataTable>
+  <div id="row-clicked"></div>
+  {{ Appli_Object.ButtonState }}
 </template>
   
   <script>
@@ -288,34 +300,31 @@ export default {
   },
   props: {
     fatherALert: Function,
-    HistoryFunction:Function,
-    Review:Function,
-    Appli:Function,
+    HistoryFunction: Function,
+    Review: Function,
+    Appli: Function,
   },
 
   setup(props) {
     const store = useStore();
-    
 
     const Alert = (Msg, Key) => {
       props.fatherALert(Msg, Key);
     };
 
-    
-    const HistorySwicth=(Emp_Key,Switch)=>{
-      (Switch=="Appli")? props.Appli(Emp_Key):props.Review(Emp_Key);
-    }
+    const HistorySwicth = (Emp_Key, Switch) => {
+      Switch == "Appli" ? props.Appli(Emp_Key) : props.Review(Emp_Key);
+    };
 
-    const History = (Emp_Key,Switch)=>{
-      props.HistoryFunction(Emp_Key,Switch);
-    }
+    const History = (Emp_Key, Switch) => {
+      props.HistoryFunction(Emp_Key, Switch);
+    };
 
-    const Tabel_Switch=ref("default");
+    const Tabel_Switch = ref("default");
 
     watch(
       () => store.state.Personnel_Attend.Appli_List,
       (newValue) => {
-        
         AppliTableData.value = newValue;
       }
     );
@@ -323,10 +332,9 @@ export default {
     watch(
       () => store.state.Personnel_Attend.TabelState,
       (newValue) => {
-        Tabel_Switch.value=newValue;
+        Tabel_Switch.value = newValue;
       }
     );
-
 
     const Login_Employee_Lv =
       store.state.Personnel_Attend.Login_Object.Account_Lv;
@@ -360,7 +368,7 @@ export default {
     });
 
     const Appli_Object = ref({
-      Appli_id:"",
+      Appli_id: "",
       Emp_ID: "",
       Employee: "",
       DepartMent: "",
@@ -368,7 +376,7 @@ export default {
       ReasonMark: "",
       Appli_Time: "",
       Total_Time: "",
-      ButtonState:"Insert",
+      ButtonState: "Insert",
     });
     const AppliTableData = ref([]);
     const Appli_headers = ref([
@@ -387,8 +395,8 @@ export default {
     ]);
     const LogTableData = ref([]);
 
-    const History_Log_Header=ref([
-    { text: "Emp_ID", value: "Emp_ID" },
+    const History_Log_Header = ref([
+      { text: "Emp_ID", value: "Emp_ID" },
       { text: "Emp_Name", value: "Emp_Name" },
       { text: "Department", value: "Department" },
       { text: "Old_Time", value: "Old_Time" },
@@ -399,11 +407,11 @@ export default {
       { text: "Time_Mark", value: "Time_Mark" },
       { text: "Time_Pon_Mark", value: "Time_Pon_Mark" },
       { text: "Update_Time", value: "Update_Time" },
-    ])
+    ]);
 
     const Appli_sortBy = ["Appli_Time", "Last_Time"];
     const Appli_sortType = ["desc", "asc"];
-    const Appli_itemsSelected = ref([]);
+    const Appli_itemsSelected = ref([]);   /*日後有需要可以加在table v-model:items-selected="Appli_itemsSelected"*/
     const Appli_searchField = ["Emp_Name"];
     const Appli_searchName = ref("");
     const Review_Data = ref({
@@ -448,44 +456,43 @@ export default {
     //   { id:10,"championships": [2017, 2018, 2019, 2022],name: 'Jane Doe', age: 95 },
 
     // ]);
-    const arrayFilter=(Start,data)=>{
-      let end=0;
-      for(let i=Start+1;i<data.length;i++){
-         if(data[Start].Emp_ID==data[i].Emp_ID){
-        end++
-        data[i].Emp_ID="";
-        data[i].Emp_Name="";
-        data[i].Department=""; 
-        data[i].Last_Time="";
-        data[i].Special_Date="";
-        data[i].Time_Pon_Mark=""; 
-        data[i].Update_Time="";
-         }
+    const arrayFilter = (Start, data) => {
+      let end = 0;
+      for (let i = Start + 1; i < data.length; i++) {
+        if (data[Start].Emp_ID == data[i].Emp_ID) {
+          end++;
+          data[i].Emp_ID = "";
+          data[i].Emp_Name = "";
+          data[i].Department = "";
+          data[i].Last_Time = "";
+          data[i].Special_Date = "";
+          data[i].Time_Pon_Mark = "";
+          data[i].Update_Time = "";
+        }
       }
       return end;
-
-    }
-    const tableFilter=(data)=>{
-      let end=0;
-      for(let i=0;i<data.length;i++){
-        end=arrayFilter(i,data);
-        if(data.Emp_ID!=""){
-          arrayFilter(end+1,data);
+    };
+    const tableFilter = (data) => {
+      let end = 0;
+      for (let i = 0; i < data.length; i++) {
+        end = arrayFilter(i, data);
+        if (data.Emp_ID != "") {
+          arrayFilter(end + 1, data);
+        }
       }
-     }
-    }
-    const exportExcel=(data, filename)=>{
-     const ws=XLSX.utils.json_to_sheet(data);
-     const wb=XLSX.utils.book_new();
-     XLSX.utils.book_append_sheet(wb,ws,"sheet1")
-     XLSX.writeFile(wb,filename);
-    }
-    const printExcel=()=>{
-      if(Tabel_Switch.value=="Log"){
+    };
+    const exportExcel = (data, filename) => {
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+      XLSX.writeFile(wb, filename);
+    };
+    const printExcel = () => {
+      if (Tabel_Switch.value == "Log") {
         tableFilter(AppliTableData.value);
       }
-      exportExcel(AppliTableData.value,'excel.xlsx');
-    }
+      exportExcel(AppliTableData.value, "excel.xlsx");
+    };
     const handleButtonClick = (row) => {
       console.log("Button clicked for row:", row);
     };
@@ -511,8 +518,8 @@ export default {
         Appli_Object.value.Total_Time = Last_Time;
       } else {
         let Process_Number =
-          (Appli_Object.value.Reason == "Public_Holi" ||
-          Appli_Object.value.Reason == "Over_Time")
+          Appli_Object.value.Reason == "Public_Holi" ||
+          Appli_Object.value.Reason == "Over_Time"
             ? item
             : -item;
         Appli_Object.value.Total_Time =
@@ -565,57 +572,64 @@ export default {
         Appli_Disable.value = true;
       }
     };
-    
-    const openModal=(buttonName,Switch)=>{  
-      Appli_Object.value.ButtonState=Switch;
+
+    const openModal = (buttonName, Switch) => {
+      Appli_Object.value.ButtonState = Switch;
 
       var button = document.getElementById(buttonName);
-      button.click();   }
+      button.click();
+    };
 
-    const Open_Appli=()=>{
+    const Open_Appli = () => {
       Init_Appli();
-      openModal("button-17-Hide","Insert")
-    }
-    const Print_Appi=(Appli_id,Emp_Key)=>{  //編輯須帶出單號
-      axios.get(Api_Url + 'Edit_Print', {
-  params: {
-    id: Appli_id,      
-    Emp_Key: Emp_Key
-  }
-})
-.then(response => {
-  console.log(response.data); 
-  if(response.data=="fail"){
-    Alert("單號錯誤請聯繫...", "fail");
-  }else{
-    Appli_Object.value.Appli_id=response.data.id;
-    Appli_Object.value.ReasonMark=response.data.reason
-    Appli_Object.value.Appli_Time=(response.data.Appli_Time<0)?-response.data.Appli_Time:response.data.Appli_Time;
-    Appli_Object.value.ReasonMark=response.data.Reason_Mark;
-    Appli_Object.value.Reason=response.data.Reason;  
+      openModal("button-17-Hide", "Insert");
+    };
+    const Print_Appli = (Appli_id, Emp_Key) => {
 
-    Time_Check(Appli_Object.value.Appli_Time);
-    openModal("button-17-Hide","Update")
-  }
-})
-.catch(error => {
-  Alert(error, "fail");
-});
-  }
- 
-    const Init_Appli=()=>{
-      Appli_Object.value.Appli_id="";
+      //編輯須帶出單號
+      axios
+        .get(Api_Url + "Edit_Print", {
+          params: {
+            id: Appli_id,
+            Emp_Key: Emp_Key,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data == "fail") {
+            Alert("單號錯誤請聯繫...", "fail");
+          } else {
+            Appli_Object.value.Appli_id = response.data.id;
+            Appli_Object.value.ReasonMark = response.data.reason;
+            Appli_Object.value.Appli_Time =
+              response.data.Appli_Time < 0
+                ? -response.data.Appli_Time
+                : response.data.Appli_Time;
+            Appli_Object.value.ReasonMark = response.data.Reason_Mark;
+            Appli_Object.value.Reason = response.data.Reason;
+
+            Time_Check(Appli_Object.value.Appli_Time);
+            openModal("button-17-Hide", "Update");
+          }
+        })
+        .catch((error) => {
+          Alert(error, "fail");
+        });
+    };
+
+    const Init_Appli = () => {
+      Appli_Object.value.Appli_id = "";
       Appli_Object.value.Reason = "";
       Appli_Object.value.ReasonMark = "";
       Appli_Object.value.Appli_Time = "";
       Appli_Object.value.Total_Time = 0;
       Appli_Disable.value = true;
-      Radio_Check.value=true;
+      Radio_Check.value = true;
       Insert_Msg.value = "";
-    }
+    };
 
-        
-    const Update_Appli=()=>{   //更新申請
+    const Update_Appli = () => {
+      //更新申請
       {
         axios
           .post(Api_Url + "Edit_Appli", {
@@ -624,9 +638,10 @@ export default {
 
           .then(function (response) {
             if (response.data == "Sucess") {
-              Alert("更新完成請刷新", "Sucess");
+              Alert("更新完成!", "Sucess");
               Init_Appli();
-            } else if(response.data=="fail"){
+              HistorySwicth(Login_Object.value.Emp_ID, 'Appli')
+            } else if (response.data == "fail") {
               Alert("更新失敗", "fail");
             }
           })
@@ -634,8 +649,9 @@ export default {
             Alert(error, "Error");
           });
       }
-    }
-    const Post_Appli = () => {   //新增申請
+    };
+    const Post_Appli = () => {
+      //新增申請
       {
         axios
           .post(Api_Url + "Insert_TimeData", {
@@ -646,9 +662,9 @@ export default {
             if (response.data == "Sucess") {
               Alert(response.data, "Sucess");
               Init_Appli();
-            } else if(response.data=="OrderRepeat..."){
+            } else if (response.data == "OrderRepeat...") {
               Alert("當月申請有尚未審核請連絡主管", "fail");
-            }else if (response.data == "false") {
+            } else if (response.data == "false") {
               Alert(response.data, "fail");
             }
           })
@@ -657,7 +673,7 @@ export default {
           });
       }
     };
-    
+
     const Review_Object = (Item, Switch, State) => {
       if (Switch == "Post") {
         Review_Data.value.Appli_Id = Item.id;
@@ -668,9 +684,7 @@ export default {
       } else if (Switch == "Cancel") {
         Review_Data.value.Appli_Id = Item.id;
         Review_Data.value.Appli_Employee = Item.Emp_Key;
-
-
-      }else if(Switch == "Init"){
+      } else if (Switch == "Init") {
         Review_Data.value.Appli_Id = "";
         Review_Data.value.Appli_Employee = "";
         Review_Data.value.State = "";
@@ -689,7 +703,7 @@ export default {
         ? Review_Object(item, "Init", State)
         : Review_Object(item, "Init", State);
     };
-    const Cancel_Button = async(item, State) => {
+    const Cancel_Button = async (item, State) => {
       Review_Object(item, "Cancel", State);
       let Msg = await store.dispatch(
         "Personnel_Attend/Cancel_Appli",
@@ -700,8 +714,6 @@ export default {
         : Review_Object(item, "Init", State);
     };
 
-
-  
     onMounted(() => {
       Login_Object.value = { Emp_ID, Emp_Name, Department_Key, Last_Time };
       Appli_Object.value.Total_Time = Last_Time;
@@ -716,7 +728,7 @@ export default {
     });
     return {
       Login_Employee_Lv,
-   
+
       Appli_headers,
       Tabel_Switch,
       History_Log_Header,
@@ -742,7 +754,7 @@ export default {
       showRow,
       Radio_Event,
       Post_Appli,
-      Print_Appi,
+      Print_Appli,
       Update_Appli,
       History,
       HistorySwicth,

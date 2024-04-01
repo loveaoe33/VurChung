@@ -265,6 +265,7 @@
               class="form-control Employee_Level"
               v-model="Insert_Employee.Emp_Lv"
               placeholder="權限等級"
+              min="0"
             /><br />
             <label class="form-check-label" for="flexRadioDefault2"
               >使用者部門:</label
