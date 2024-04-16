@@ -1108,6 +1108,7 @@ export default {
             Alert(response.data, "Sucess");
           }
           Init_Depart();
+          store.dispatch("Personnel_Attend/getDepartment");
         })
         .catch(function (error) {
           alert(error);
