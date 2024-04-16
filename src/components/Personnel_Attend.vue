@@ -485,7 +485,7 @@
             data-bs-toggle="modal"
             data-bs-target="#DepartModal"
           >
-            <span @mouseleave="stopMarquee" @mouseenter="startMarquee"
+            <span class="btn-98-text" @mouseleave="stopMarquee" @mouseenter="startMarquee"
               >新增部門</span
             >
           </button>
