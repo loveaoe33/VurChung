@@ -33,12 +33,20 @@
             <span class="Context">{{ Login_Object.Last_Time }}</span>
           </div>
           <br />
+          申請日期:<br><input
+              type="date"
+              id="datepicker"
+              name="datepicker"
+              @change="Date_Select"
+              /><br><br>
           申請理由:<br /><input
             type="text"
             class="form-control"
             v-model="Appli_Object.ReasonMark"
+            :disabled="Date_Check"
             @keyup="Radio_Event()"
-          /><br />
+          />
+          <br />
           <div class="appli-radio-buttons">
             <label for="Over_Time">加班</label>
             <input
@@ -343,6 +351,7 @@ export default {
       store.state.Personnel_Attend.Login_Object;
     const Insert_Msg = ref("");
     const Radio_Check = ref(true);
+    const Date_Check=ref(true);
     const Appli_Disable = ref(true);
     const Appli_Objct_Export = ref([]);
     // const Appli_Objct_Export=ref({
@@ -500,6 +509,46 @@ export default {
     const showRow = (item) => {
       document.getElementById("row-clicked").innerHTML = JSON.stringify(item);
     };
+
+
+
+    const Date_Zero=(LocalDate)=>{
+      let getDate;
+      let Year=LocalDate.getFullYear();
+      let Month=LocalDate.getMonth()+1;
+      let Date=LocalDate.getDate();
+      ((LocalDate.getMonth()+1)<10)?Month=`0${LocalDate.getMonth()+1}`:"";
+      ((LocalDate.getDate())<10)?Month=`0${LocalDate.getDate()}`:"";
+      getDate=`${Year}-${Month}-${Date}`
+      return getDate;
+    }
+    const Date_Compare=(date)=>{
+      const LocalDate=new Date();
+      const getDate=Date_Zero(LocalDate);
+      const Now=new Date(getDate);
+      const End=new Date(date);
+      const timeDiff=Math.abs(Now-End);
+      const diffDays=Math.ceil(timeDiff/(1000*3600*24))
+      console.log(diffDays);
+      if(Now>End && diffDays>7)
+      {
+        return false;
+      }else{
+        return true;
+      }
+    }
+    const Date_Select=(date)=>{
+      Appli_Object.value.ReasonMark="";
+      const dateString=date.target.value.concat('_',Appli_Object.value.ReasonMark);
+      Appli_Object.value.ReasonMark=dateString;
+      if(  Date_Compare(date.target.value)){
+        Date_Check.value=false
+      }else{
+        Date_Check.value=true;
+        Init_Appli();
+        Alert("超過七天請聯繫主管...", "fail");
+        }
+    }
     const Radio_Event = () => {
       if (Appli_Object.value.Reason == "Public_Holi") {
         Radio_Check.value = true;
@@ -742,6 +791,7 @@ export default {
       Login_Object,
       Insert_Msg,
       Radio_Check,
+      Date_Check,
       Appli_Disable,
       Appli_Objct_Export,
       Review_Data,
@@ -753,6 +803,7 @@ export default {
       Time_Check,
       showRow,
       Radio_Event,
+      Date_Select,
       Post_Appli,
       Print_Appli,
       Update_Appli,
