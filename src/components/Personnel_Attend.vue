@@ -76,6 +76,98 @@
 
     <div
       class="modal fade"
+      id="PassModal"
+      tabindex="-1"
+      aria-labelledby="PassModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="PassModal">通行碼新增</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label"
+                  >選擇建立部門:</label
+                >
+                <select
+              class="form-select form-select-sm SelectItem Pass_Select"
+              id="Pass_Select"
+              v-model="PassObject.Depart_Select"
+            >
+              <option
+                v-for="option in Department_List"
+                :key="option"
+                :value="option"
+              >
+                {{ option }}
+              </option>
+            </select>
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label"
+                  >通行碼:</label
+                >
+                <input type="textbox"
+                  class="form-control"
+                  v-model="PassObject.Pass_Code"
+                  id="Pass-text"
+                />
+
+              </div>
+            </form>
+            <span class="Pass-Title">已建立通行碼:</span><br /><span
+              v-for="(item, index) in Announcement_List"
+              :key="index"
+              ><div
+                v-if="JsonParse(item, 'Create_Name') == Announcement.Emp_Name"
+              >
+                {{ JsonParse(item, "Announcement") }}
+                <button
+                  type="button"
+                  class="btn btn-primary Announcement_Delete"
+                  @click="Delete_PassCode()"
+                >
+                  刪除通行碼
+                </button>
+              </div></span
+            >
+            <span class="Announcement-Employee">發布人:</span
+            ><span class="Announcement-Context"
+              >{{ Announcement.Emp_Name }}
+            </span>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="Save_Passcdoe('Insert')"
+            >
+              新增通行碼
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div
+      class="modal fade"
       id="AnnouncementModal"
       tabindex="-1"
       aria-labelledby="AnnouncementModalLabel"
@@ -510,6 +602,20 @@
               >新增公告</span
             >
           </button>
+          <button
+            class="btn-98"
+            data-bs-toggle="modal"
+            data-bs-target="#PassModal"
+            data-bs-whatever="@mdo"
+          >
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >編輯通行碼</span
+            >
+          </button>
+
           <button class="btn-98" @click="Export_All_Applie">
             <span
               class="btn-98-text"
@@ -733,6 +839,12 @@ export default {
       State_Key: "",
       Select_State: "",
     });
+    const PassObject=ref({
+      Pass_Id:"",
+      Create_Name: Login_Object.Emp_Name,
+      Depart_Select: "",
+      Pass_Code:"",
+    })
     const Insert_Employee = ref({
       Emp_Name: "",
       Emp_Account: "",
@@ -1086,6 +1198,16 @@ export default {
           });
       }
     };
+
+    const Save_Passcode=()=>{
+      alert(123);
+
+    };
+
+    const Delete_PassCode=()=>{
+      alert(123);
+    };
+
     const Save_Depart = () => {
       axios
         .post(
@@ -1263,6 +1385,7 @@ document.head.appendChild(styleElemnet);
       HistoryRadio,
       Admin_Form,
       Update_Object,
+      PassObject,
       // EmpMapState,
       templateArea,
       Select_History,
@@ -1270,6 +1393,9 @@ document.head.appendChild(styleElemnet);
       Member_Appli,
       Member_Review,
       Save_Announcement,
+      Delete_Announcement,
+      Save_Passcode,
+      Delete_PassCode,
       Alert,
       Export_All_Applie,
       Export_All_review,
@@ -1281,7 +1407,6 @@ document.head.appendChild(styleElemnet);
       DepartClick,
       Check_Depart,
       Save_Depart,
-      Delete_Announcement,
       Special_Button,
       Special_Insert,
       UpdatePassword,
