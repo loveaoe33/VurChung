@@ -541,13 +541,14 @@ export default {
       Appli_Object.value.ReasonMark="";
       const dateString=date.target.value.concat('_',Appli_Object.value.ReasonMark);
       Appli_Object.value.ReasonMark=dateString;
-      if(  Date_Compare(date.target.value)){
+      if(  Date_Compare(date.target.value) || Login_Object.value.Account_Lv<=0){
         Date_Check.value=false
       }else{
         Date_Check.value=true;
         Init_Appli();
         Alert("超過七天請聯繫主管...", "fail");
         }
+
     }
     const Radio_Event = () => {
       if (Appli_Object.value.Reason == "Public_Holi") {
