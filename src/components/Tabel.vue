@@ -541,7 +541,7 @@ export default {
       Appli_Object.value.ReasonMark="";
       const dateString=date.target.value.concat('_',Appli_Object.value.ReasonMark);
       Appli_Object.value.ReasonMark=dateString;
-      if(  Date_Compare(date.target.value) || Login_Object.value.Account_Lv<=0){
+      if(  Date_Compare(date.target.value)){
         Date_Check.value=false
       }else{
         Date_Check.value=true;
