@@ -19,7 +19,7 @@
    
    
    }
-   .Announcement_Delete{
+   .Announcement_Delete,.PassCode_Delete{
     align-items: center;
     appearance: none;
     background-color: #d10d0d;

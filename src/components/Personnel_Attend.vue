@@ -76,6 +76,98 @@
 
     <div
       class="modal fade"
+      id="PassModal"
+      tabindex="-1"
+      aria-labelledby="PassModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="PassModal">通行碼新增</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label"
+                  >選擇建立部門:</label
+                >
+                <select
+                  class="form-select form-select-sm SelectItem Pass_Select"
+                  id="Pass_Select"
+                  v-model="PassObject.Depart_Select"
+                >
+                  <option
+                    v-for="option in Department_List"
+                    :key="option"
+                    :value="option"
+                  >
+                    {{ option }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">通行碼:</label>
+                <input
+                  type="textbox"
+                  class="form-control"
+                  v-model="PassObject.Pass_Code"
+                  id="Pass-text"
+                />
+              </div>
+            </form>
+            <span class="Pass-Title">已建立通行碼:</span><br /><span
+              v-for="(item, index) in Pass_Code_List"
+              :key="index"
+              ><div
+                v-if="
+                  JsonParse(item, 'Create_Name') == Login_Object.Emp_Name ||
+                  Login_Object.Account_Lv == 0
+                "
+              >
+                {{ JsonParse(item, "PassCode") }}
+                <button
+                  type="button"
+                  class="btn btn-primary PassCode_Delete"
+                  @click="Delete_PassCode(JsonParse(item, 'id'), 'Delete')"
+                >
+                  刪除通行碼
+                </button>
+              </div></span
+            >
+            <span class="Announcement-Employee">發布人:</span
+            ><span class="Announcement-Context"
+              >{{ Announcement.Emp_Name }}
+            </span>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="Save_Passcode('Insert')"
+            >
+              新增通行碼
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
       id="AnnouncementModal"
       tabindex="-1"
       aria-labelledby="AnnouncementModalLabel"
@@ -119,19 +211,20 @@
             <span class="Announcement-Title">已發布公告:</span><br /><span
               v-for="(item, index) in Announcement_List"
               :key="index"
-              ><div
-                v-if="JsonParse(item, 'Create_Name') == Announcement.Emp_Name"
-              >
-                {{ JsonParse(item, "Announcement") }}
-                <button
-                  type="button"
-                  class="btn btn-primary Announcement_Delete"
-                  @click="Delete_Announcement(JsonParse(item, 'id'), 'Delete')"
-                >
-                  刪除公告
-                </button>
-              </div></span
             >
+              {{ JsonParse(item, "Announcement") }}
+              <button
+                v-if="
+                  JsonParse(item, 'Create_Name') == Login_Object.Emp_Name ||
+                  Login_Object.Account_Lv == 0
+                "
+                type="button"
+                class="btn btn-primary Announcement_Delete"
+                @click="Delete_Announcement(JsonParse(item, 'id'), 'Delete')"
+              >
+                刪除公告</button
+              ><br />
+            </span>
             <span class="Announcement-Employee">發布人:</span
             ><span class="Announcement-Context"
               >{{ Announcement.Emp_Name }}
@@ -443,14 +536,14 @@
         </div>
       </div>
     </div>
-    
-    <div class="Container"> 
+
+    <div class="Container">
       <div class="Announcement">
         <div id="Announcement_Box">
           <div class="marquee-container">
-            <div class="marquee-content" >
+            <div class="marquee-content">
               <div
-                class="marquee-item" 
+                class="marquee-item"
                 v-for="(item, index) in Announcement_List"
                 :key="index"
               >
@@ -485,8 +578,10 @@
             data-bs-toggle="modal"
             data-bs-target="#DepartModal"
           >
-            <span               class="btn-98-text"
-@mouseleave="stopMarquee" @mouseenter="startMarquee"
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
               >新增部門</span
             >
           </button>
@@ -511,6 +606,20 @@
               >新增公告</span
             >
           </button>
+          <button
+            class="btn-98"
+            data-bs-toggle="modal"
+            data-bs-target="#PassModal"
+            data-bs-whatever="@mdo"
+          >
+            <span
+              class="btn-98-text"
+              @mouseleave="stopMarquee"
+              @mouseenter="startMarquee"
+              >編輯通行碼</span
+            >
+          </button>
+
           <button class="btn-98" @click="Export_All_Applie">
             <span
               class="btn-98-text"
@@ -710,7 +819,7 @@ export default {
     //   Insert_Employee.value.Create_Emp = Login_Object.Emp_Name;
     //   Update_Object.value.Emp_ID = Login_Object.Emp_ID;
     // };
-  
+
     const HistoryRadio = ref(["申請歷史", "審核歷史"]);
     const Post_History = ref({
       Emp_Key: "",
@@ -733,6 +842,14 @@ export default {
       Announcement_Context: "",
       State_Key: "",
       Select_State: "",
+    });
+    const Pass_Code_List = ref([]);
+    const PassObject = ref({
+      Pass_Id: "",
+      Create_Name: Login_Object.Emp_Name,
+      Depart_Select: "",
+      Pass_Code: "",
+      State_Key: "",
     });
     const Insert_Employee = ref({
       Emp_Name: "",
@@ -777,8 +894,10 @@ export default {
     const Emp_Disable = ref(true);
 
     const Tmpla_Init = () => {
+      //初始化帶出資料
       store.dispatch("Personnel_Attend/getDepartment");
       store.dispatch("Personnel_Attend/getAnnouncement");
+      store.dispatch("Personnel_Attend/getPasscode");
     };
 
     const UpdatePassword = () => {
@@ -800,9 +919,7 @@ export default {
             )
 
             .then(function (response) {
-
               if (response.data == "fail") {
-
                 Alert(`密碼錯誤`, "fail");
               } else if (response.data == "Sucess") {
                 Alert(`更改完成即將登出`, "Sucess");
@@ -846,13 +963,21 @@ export default {
         Employee_List.value = newValue;
       }
     );
+
+    watch(
+      () => store.state.Personnel_Attend.Pass_Code,
+      (newValue) => {
+        // 在这里可以执行其他逻辑
+        Pass_Code_List.value = newValue;
+      }
+    );
     watch(
       () => store.state.Personnel_Attend.Announcement,
       (newValue) => {
         // 在这里可以执行其他逻辑
-        Announcement_List.value=newValue
+        Announcement_List.value = newValue;
         marqueeContext();
-        }
+      }
     );
 
     watch(
@@ -923,6 +1048,8 @@ export default {
           return Proecess_String.id;
         } else if (Switch_String == "Create_Name") {
           return Proecess_String.Create_Name;
+        } else if (Switch_String == "PassCode") {
+          return `【${Proecess_String.Depart}】:${Proecess_String.PassCode}`;
         }
 
         //  return  (JsonString=="查無員工資料")?"查無員工資料":JSON.parse(JsonString)
@@ -1023,7 +1150,6 @@ export default {
             Last_Special: response.data.Special_Date,
             Last_UpdateTime: response.data.Update_Time,
           };
-
         })
         .catch(function (error) {
           Alert(error, "Error");
@@ -1087,6 +1213,93 @@ export default {
           });
       }
     };
+
+    const Save_Passcode = (State_Key) => {
+      PassObject.value.State_Key = State_Key;
+      if (
+        PassObject.value.Depart_Select == "" ||
+        PassObject.value.Pass_Code == ""
+      ) {
+        Alert("部門或通行碼不可為空", "fail");
+      } else {
+        axios
+          .post(
+            Api_Url + "Passcode",
+            { PassObject_Post: PassObject.value },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then(function (response) {
+            response.data == "Sucess"
+              ? Alert(response.data, "Sucess")
+              : Alert("新增錯誤請聯繫...", "fail");
+            PassObject.value.Depart_Select = "";
+            PassObject.value.Pass_Code = "";
+            PassObject.value.State_Key = "";
+            store.dispatch("Personnel_Attend/getPasscode");
+          })
+          .catch(function (error) {
+            Alert(error, "Error");
+          });
+      }
+    };
+
+    const Delete_PassCode = (id, State_Key) => {
+      PassObject.value.Pass_Id = id;
+      PassObject.value.State_Key = State_Key;
+      axios
+        .post(
+          Api_Url + "Passcode",
+          { PassObject_Post: PassObject.value },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+          response.data == "Sucess"
+            ? Alert(response.data, "Sucess")
+            : Alert("刪除錯誤請聯繫...", "fail");
+          PassObject.value.State_Key = "";
+          PassObject.value.Pass_Id = "";
+          store.dispatch("Personnel_Attend/getPasscode");
+        })
+        .catch(function (error) {
+          Alert(error, "Error");
+        });
+      };
+
+
+      const Check_PassCode = (Depart, PassCode) => {
+
+      axios
+        .post(
+          Api_Url + "checkPasscode",
+          { Depart: Depart,
+            PassCode:PassCode,
+           },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+          response.data == "Sucess"
+            ? Alert(response.data, "Sucess")
+            : Alert("密碼錯誤", "fail");
+        })
+        .catch(function (error) {
+          Alert(error, "Error");
+        });
+      };
+
+
+
     const Save_Depart = () => {
       axios
         .post(
@@ -1100,10 +1313,8 @@ export default {
         )
 
         .then(function (response) {
-
           console.log(response);
           if (response.data == "Deaprtment value Cant Empty..") {
-
             Alert(response.data, "fail");
           } else {
             Alert(response.data, "Sucess");
@@ -1196,33 +1407,36 @@ export default {
       );
     };
 
-    const marqueeContext=()=>{
-      let totalWidth=0
-      const maqueeElem=document.querySelector(".marquee-content")      
-      for(let i=0;i<Announcement_List.value.length;i++){
-        totalWidth+=JsonParse(Announcement_List.value[i],"Announcement").length
+    const marqueeContext = () => {
+      let totalWidth = 0;
+      const maqueeElem = document.querySelector(".marquee-content");
+      for (let i = 0; i < Announcement_List.value.length; i++) {
+        totalWidth += JsonParse(
+          Announcement_List.value[i],
+          "Announcement"
+        ).length;
       }
       // Announcement_List.value.forEach((item)=>{totalWidth+=JsonParse(item.value,"Announcement").length         ;console.log(item);} )
-      const animationDuration = totalWidth /1; // 每秒移動 10px
-      maqueeElem.style.animation=`marqueeAnnoun ${animationDuration}s linear infinite`
+      const animationDuration = totalWidth / 1; // 每秒移動 10px
+      maqueeElem.style.animation = `marqueeAnnoun ${animationDuration}s linear infinite`;
       // marqueeItem.forEach(item=>{ totalWidth+=item.offsetWidth })
       marqueePosition(totalWidth);
-    }
-    const marqueePosition =(Percent)=>{
-    const styleElemnet=document.createElement("style");
-    const KeyStyle=`
+    };
+    const marqueePosition = (Percent) => {
+      const styleElemnet = document.createElement("style");
+      const KeyStyle = `
   @keyframes marqueeAnnoun {
     0% {
       transform: translateX(100%);
     }
     100% {
-      transform: translateX(-${Percent+100}%);
+      transform: translateX(-${Percent + 100}%);
     }
   }
 `;
-styleElemnet.innerHTML=KeyStyle;
-document.head.appendChild(styleElemnet);
-    }
+      styleElemnet.innerHTML = KeyStyle;
+      document.head.appendChild(styleElemnet);
+    };
     const UnMountData = () => {
       //卸除元件移除狀態管理
       store.dispatch("Personnel_Attend/resetState");
@@ -1264,6 +1478,8 @@ document.head.appendChild(styleElemnet);
       HistoryRadio,
       Admin_Form,
       Update_Object,
+      PassObject,
+      Pass_Code_List,
       // EmpMapState,
       templateArea,
       Select_History,
@@ -1271,6 +1487,10 @@ document.head.appendChild(styleElemnet);
       Member_Appli,
       Member_Review,
       Save_Announcement,
+      Delete_Announcement,
+      Save_Passcode,
+      Delete_PassCode,
+      Check_PassCode,
       Alert,
       Export_All_Applie,
       Export_All_review,
@@ -1282,7 +1502,6 @@ document.head.appendChild(styleElemnet);
       DepartClick,
       Check_Depart,
       Save_Depart,
-      Delete_Announcement,
       Special_Button,
       Special_Insert,
       UpdatePassword,

@@ -188,6 +188,7 @@ const state = {
     Appli_List:[],      //申請列表
     Report_List:[],      //報表輸出
     Announcement:[], //布告欄
+    Pass_Code:[],
     Employee_Object:{    //員工處理物件
       Emp_ID:"",
       Password:"",
@@ -271,6 +272,9 @@ const state = {
       // console.log(state.Announcement);
 
     },
+    GET_PassCode(state,Pass_Code){
+      state.Pass_Code=Pass_Code;
+    },
     GET_Department_Employee(state, DepartMent_Employee) {
       if(DepartMent_Employee=="查無員工資料"){
         state.Employee_List=["查無員工資料"];
@@ -346,10 +350,31 @@ const state = {
       }
 
     },
+    getPasscode({commit}){
+          {
+          axios
+          .get(state.Attend_Api_Url+"getPasscode"
+          ,{
+          })
+  
+          .then(function (response) {
+            if(response.data=="fail")
+            {
+              Swal.fire("通行碼取得錯誤");
+            }else{
+              console.log(response.data)
+              commit('GET_PassCode', response.data);
+
+            }
+          })
+          .catch(function (error) {
+            Swal.fire(error);              
+          });
+        }
+      },
 
         // 初始化布告欄
-        getAnnouncement({ commit }) {
-          {
+        getAnnouncement({ commit }) { 
             axios
               .post(state.Attend_Api_Url+"Announcement_List"
               ,{
@@ -367,9 +392,10 @@ const state = {
               .catch(function (error) {
                 Swal.fire(error);              
               });
-          }
-    
+          
         },
+
+      
 
     
 
