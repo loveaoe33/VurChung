@@ -2,7 +2,6 @@
   <div
     class="modal fade"
     id="AppliModal"
-    tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
@@ -33,22 +32,33 @@
             <span class="Context">{{ Login_Object.Last_Time }}</span>
           </div>
           <br />
-          <div v-if="Appli_Object.ButtonState!='Update'">
-          申請日期:<br /><input
-            type="date"
-            id="datepicker"
-            name="datepicker"
-            @change="Pass_Check"
-          /><br /><br />
+          <div v-if="Appli_Object.ButtonState != 'Update'">
+            申請日期:<br /><input
+              type="date"
+              id="datepicker"
+              name="datepicker"
+              @change="Pass_Check"
+            />
+     
+            <div v-if="Pass_Text_Check">
+              輸入通行碼:<br /><input type="Password" v-model="PassTextObject.PassCode" class="PassText Context" />
+              <button type="button"  @click="Post_Pass"   class="btn btn-success" id="Post_Pass">
+                通行碼
+              </button>
+            </div>
+        
           </div>
-          申請理由:<br /><span v-if='Appli_Object.ButtonState!="Update"'><input
-            type="text"
-            class="form-control"
-            v-model="Appli_Object.ReasonMark"
-            :disabled="Date_Check"
-            @keyup="Radio_Event()"
-          /></span><span v-else><h3 style="color:red">{{ Appli_Object.ReasonMark }}</h3></span>
-          <br />
+          申請理由:<br /><span v-if="Appli_Object.ButtonState != 'Update'"
+            ><input
+              v-if="Date_Check==false"
+              type="text"
+              class="form-control"
+              v-model="Appli_Object.ReasonMark"
+              @keyup="Radio_Event()" /></span
+          ><span v-else
+            ><h3 style="color: red">{{ Appli_Object.ReasonMark }}</h3></span
+          >
+
           <div class="appli-radio-buttons">
             <label for="Over_Time">加班</label>
             <input
@@ -312,7 +322,6 @@ import { Header, Item } from "vue3-easy-data-table";
 import { useStore } from "vuex";
 import axios from "axios";
 import * as XLSX from "xlsx";
-import Swal from "sweetalert2";
 
 export default {
   name: "DataTable",
@@ -364,6 +373,7 @@ export default {
     const { Emp_ID, Emp_Name, Department_Key, Last_Time } =
       store.state.Personnel_Attend.Login_Object;
     const Insert_Msg = ref("");
+    const Pass_Text_Check = ref(false);
     const Radio_Check = ref(true);
     const Date_Check = ref(true);
     const Appli_Disable = ref(true);
@@ -388,6 +398,11 @@ export default {
       Emp_Name: "",
       Department_Key: "",
       Last_Time: "",
+    });
+
+    const PassTextObject=ref({
+        PassCode:"",
+        Department:"",
     });
 
     const Appli_Object = ref({
@@ -552,15 +567,24 @@ export default {
         return true;
       }
     };
-    const Date_Select = (date) => {
-      Appli_Object.value.ReasonMark = "";
-      const dateString = date.target.value.concat(
-        "_",
-        Appli_Object.value.ReasonMark
-      );
-      Appli_Object.value.ReasonMark = dateString;
-      if (Date_Compare(date.target.value)) {
+
+    const Text_Concat = (date, Key) => {
+      if (Key == "setSucess") {
+        Appli_Object.value.ReasonMark = "";
+        const dateString = date.target.value.concat(
+          "_",
+          Appli_Object.value.ReasonMark
+        );
+        Appli_Object.value.ReasonMark = dateString;
         Date_Check.value = false;
+      } else if (Key == "setFail") {
+        Date_Check.value = true;
+        Appli_Object.value.ReasonMark = "";
+      }
+    };
+    const Date_Select = (date) => {
+      if (Date_Compare(date.target.value)) {
+        Text_Concat(date, "setSucess");
         return false;
       } else {
         Date_Check.value = true;
@@ -570,45 +594,37 @@ export default {
     };
     const Pass_Check = (date) => {
       if (Date_Select(date)) {
-        Swal.fire({
-          title: "輸入通行碼補簽...",
-          input: "text",
-          inputAttributes: {
-            autocapitalize: "off",
-          },
-          showCancelButton: true,
-          confirmButtonText: "Look up",
-          showLoaderOnConfirm: true,
-          preConfirm: async (login) => {
-            try {
-              const githubUrl = `
-        https://api.github.com/users/${login}
-      `;
-              const response = await fetch(githubUrl);
-              if (!response.ok) {
-            return Swal.showValidationMessage(`
-          ${JSON.stringify(await response.json())}
-        `);
-              }
-              return response.json();
-            } catch (error) {
-              Swal.showValidationMessage(`
-        Request failed: ${error}
-      `);
-            }
-          },
-          allowOutsideClick: () => !Swal.isLoading(),
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: `${result.value.login}'s avatar`,
-              imageUrl: result.value.avatar_url,
-            });
-          }
-        });
+        Pass_Text_Check.value = true;
+      } else {
+        Pass_Text_Check.value = false;
       }
     };
+    
+    const Post_Pass=()=>{
+       const dateValue= document.getElementById('datepicker');
 
+       PassTextObject.value.Department=Login_Object.value.Department_Key;
+       axios
+        .get(Api_Url + "Edit_Print", {
+          params: {
+            PassCode: PassTextObject.value.PassCode,
+            DepartKey: PassTextObject.value.Department,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data == "Sucess") {
+            Alert("確認成功...", "Sucess");
+            Text_Concat(dateValue.value, "setSucess");
+          } else {
+            Alert("通行碼錯誤...", "fail");
+            Text_Concat("", "setFail");
+          }
+        })
+        .catch((error) => {
+          Alert(error, "fail");
+        });
+    }
 
     const Radio_Event = () => {
       if (Appli_Object.value.Reason == "Public_Holi") {
@@ -684,10 +700,10 @@ export default {
     };
 
     const openModal = (buttonName, Switch) => {
-      if(Switch=="Update"){
-      Appli_Disable.value = false;
-      Radio_Check.value = false;
-      Date_Check.value=true;
+      if (Switch == "Update") {
+        Appli_Disable.value = false;
+        Radio_Check.value = false;
+        Date_Check.value = true;
       }
       Appli_Object.value.ButtonState = Switch;
       var button = document.getElementById(buttonName);
@@ -738,7 +754,8 @@ export default {
       Appli_Object.value.Total_Time = 0;
       Appli_Disable.value = true;
       Radio_Check.value = true;
-      Date_Check.value=true;
+      Date_Check.value = true;
+      Pass_Text_Check.value = false;
       Insert_Msg.value = "";
     };
 
@@ -834,11 +851,12 @@ export default {
       Appli_Object.value.Emp_ID = Emp_ID;
       Appli_Object.value.Employee = Emp_Name;
       Appli_Object.value.DepartMent = Department_Key;
+      PassTextObject.value.Department=Login_Object.value.Department_Key;
       Review_Data.value.Manager = Emp_ID; //審核人物件資料
       store.state.Personnel_Attend.Appli_Object.Account_Lv ==
-        store.state.Personnel_Attend.Login_Employee_Lv; //Appli固定物件資料
+      store.state.Personnel_Attend.Login_Employee_Lv; //Appli固定物件資料
       store.state.Personnel_Attend.Appli_Object.Export_Depart ==
-        store.state.Personnel_Attend.DepartMent; //Appli固定物件資料
+      store.state.Personnel_Attend.DepartMent; //Appli固定物件資料
     });
     return {
       Login_Employee_Lv,
@@ -861,6 +879,9 @@ export default {
       Appli_Objct_Export,
       Review_Data,
       LogTableData,
+      Pass_Text_Check,
+      PassTextObject,
+      Post_Pass,
       Pass_Check,
       Review_Button,
       Cancel_Button,
