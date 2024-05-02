@@ -37,6 +37,7 @@
               type="date"
               id="datepicker"
               name="datepicker"
+              v-model="PassTextObject.SelectDate"
               @change="Pass_Check"
             />
      
@@ -351,7 +352,7 @@ export default {
       props.HistoryFunction(Emp_Key, Switch);
     };
 
-    const Tabel_Switch = ref("default");
+    const Tabel_Switch = ref("default");   //表單切換物件
 
     watch(
       () => store.state.Personnel_Attend.Appli_List,
@@ -393,19 +394,20 @@ export default {
     //   Review_ID_Key: "",
     //   id: "",
     // })
-    const Login_Object = ref({
+    const Login_Object = ref({ //登入物件儲存
       Emp_ID: "",
       Emp_Name: "",
       Department_Key: "",
       Last_Time: "",
     });
 
-    const PassTextObject=ref({
+    const PassTextObject=ref({   //通行碼物件
         PassCode:"",
         Department:"",
+        SelectDate:"",
     });
-
-    const Appli_Object = ref({
+ 
+    const Appli_Object = ref({  //申請表單物件
       Appli_id: "",
       Emp_ID: "",
       Employee: "",
@@ -546,24 +548,33 @@ export default {
       let Year = LocalDate.getFullYear();
       let Month = LocalDate.getMonth() + 1;
       let Date = LocalDate.getDate();
-      LocalDate.getMonth() + 1 < 10
-        ? (Month = `0${LocalDate.getMonth() + 1}`)
-        : "";
-      LocalDate.getDate() < 10 ? (Month = `0${LocalDate.getDate()}`) : "";
+      console.log(Month);
+      console.log(Date);
+
+      (Month < 10) ? (Month = `0${Month}`): "";
+      (Date < 10) ? (Date = `0${Date}`) : "";
+   
       getDate = `${Year}-${Month}-${Date}`;
+      console.log("getDate"+getDate);
+
       return getDate;
     };
     const Date_Compare = (date) => {
       const LocalDate = new Date();
+
       const getDate = Date_Zero(LocalDate);
+
       const Now = new Date(getDate);
+
       const End = new Date(date);
+    
+
       const timeDiff = Math.abs(Now - End);
       const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      console.log(diffDays);
       if (Now > End && diffDays > 7) {
         return false;
       } else {
+
         return true;
       }
     };
@@ -571,19 +582,20 @@ export default {
     const Text_Concat = (date, Key) => {
       if (Key == "setSucess") {
         Appli_Object.value.ReasonMark = "";
-        const dateString = date.target.value.concat(
+        const dateString = date.concat(
           "_",
           Appli_Object.value.ReasonMark
         );
         Appli_Object.value.ReasonMark = dateString;
         Date_Check.value = false;
+        Pass_Text_Check.value=false;
       } else if (Key == "setFail") {
         Date_Check.value = true;
         Appli_Object.value.ReasonMark = "";
       }
     };
     const Date_Select = (date) => {
-      if (Date_Compare(date.target.value)) {
+      if (Date_Compare(date)) {
         Text_Concat(date, "setSucess");
         return false;
       } else {
@@ -592,8 +604,8 @@ export default {
         return true;
       }
     };
-    const Pass_Check = (date) => {
-      if (Date_Select(date)) {
+    const Pass_Check = () => {
+      if (Date_Select(PassTextObject.value.SelectDate)) {
         Pass_Text_Check.value = true;
       } else {
         Pass_Text_Check.value = false;
@@ -601,11 +613,9 @@ export default {
     };
     
     const Post_Pass=()=>{
-       const dateValue= document.getElementById('datepicker');
-
        PassTextObject.value.Department=Login_Object.value.Department_Key;
        axios
-        .get(Api_Url + "Edit_Print", {
+        .get(Api_Url + "checkPasscode", {
           params: {
             PassCode: PassTextObject.value.PassCode,
             DepartKey: PassTextObject.value.Department,
@@ -615,7 +625,8 @@ export default {
           console.log(response.data);
           if (response.data == "Sucess") {
             Alert("確認成功...", "Sucess");
-            Text_Concat(dateValue.value, "setSucess");
+            Text_Concat(PassTextObject.value.SelectDate, "setSucess");
+
           } else {
             Alert("通行碼錯誤...", "fail");
             Text_Concat("", "setFail");
@@ -747,16 +758,17 @@ export default {
     };
 
     const Init_Appli = () => {
-      Appli_Object.value.Appli_id = "";
-      Appli_Object.value.Reason = "";
-      Appli_Object.value.ReasonMark = "";
-      Appli_Object.value.Appli_Time = "";
-      Appli_Object.value.Total_Time = 0;
-      Appli_Disable.value = true;
-      Radio_Check.value = true;
-      Date_Check.value = true;
-      Pass_Text_Check.value = false;
-      Insert_Msg.value = "";
+      Appli_Object.value.Appli_id = ""; //申請物件初始化
+      Appli_Object.value.Reason = "";//申請物件初始化
+      Appli_Object.value.ReasonMark = "";//申請物件初始化
+      Appli_Object.value.Appli_Time = "";//申請物件初始化
+      Appli_Object.value.Total_Time = 0;//申請物件初始化
+      Appli_Disable.value = true;//申請按鈕防呆
+      Radio_Check.value = true;//radio選取防呆
+      Date_Check.value = true;//日期選取防呆
+      Pass_Text_Check.value = false; //逾期防呆
+      PassTextObject.value.PassCode=""; //通行碼初始化
+      Insert_Msg.value = "";//提醒文字
     };
 
     const Update_Appli = () => {
