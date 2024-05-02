@@ -2,7 +2,6 @@
   <div
     class="modal fade"
     id="AppliModal"
-    tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
@@ -33,20 +32,34 @@
             <span class="Context">{{ Login_Object.Last_Time }}</span>
           </div>
           <br />
-          申請日期:<br><input
+          <div v-if="Appli_Object.ButtonState != 'Update'">
+            申請日期:<br /><input
               type="date"
               id="datepicker"
               name="datepicker"
-              @change="Date_Select"
-              /><br><br>
-          申請理由:<br /><input
-            type="text"
-            class="form-control"
-            v-model="Appli_Object.ReasonMark"
-            :disabled="Date_Check"
-            @keyup="Radio_Event()"
-          />
-          <br />
+              v-model="PassTextObject.SelectDate"
+              @change="Pass_Check"
+            />
+     
+            <div v-if="Pass_Text_Check">
+              輸入通行碼:<br /><input type="Password" v-model="PassTextObject.PassCode" class="PassText Context" />
+              <button type="button"  @click="Post_Pass"   class="btn btn-success" id="Post_Pass">
+                通行碼
+              </button>
+            </div>
+        
+          </div>
+          申請理由:<br /><span v-if="Appli_Object.ButtonState != 'Update'"
+            ><input
+              v-if="Date_Check==false"
+              type="text"
+              class="form-control"
+              v-model="Appli_Object.ReasonMark"
+              @keyup="Radio_Event()" /></span
+          ><span v-else
+            ><h3 style="color: red">{{ Appli_Object.ReasonMark }}</h3></span
+          >
+
           <div class="appli-radio-buttons">
             <label for="Over_Time">加班</label>
             <input
@@ -132,6 +145,7 @@
               class="btn btn-success"
               id="Post_Appli"
               @click="Update_Appli"
+              :disabled="Appli_Disable"
             >
               Update
             </button>
@@ -226,14 +240,23 @@
     >
       <div v-if="item.Check_State == 'No_Process'">
         <div v-if="item.Emp_Key == Review_Data.Manager">
-          <button class="button-20 tableButton" @click="Print_Appli(item.id, item.Emp_Key)">
+          <button
+            class="button-20 tableButton"
+            @click="Print_Appli(item.id, item.Emp_Key)"
+          >
             Edit
           </button>
         </div>
-        <button class="button-18 tableButton" @click="Review_Button(item, 'Pass')">
+        <button
+          class="button-18 tableButton"
+          @click="Review_Button(item, 'Pass')"
+        >
           Pass
         </button>
-        <button class="button-19 tableButton" @click="Review_Button(item, 'NPass')">
+        <button
+          class="button-19 tableButton"
+          @click="Review_Button(item, 'NPass')"
+        >
           NPass
         </button>
       </div>
@@ -249,7 +272,9 @@
     <template v-else #item-Process="item">
       <div v-if="item.Check_State == 'No_Process'">
         <div v-if="item.Emp_Key == Review_Data.Manager">
-          <button class="button-20" @click="Print_Appli(item.id, item.Emp_Key)">編輯</button>
+          <button class="button-20" @click="Print_Appli(item.id, item.Emp_Key)">
+            編輯
+          </button>
         </div>
       </div>
       <div v-else-if="item.Check_State == 'Process'">Process</div>
@@ -298,7 +323,6 @@ import { Header, Item } from "vue3-easy-data-table";
 import { useStore } from "vuex";
 import axios from "axios";
 import * as XLSX from "xlsx";
-// import Swal from "sweetalert2";
 
 export default {
   name: "DataTable",
@@ -328,7 +352,7 @@ export default {
       props.HistoryFunction(Emp_Key, Switch);
     };
 
-    const Tabel_Switch = ref("default");
+    const Tabel_Switch = ref("default");   //表單切換物件
 
     watch(
       () => store.state.Personnel_Attend.Appli_List,
@@ -350,8 +374,9 @@ export default {
     const { Emp_ID, Emp_Name, Department_Key, Last_Time } =
       store.state.Personnel_Attend.Login_Object;
     const Insert_Msg = ref("");
+    const Pass_Text_Check = ref(false);
     const Radio_Check = ref(true);
-    const Date_Check=ref(true);
+    const Date_Check = ref(true);
     const Appli_Disable = ref(true);
     const Appli_Objct_Export = ref([]);
     // const Appli_Objct_Export=ref({
@@ -369,14 +394,20 @@ export default {
     //   Review_ID_Key: "",
     //   id: "",
     // })
-    const Login_Object = ref({
+    const Login_Object = ref({ //登入物件儲存
       Emp_ID: "",
       Emp_Name: "",
       Department_Key: "",
       Last_Time: "",
     });
 
-    const Appli_Object = ref({
+    const PassTextObject=ref({   //通行碼物件
+        PassCode:"",
+        Department:"",
+        SelectDate:"",
+    });
+ 
+    const Appli_Object = ref({  //申請表單物件
       Appli_id: "",
       Emp_ID: "",
       Employee: "",
@@ -420,7 +451,9 @@ export default {
 
     const Appli_sortBy = ["Appli_Time", "Last_Time"];
     const Appli_sortType = ["desc", "asc"];
-    const Appli_itemsSelected = ref([]);   /*日後有需要可以加在table v-model:items-selected="Appli_itemsSelected"*/
+    const Appli_itemsSelected = ref(
+      []
+    ); /*日後有需要可以加在table v-model:items-selected="Appli_itemsSelected"*/
     const Appli_searchField = ["Emp_Name"];
     const Appli_searchName = ref("");
     const Review_Data = ref({
@@ -510,45 +543,100 @@ export default {
       document.getElementById("row-clicked").innerHTML = JSON.stringify(item);
     };
 
-
-
-    const Date_Zero=(LocalDate)=>{
+    const Date_Zero = (LocalDate) => {
       let getDate;
-      let Year=LocalDate.getFullYear();
-      let Month=LocalDate.getMonth()+1;
-      let Date=LocalDate.getDate();
-      ((LocalDate.getMonth()+1)<10)?Month=`0${LocalDate.getMonth()+1}`:"";
-      ((LocalDate.getDate())<10)?Month=`0${LocalDate.getDate()}`:"";
-      getDate=`${Year}-${Month}-${Date}`
+      let Year = LocalDate.getFullYear();
+      let Month = LocalDate.getMonth() + 1;
+      let Date = LocalDate.getDate();
+      console.log(Month);
+      console.log(Date);
+
+      (Month < 10) ? (Month = `0${Month}`): "";
+      (Date < 10) ? (Date = `0${Date}`) : "";
+   
+      getDate = `${Year}-${Month}-${Date}`;
+      console.log("getDate"+getDate);
+
       return getDate;
-    }
-    const Date_Compare=(date)=>{
-      const LocalDate=new Date();
-      const getDate=Date_Zero(LocalDate);
-      const Now=new Date(getDate);
-      const End=new Date(date);
-      const timeDiff=Math.abs(Now-End);
-      const diffDays=Math.ceil(timeDiff/(1000*3600*24))
-      console.log(diffDays);
-      if(Now>End && diffDays>7)
-      {
+    };
+    const Date_Compare = (date) => {
+      const LocalDate = new Date();
+
+      const getDate = Date_Zero(LocalDate);
+
+      const Now = new Date(getDate);
+
+      const End = new Date(date);
+    
+
+      const timeDiff = Math.abs(Now - End);
+      const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      if (Now > End && diffDays > 7) {
         return false;
-      }else{
+      } else {
+
         return true;
       }
-    }
-    const Date_Select=(date)=>{
-      Appli_Object.value.ReasonMark="";
-      const dateString=date.target.value.concat('_',Appli_Object.value.ReasonMark);
-      Appli_Object.value.ReasonMark=dateString;
-      if(  Date_Compare(date.target.value)){
-        Date_Check.value=false
-      }else{
-        Date_Check.value=true;
+    };
+
+    const Text_Concat = (date, Key) => {
+      if (Key == "setSucess") {
+        Appli_Object.value.ReasonMark = "";
+        const dateString = date.concat(
+          "_",
+          Appli_Object.value.ReasonMark
+        );
+        Appli_Object.value.ReasonMark = dateString;
+        Date_Check.value = false;
+        Pass_Text_Check.value=false;
+      } else if (Key == "setFail") {
+        Date_Check.value = true;
+        Appli_Object.value.ReasonMark = "";
+      }
+    };
+    const Date_Select = (date) => {
+      if (Date_Compare(date)) {
+        Text_Concat(date, "setSucess");
+        return false;
+      } else {
+        Date_Check.value = true;
         Init_Appli();
-        Alert("超過七天請聯繫主管...", "fail");
-        }
+        return true;
+      }
+    };
+    const Pass_Check = () => {
+      if (Date_Select(PassTextObject.value.SelectDate)) {
+        Pass_Text_Check.value = true;
+      } else {
+        Pass_Text_Check.value = false;
+      }
+    };
+    
+    const Post_Pass=()=>{
+       PassTextObject.value.Department=Login_Object.value.Department_Key;
+       axios
+        .get(Api_Url + "checkPasscode", {
+          params: {
+            PassCode: PassTextObject.value.PassCode,
+            DepartKey: PassTextObject.value.Department,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data == "Sucess") {
+            Alert("確認成功...", "Sucess");
+            Text_Concat(PassTextObject.value.SelectDate, "setSucess");
+
+          } else {
+            Alert("通行碼錯誤...", "fail");
+            Text_Concat("", "setFail");
+          }
+        })
+        .catch((error) => {
+          Alert(error, "fail");
+        });
     }
+
     const Radio_Event = () => {
       if (Appli_Object.value.Reason == "Public_Holi") {
         Radio_Check.value = true;
@@ -623,8 +711,12 @@ export default {
     };
 
     const openModal = (buttonName, Switch) => {
+      if (Switch == "Update") {
+        Appli_Disable.value = false;
+        Radio_Check.value = false;
+        Date_Check.value = true;
+      }
       Appli_Object.value.ButtonState = Switch;
-
       var button = document.getElementById(buttonName);
       button.click();
     };
@@ -634,7 +726,6 @@ export default {
       openModal("button-17-Hide", "Insert");
     };
     const Print_Appli = (Appli_id, Emp_Key) => {
-
       //編輯須帶出單號
       axios
         .get(Api_Url + "Edit_Print", {
@@ -667,14 +758,17 @@ export default {
     };
 
     const Init_Appli = () => {
-      Appli_Object.value.Appli_id = "";
-      Appli_Object.value.Reason = "";
-      Appli_Object.value.ReasonMark = "";
-      Appli_Object.value.Appli_Time = "";
-      Appli_Object.value.Total_Time = 0;
-      Appli_Disable.value = true;
-      Radio_Check.value = true;
-      Insert_Msg.value = "";
+      Appli_Object.value.Appli_id = ""; //申請物件初始化
+      Appli_Object.value.Reason = "";//申請物件初始化
+      Appli_Object.value.ReasonMark = "";//申請物件初始化
+      Appli_Object.value.Appli_Time = "";//申請物件初始化
+      Appli_Object.value.Total_Time = 0;//申請物件初始化
+      Appli_Disable.value = true;//申請按鈕防呆
+      Radio_Check.value = true;//radio選取防呆
+      Date_Check.value = true;//日期選取防呆
+      Pass_Text_Check.value = false; //逾期防呆
+      PassTextObject.value.PassCode=""; //通行碼初始化
+      Insert_Msg.value = "";//提醒文字
     };
 
     const Update_Appli = () => {
@@ -689,7 +783,7 @@ export default {
             if (response.data == "Sucess") {
               Alert("更新完成!", "Sucess");
               Init_Appli();
-              HistorySwicth(Login_Object.value.Emp_ID, 'Appli')
+              HistorySwicth(Login_Object.value.Emp_ID, "Appli");
             } else if (response.data == "fail") {
               Alert("更新失敗", "fail");
             }
@@ -769,11 +863,12 @@ export default {
       Appli_Object.value.Emp_ID = Emp_ID;
       Appli_Object.value.Employee = Emp_Name;
       Appli_Object.value.DepartMent = Department_Key;
+      PassTextObject.value.Department=Login_Object.value.Department_Key;
       Review_Data.value.Manager = Emp_ID; //審核人物件資料
       store.state.Personnel_Attend.Appli_Object.Account_Lv ==
-        store.state.Personnel_Attend.Login_Employee_Lv; //Appli固定物件資料
+      store.state.Personnel_Attend.Login_Employee_Lv; //Appli固定物件資料
       store.state.Personnel_Attend.Appli_Object.Export_Depart ==
-        store.state.Personnel_Attend.DepartMent; //Appli固定物件資料
+      store.state.Personnel_Attend.DepartMent; //Appli固定物件資料
     });
     return {
       Login_Employee_Lv,
@@ -796,6 +891,10 @@ export default {
       Appli_Objct_Export,
       Review_Data,
       LogTableData,
+      Pass_Text_Check,
+      PassTextObject,
+      Post_Pass,
+      Pass_Check,
       Review_Button,
       Cancel_Button,
       Open_Appli,
