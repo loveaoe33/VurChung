@@ -1380,9 +1380,11 @@ export default {
       }
     };
     const Export_All_Applie = () => {
+      TableSwitch("default");
       store.dispatch("Personnel_Attend/getAppli_All", "No_Process", "ALL");
     };
     const Export_All_review = () => {
+      TableSwitch("default");
       store.dispatch("Personnel_Attend/getAppli_All", "Process", "ALL");
     };
 
