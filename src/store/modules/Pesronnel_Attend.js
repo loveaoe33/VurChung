@@ -180,7 +180,7 @@ import Swal from "sweetalert2";
 
 const state = {
     // 模組的狀態
-    Attend_Api_Url:"http://localhost:8080/AttendController/",
+    Attend_Api_Url:"http://192.168.2.147:8080/AttendController/",
     user: null,
     TabelState:"default",
     DepartMent: ["123"],    //部門
