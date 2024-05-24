@@ -521,7 +521,6 @@ export default {
             DipaObject.Article_Index = Article_Index;
             DipaObject.Article_ID = Article_ID;
             DipaObject.PassCode = PassCode_Post;
-            console.log(DipaObject);
             this.$store.dispatch("Article_Delete", DipaObject);
           } else {
             this.$swal.fire("驗證碼錯誤");

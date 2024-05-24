@@ -225,7 +225,7 @@ const store = createStore({
       },
       //文章刪除
       PrinDelete({commit},DipaObject){
-      if(DipaObject.SensoryIndex && DipaObject.SensoryID!="")
+        
       {
      
         axios
@@ -244,7 +244,7 @@ const store = createStore({
             
           });
 
-      }
+        }
       
 
       },
