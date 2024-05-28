@@ -35,6 +35,29 @@
   
   
   <div class="TotalContext">
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalToggleLabel">圖/檔案上傳</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
+          <li class="liTitle">檔案 <i class="fa-solid fa-file IconImage"></i></li>
+      <input type="file" class="form-control Contextext" ref="fileClear" @change="fileChange($event)"><br>
+      <!-- <li class="liTitle">QRCode <i class="fa-solid fa-cubes-stacked IconImage"></i></li>
+      <input type="file" class="form-control Contextext" ref="QrClear" accept="image/git,image/jpeg" @change="QrChange($event)"><br> -->
+      </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"   @click="FileUpload">上傳</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
     <nav id ="siderbar" :style=LoginObject>
       <p>公告發布站</p>
       <ul>
@@ -190,12 +213,9 @@
           <td><input type="button"  id="{{ Article.id }}" @click="ViewSensory(Article.id)" class="btn btn-primary ViewButton" value="查看"></td>
           <td><input type="button"  id="{{ Article.id }}"  @click="Dele_Article(index,Article.id)"  class="btn btn-danger ViewButton" value="刪除"></td>
           <td  v-if="Article.articleFileUrl!='' && Article.articleFileUrl!=null " style="color:red;"><i class="fa-sharp fa-solid fa-check"></i>已完成</td>    
-          <td v-else > <input type="file" style="width:220px;" class="form-control Contextext" ref="fileClear" @change="fileChange($event)">          <button class="btn btn-primary"  data-bs-toggle="modal" @click="FileUpload(Article.id)" data-bs-dismiss="modal">上傳</button>
-</td>
-       
-        
-            </tr>
-        
+          <td v-else ><input type="button" data-bs-toggle="modal" href="#exampleModalToggle" @click="SetId(Article.id)" role="button" class="btn btn-success UpLoadButton"  value="缺少檔案"></td>
+          
+          </tr>
            </tbody>
 
           </table>
@@ -552,9 +572,11 @@ export default {
     QrChange: function (e) {
       this.UpLoads.append("Qr", e.target.files[0]);
     },
-
-    FileUpload: function (UploadId) {
+    SetId: function (UploadId) {
       this.UploadId = UploadId;
+      console.log(UploadId);
+    },
+    FileUpload: function () {
       if (this.UpLoads.has("file")) {
         this.UpLoads.set("Article_Id", this.UploadId);
         console.log(this.UpLoads.get("Article_Id"));
