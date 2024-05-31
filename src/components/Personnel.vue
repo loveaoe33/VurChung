@@ -43,7 +43,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
+          <form @submit="HandleSubmit" id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
           <li class="liTitle">檔案 <i class="fa-solid fa-file IconImage"></i></li>
       <input type="file" class="form-control Contextext" ref="fileClear" @change="fileChange($event)"><br>
       <!-- <li class="liTitle">QRCode <i class="fa-solid fa-cubes-stacked IconImage"></i></li>
@@ -576,6 +576,9 @@ export default {
       this.UploadId = UploadId;
       console.log(UploadId);
     },
+
+
+
     FileUpload: function () {
       if (this.UpLoads.has("file")) {
         this.UpLoads.set("Article_Id", this.UploadId);
@@ -599,6 +602,9 @@ export default {
         this.$swal.fire("至少需上傳一項");
       }
     },
+    HandleSubmit: function (e) {
+      e.preventDefault(); // 阻止默认提交行为
+    },    
     UrlFun: function (Url) {
       return Url;
     },
