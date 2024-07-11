@@ -43,7 +43,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form @submit="HandleSubmit" id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
+          <form @submit.prevent="HandleSubmit" id="uploadForm" action='upload_file' role="form" method="post" enctype=multipart/form-data>
           <li class="liTitle">檔案 <i class="fa-solid fa-file IconImage"></i></li>
       <input type="file" class="form-control Contextext" ref="fileClear" @change="fileChange($event)"><br>
       <!-- <li class="liTitle">QRCode <i class="fa-solid fa-cubes-stacked IconImage"></i></li>

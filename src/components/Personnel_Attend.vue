@@ -1007,6 +1007,7 @@ export default {
             Post_History.value
           );
         } else if (Post_History.value.Select_State == "Employee") {
+
           TableSwitch("default");
           const Url =
             Post_History.value.State == "申請歷史" ? "Appli" : "Review";

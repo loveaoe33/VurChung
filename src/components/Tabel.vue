@@ -364,6 +364,7 @@ export default {
     watch(
       () => store.state.Personnel_Attend.TabelState,
       (newValue) => {
+        alert("變動"+newValue);
         Tabel_Switch.value = newValue;
       }
     );

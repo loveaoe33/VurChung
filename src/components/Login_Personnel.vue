@@ -127,7 +127,7 @@ export default {
 
           .then((response) => {
             console.log(response.data);
-            if (response.data != null &response.data != "") {
+            if (response.data != "fail") {
               this.loginAuto(response.data);
               this.$store.dispatch("Personnel_Attend/loginState",this.query);
               this.$router.push({
