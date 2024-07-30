@@ -128,7 +128,6 @@ export default {
           .then((response) => {
             console.log(response.data);
             if (response.data != "fail") {
-              alert("數值"+response.data);
               this.loginAuto(response.data);
               this.$store.dispatch("Personnel_Attend/loginState",this.query);
               this.$router.push({
