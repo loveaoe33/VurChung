@@ -1037,6 +1037,7 @@ export default {
     };
 
     const JsonParse = (JsonString, Switch_String) => {
+      console.log(JsonString);
       try {
         let Proecess_String = JSON.parse(JsonString);
         if (Switch_String == "Employee") {
@@ -1047,8 +1048,8 @@ export default {
           return `【${Proecess_String.Title}】:${Proecess_String.Context}`;
         } else if (Switch_String == "id") {
           return Proecess_String.id;
-        } else if (Switch_String == "Create_Name") {
-          return Proecess_String.Create_Name;
+        } else if (Switch_String == "CreateName") {
+          return Proecess_String.CreateName;
         } else if (Switch_String == "PassCode") {
           return `【${Proecess_String.Depart}】:${Proecess_String.PassCode}`;
         }
