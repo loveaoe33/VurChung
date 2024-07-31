@@ -127,7 +127,7 @@
               :key="index"
               ><div
                 v-if="
-                  JsonParse(item, 'Create_Name') == Login_Object.Emp_Name ||
+                  JsonParse(item, 'CreateName') == Login_Object.Emp_Name ||
                   Login_Object.Account_Lv == 0
                 "
               >
